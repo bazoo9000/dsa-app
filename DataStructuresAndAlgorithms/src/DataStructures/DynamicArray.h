@@ -78,6 +78,7 @@ namespace ds
 			arr.m_Capacity = 0;
 
 			LOG_INFO("DynamicArray MOVED succesfully");
+			return *this;
 		}
 
 	private:
