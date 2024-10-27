@@ -61,9 +61,11 @@
     };
 
     #ifdef DEBUG_MODE
+        #define LOG_TRACE(x)    Logger::LogTrace(x)
         #define LOG_DEBUG(x)    Logger::LogDebug(x)
         #define LOG_INFO(x)     Logger::LogInfo(x)
     #else
+        #define LOG_TRACE(x)
         #define LOG_DEBUG(x)
         #define LOG_INFO(x)
     #endif // DEBUG_MODE
@@ -74,6 +76,7 @@
 
 #else
 
+    #define LOG_TRACE(x)
     #define LOG_DEBUG(x)
     #define LOG_INFO(x)
     #define LOG_WARN(x)

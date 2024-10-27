@@ -1,16 +1,18 @@
+#include "DataStructures/DynamicArray.h"
 #include "Includes.h"
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	ds::DynamicArray<int> *da = new ds::DynamicArray<int>();
-	da->Add(1);
-	da->Add(2);
-	da->Add(3);
+	ds::DynamicArray<int> arr;
 
-	ds::DynamicArray<int> da2(std::move(*da));
-	delete da;
-	da2.Print();
+	arr.Add(1);
+	arr.Add(2);
+	arr.Add(3);
+	arr.Add(4);
+	std::cout << arr[3] << std::endl;	
+
+	arr.Print();
 
 	//ds::Graph<int> graph(ds::GraphRepresentOption::LIST);
 	

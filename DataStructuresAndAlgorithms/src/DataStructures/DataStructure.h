@@ -20,7 +20,7 @@ namespace ds
         uint32_t GetSize() { return m_Size; }
 
     public:
-        virtual void Print() = 0;
+        virtual void Print() { LOG_DEBUG("This is a data structure"); };
 
     protected:
         uint32_t m_Size = 0;

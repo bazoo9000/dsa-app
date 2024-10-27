@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <iostream>
+#include <string>
 #include "DataStructure.h"
 
 namespace ds
@@ -31,9 +32,53 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
-		DynamicArray<T>& operator=(const T* arr) { return DynamicArray<T>(arr); }
-		DynamicArray<T>& operator=(const DynamicArray& arr) { return DynamicArray<T>(arr); }
-		DynamicArray<T>& operator=(DynamicArray&& arr) { return DynamicArray<T>(arr); }
+		DynamicArray<T>& operator=(const T* arr) 
+		{
+			uint32_t size = 0;
+
+			while (arr[size]) 
+			{
+				size++;
+			}
+
+			this->m_Size = size;
+			this->m_Capacity = size * 2;
+			this->m_Data = new T[size];
+
+			for(uint32_t i = 0; i < this->m_Size; i++)
+			{
+				m_Data[size] = arr[size];
+			}
+
+			LOG_INFO("DynamicArray COPIED succesfully");
+			return *this;
+		}
+		DynamicArray<T>& operator=(const DynamicArray& arr) 
+		{
+			this->m_Size = arr.m_Size;
+			m_Capacity = arr.m_Capacity * 2;
+			m_Data = new T[m_Capacity];
+
+			for (uint32_t i = 0; i < arr.m_Size; ++i)
+			{
+				m_Data[i] = arr.m_Data[i];
+			}
+
+			LOG_INFO("DynamicArray COPIED succesfully");
+			return *this;
+		}
+		DynamicArray<T>& operator=(DynamicArray&& arr) 
+		{
+			m_Data = arr.m_Data;
+			this->m_Size = arr.m_Size;
+			m_Capacity = arr.m_Capacity;
+
+			arr.m_Data = nullptr;
+			arr.m_Size = 0;
+			arr.m_Capacity = 0;
+
+			LOG_INFO("DynamicArray MOVED succesfully");
+		}
 
 	private:
 		void resize(size_t newCap);
@@ -47,10 +92,16 @@ namespace ds
 	DynamicArray<T>::DynamicArray(uint32_t startSize)
 		: m_Capacity(startSize)
 	{
+		if(m_Capacity == 0)
+		{
+			LOG_ERROR("Max capacity of DynamicArray is 0! Setting it back to 1");
+			m_Capacity = 1;
+		}
+
 		this->m_Size = 0;
 		m_Data = new T[m_Capacity];
 
-		LOG_DEBUG("DynamicArray CREATED succesfully!");
+		LOG_INFO("DynamicArray CREATED succesfully");
 	}
 
 	template <typename T>
@@ -63,16 +114,16 @@ namespace ds
 			++size;
 		}
 
-		m_Data = new T[size];
+		this->m_Size = size;
+		this->m_Capacity = size;
+		this->m_Data = new T[m_Capacity];
 
-		for (uint32_t i = 0; i < size; ++i) 
+		for (uint32_t i = 0; i < this->m_Size; ++i) 
 		{
 			m_Data[i] = arr[i];
 		}
 
-		this->m_Size = size;
-
-		LOG_DEBUG("DynamicArray COPIED succesfully!");
+		LOG_INFO("DynamicArray COPIED succesfully");
 	}
 
 	template <typename T>
@@ -87,7 +138,7 @@ namespace ds
 			m_Data[i] = arr.m_Data[i];
 		}
 
-		LOG_DEBUG("DynamicArray COPIED succesfully!");
+		LOG_INFO("DynamicArray COPIED succesfully!");
 	}
 
 	template <typename T>
@@ -99,7 +150,7 @@ namespace ds
 		arr.m_Size = 0;
 		arr.m_Capacity = 0;
 
-		LOG_DEBUG("DynamicArray MOVED succesfully!");
+		LOG_INFO("DynamicArray MOVED succesfully");
 	}
 
 	template <typename T>
@@ -110,7 +161,7 @@ namespace ds
 		m_Capacity = 0;
 		this->m_Size = 0;
 
-		LOG_DEBUG("DynamicArray DELETED succesfully!");
+		LOG_INFO("DynamicArray DELETED succesfully");
 	}
 
 	template <typename T>
@@ -122,6 +173,8 @@ namespace ds
 		}
 
 		m_Data[this->m_Size++] = elem;
+
+		LOG_INFO("Adding succesful");
 	}
 
 	template <typename T>
@@ -129,8 +182,8 @@ namespace ds
 	{
 		if (index >= this->m_Size)
 		{
-			LOG_FATAL("Can't insert. Index is out of range!");
-			exit(1);
+			LOG_ERROR("Can't insert, index is out of range");
+			return;
 		}
 
 		if (this->m_Size == m_Capacity)
@@ -145,6 +198,8 @@ namespace ds
 
 		m_Data[index] = elem;
 		++this->m_Size;
+
+		LOG_INFO("Inserting succesful");
 	}
 
 	template <typename T>
@@ -152,9 +207,11 @@ namespace ds
 	{
 		if (index >= this->m_Size)
 		{
-			std::cout << "Can't get element. Index is out of range!";
+			LOG_FATAL("Can't get element, index is out of range");
 			exit(1);
 		}
+
+		LOG_INFO("Got element succesfully");
 
 		return m_Data[index];
 	}
@@ -164,8 +221,7 @@ namespace ds
 	{
 		if (index >= this->m_Size)
 		{
-			std::cout << "Can't delete. Index is out of range!\n";
-			exit(1);
+			LOG_ERROR("Can't delete, index is out of range");
 		}
 
 		for (size_t i = index; i < this->m_Size - 1; ++i)
@@ -174,17 +230,24 @@ namespace ds
 		}
 
 		--this->m_Size;
+		LOG_INFO("Element deleted succesfully");
 	}
 
 	template <typename T>
 	void DynamicArray<T>::Print()
 	{
-		using std::cout;
+		LOG_DEBUG("This is an DynamicArray");
+
+		if(this->m_Size == 0)
+		{
+			LOG_DEBUG("DynamicArray is empty");
+		}
+
 		for (uint32_t i = 0; i < this->m_Size; i++)
 		{
-			cout << m_Data[i] << " ";
+			std::cout << m_Data[i] << " ";
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
 
 	template <typename T>
@@ -198,5 +261,7 @@ namespace ds
 		delete[] m_Data;
 		m_Data = newData;
 		m_Capacity = newCap;
+
+		LOG_DEBUG("DynamicArray has been resized");
 	}
 }
