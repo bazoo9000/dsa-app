@@ -29,15 +29,21 @@ namespace ds
 		void DeleteAt(uint32_t index);
 		void Print();
 
+	public:
+		// TO BE IMPLEMENTED!!!!
+		// T GetElement(const T& elem);
+		// T GetElementAt(uint32_t index);
+		// T GetFirst();
+		// T GetLast();
+		// TO BE IMPLEMENTED
+
 	private:
-		Node<T>* m_Head;
-		Node<T>* m_Tail;
-		uint32_t m_Size;
+		Node<T>* m_Head = nullptr;
+		Node<T>* m_Tail = nullptr;
 	};
 
 	template <typename T>
 	LinkedList<T>::LinkedList()
-		: m_Head(nullptr), m_Tail(nullptr), m_Size(0)
 	{
 		// nimic
 	}
@@ -72,7 +78,7 @@ namespace ds
 			m_Tail = newNode;
 		}
 
-		++m_Size;
+		++this->m_Size;
 	}
 
 	template <typename T>
@@ -91,13 +97,13 @@ namespace ds
 			m_Head = newNode;
 		}
 
-		++m_Size;
+		++this->m_Size;
 	}
 
 	template <typename T>
 	void LinkedList<T>::InsertAt(T elem, uint32_t index)
 	{
-		if (index >= m_Size)
+		if (index >= this->m_Size)
 		{
 			std::cout << "Can't insert. Index out of range.\n";
 			return;
@@ -109,7 +115,7 @@ namespace ds
 			return;
 		}
 
-		if (index == m_Size)
+		if (index == this->m_Size)
 		{
 			Append(elem);
 			return;
@@ -128,7 +134,7 @@ namespace ds
 		newNode->next = prevNode->next;
 		prevNode->next = newNode;
 
-		++m_Size;
+		++this->m_Size;
 	}
 
 	template <typename T>
@@ -176,7 +182,7 @@ namespace ds
 				m_Tail = nullptr;
 			}
 
-			--m_Size;
+			--this->m_Size;
 
 			return;
 		}
@@ -199,14 +205,14 @@ namespace ds
 			delete tempNode;
 			tempNode = nullptr;
 
-			--m_Size;
+			--this->m_Size;
 		}
 	}
 
 	template <typename T>
 	void LinkedList<T>::DeleteAt(uint32_t index)
 	{
-		if (index >= m_Size)
+		if (index >= this->m_Size)
 		{
 			std::cout << "Can't delete. Index out of range.\n";
 			return;
@@ -225,7 +231,7 @@ namespace ds
 				m_Tail = nullptr;
 			}
 
-			--m_Size;
+			--this->m_Size;
 
 			return;
 		}
@@ -247,7 +253,7 @@ namespace ds
 		delete tempNode;
 		tempNode = nullptr;
 
-		--m_Size;
+		--this->m_Size;
 	}
 
 	template <typename T>

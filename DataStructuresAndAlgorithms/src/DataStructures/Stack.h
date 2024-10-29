@@ -24,19 +24,17 @@ namespace ds
 		void Push(T elem);
 		void Pop();
 		bool IsEmpty();
-		void Print();
+		virtual void Print() override;
 
 	public:
 		T GetTop() { return m_Head->data; }
-		uint32_t GetSize() { return this->m_Size; }
 
 	private:
-		Node<T>* m_Head;
+		Node<T>* m_Head = nullptr;
 	};
 
 	template <typename T>
 	Stack<T>::Stack()
-		: m_Head(nullptr)
 	{
 		// nimic
 	}

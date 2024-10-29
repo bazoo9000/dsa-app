@@ -24,21 +24,18 @@ namespace ds
 		void Enqueue(T elem);
 		void Dequeue();
 		bool IsEmpty();
-		void Print();
+		virtual void Print() override;
 
 	public:
 		T GetFirst() { return m_Head->data; }
-		uint32_t GetSize() { return m_Size; }
 
 	private:
-		Node<T>* m_Head;
-		Node<T>* m_Tail;
-		uint32_t m_Size;
+		Node<T>* m_Head = nullptr;
+		Node<T>* m_Tail = nullptr;
 	};
 
 	template <typename T>
 	Queue<T>::Queue()
-		: m_Head(nullptr), m_Tail(nullptr), m_Size(0)
 	{
 		// nimic
 	}
@@ -64,7 +61,7 @@ namespace ds
 			m_Head = newNode;
 			m_Tail = newNode;
 
-			++m_Size;
+			++this->m_Size;
 
 			return;
 		}
@@ -72,7 +69,7 @@ namespace ds
 		m_Tail->next = newNode;
 		m_Tail = newNode;
 
-		++m_Size;
+		++this->m_Size;
 	}
 
 	template <typename T>
@@ -95,13 +92,13 @@ namespace ds
 			m_Tail = nullptr;
 		}
 
-		--m_Size;
+		--this->m_Size;
 	}
 
 	template <typename T>
 	bool Queue<T>::IsEmpty()
 	{
-		return m_Size == 0;
+		return this->m_Size == 0;
 	}
 
 	template <typename T>

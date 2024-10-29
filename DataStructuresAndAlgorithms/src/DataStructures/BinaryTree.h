@@ -4,6 +4,8 @@
 #include "DataStructure.h"
 #include "Queue.h"
 
+// !! This remains to be reimplemented !! // 
+
 namespace ds
 {
     template <typename T>
@@ -35,9 +37,6 @@ namespace ds
         virtual void Print() override { Print(PrintOrderType::NONE); }
         void Print(PrintOrderType type = PrintOrderType::NONE);
 
-    public:
-        uint32_t GetSize() { return m_Size; }
-
     private:
         void printPRE(Node<T>* node);
         void printIN(Node<T>* node);
@@ -46,13 +45,11 @@ namespace ds
         void deleteTree(Node<T>* node);
 
     private:
-        Node<T>* m_Root;
-        uint32_t m_Size; // amount of elements in tree
+        Node<T>* m_Root = nullptr;
     };
 
     template <typename T>
     BinaryTree<T>::BinaryTree()
-        : m_Root(nullptr), m_Size(0)
     {
         // nimic
     }
@@ -74,7 +71,7 @@ namespace ds
         if (m_Root == nullptr)
         {
             m_Root = newNode;
-            ++m_Size;
+            ++this->m_Size;
             return;
         }
 
@@ -89,7 +86,7 @@ namespace ds
             if (node->left == nullptr)
             {
                 node->left = newNode;
-                ++m_Size;
+                ++this->m_Size;
                 return;
             }
             else
@@ -100,7 +97,7 @@ namespace ds
             if (node->right == nullptr)
             {
                 node->right = newNode;
-                ++m_Size;
+                ++this->m_Size;
                 return;
             }
             else
@@ -206,7 +203,7 @@ namespace ds
             delete node;
             node = nullptr;
 
-            --m_Size;
+            --this->m_Size;
         }
     }
 }

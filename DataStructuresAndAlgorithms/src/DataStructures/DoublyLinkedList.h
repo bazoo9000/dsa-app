@@ -28,17 +28,15 @@ namespace ds
 		bool Find(T elem);
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
-		void Print();
+		virtual void Print() override;
 
 	private:
-		Node<T>* m_Head;
-		Node<T>* m_Tail;
-		uint32_t m_Size;
+		Node<T>* m_Head = nullptr;
+		Node<T>* m_Tail = nullptr;
 	};
 
 	template <typename T>
 	inline DoublyLinkedList<T>::DoublyLinkedList()
-		: m_Head(nullptr), m_Tail(nullptr), m_Size(0)
 	{
 		// nimic
 	}
@@ -52,21 +50,6 @@ namespace ds
 	template <typename T>
 	inline void DoublyLinkedList<T>::Append(T elem)
 	{
-		Node<T>* newNode = new Node<T>;
-		newNode->data = elem;
-
-		if (m_Tail == nullptr) 
-		{
-			m_Head = m_Tail = newNode; // in case there was no element in the list
-		}
-		else 
-		{
-			m_Tail->next = newNode;
-			m_Tail = newNode;
-			newNode->prev = m_Tail->prev;
-		}
-
-		++m_Size;
 	}
 
 	template <typename T>

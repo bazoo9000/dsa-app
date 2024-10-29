@@ -23,7 +23,7 @@ namespace ds
 		void Insert(T elem, uint32_t index);
 		T& GetElementAt(uint32_t index);
 		void DeleteAt(int index);
-		void Print();
+		virtual void Print() override;
 
 	public:
 		T* GetData() { return m_Data; }
