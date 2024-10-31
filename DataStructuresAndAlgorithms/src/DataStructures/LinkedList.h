@@ -68,14 +68,14 @@ namespace ds
 		Node<T>* newNode = new Node<T>;
 		newNode->data = elem;
 
-		if (m_Tail == nullptr) 
+		if (this->m_Tail == nullptr) 
 		{
-			m_Head = m_Tail = newNode; // in case there was no element in the list
+			this->m_Head = this->m_Tail = newNode; // in case there was no element in the list
 		}
 		else 
 		{
-			m_Tail->next = newNode;
-			m_Tail = newNode;
+			this->m_Tail->next = newNode;
+			this->m_Tail = newNode;
 		}
 
 		++this->m_Size;
@@ -87,14 +87,14 @@ namespace ds
 		Node<T>* newNode = new Node<T>;
 		newNode->data = elem;
 
-		if (m_Tail == nullptr)
+		if (this->m_Tail == nullptr)
 		{
-			m_Head = m_Tail = newNode; // in case there was no element in the list
+			this->m_Head = this->m_Tail = newNode; // in case there was no element in the list
 		}
 		else
 		{
-			newNode->next = m_Head;
-			m_Head = newNode;
+			newNode->next = this->m_Head;
+			this->m_Head = newNode;
 		}
 
 		++this->m_Size;
@@ -121,7 +121,7 @@ namespace ds
 			return;
 		}
 
-		Node<T>* prevNode = m_Head;
+		Node<T>* prevNode = this->m_Head;
 
 		for (uint32_t i = 0; i < index - 1 && prevNode != nullptr; ++i)
 		{
@@ -140,7 +140,7 @@ namespace ds
 	template <typename T>
 	bool LinkedList<T>::Find(T elem)
 	{
-		Node<T>* curNode = m_Head;
+		Node<T>* curNode = this->m_Head;
 		while (curNode != nullptr)
 		{
 			if (curNode->data == elem)
@@ -157,7 +157,7 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::Delete(T elem)
 	{ 
-		if (m_Head == nullptr)
+		if (this->m_Head == nullptr)
 		{
 			std::cout << "Can't delete. List is empty.\n";
 			return;
@@ -169,17 +169,17 @@ namespace ds
 			return;
 		}
 
-		if (m_Head->data == elem)
+		if (this->m_Head->data == elem)
 		{
-			Node<T>* tempNode = m_Head;
-			m_Head = m_Head->next;
+			Node<T>* tempNode = this->m_Head;
+			this->m_Head = this->m_Head->next;
 
 			delete tempNode;
 			tempNode = nullptr;
 
-			if (m_Head == nullptr) // in case i delete the only element in the list
+			if (this->m_Head == nullptr) // in case i delete the only element in the list
 			{
-				m_Tail = nullptr;
+				this->m_Tail = nullptr;
 			}
 
 			--this->m_Size;
@@ -187,7 +187,7 @@ namespace ds
 			return;
 		}
 
-		Node<T>* curNode = m_Head;
+		Node<T>* curNode = this->m_Head;
 		while (curNode->next != nullptr && curNode->next->data != elem) 
 		{
 			curNode = curNode->next;
@@ -197,9 +197,9 @@ namespace ds
 			Node<T>* tempNode = curNode->next;
 			curNode->next = curNode->next->next;
 
-			if (tempNode == m_Tail)
+			if (tempNode == this->m_Tail)
 			{
-				m_Tail = curNode;
+				this->m_Tail = curNode;
 			}
 
 			delete tempNode;
@@ -220,15 +220,15 @@ namespace ds
 
 		if (index == 0)
 		{
-			Node<T>* tempNode = m_Head;
-			m_Head = m_Head->next;
+			Node<T>* tempNode = this->m_Head;
+			this->m_Head = this->m_Head->next;
 
 			delete tempNode;
 			tempNode = nullptr;
 
-			if (m_Head == nullptr) // in case i delete the only element in the list
+			if (this->m_Head == nullptr) // in case i delete the only element in the list
 			{
-				m_Tail = nullptr;
+				this->m_Tail = nullptr;
 			}
 
 			--this->m_Size;
@@ -236,7 +236,7 @@ namespace ds
 			return;
 		}
 
-		Node<T>* curNode = m_Head;
+		Node<T>* curNode = this->m_Head;
 		for(uint32_t i = 0; i < index - 1; ++i)
 		{
 			curNode = curNode->next;
@@ -245,9 +245,9 @@ namespace ds
 		Node<T>* tempNode = curNode->next;
 		curNode->next = curNode->next->next;
 
-		if (tempNode == m_Tail)
+		if (tempNode == this->m_Tail)
 		{
-			m_Tail = curNode;
+			this->m_Tail = curNode;
 		}
 
 		delete tempNode;
@@ -259,7 +259,7 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::Print()
 	{
-		Node<T>* aux = m_Head;
+		Node<T>* aux = this->m_Head;
 		while (aux != nullptr)
 		{
 			std::cout << aux->data << " ";

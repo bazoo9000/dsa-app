@@ -26,9 +26,9 @@ namespace ds
 		virtual void Print() override;
 
 	public:
-		T* GetData() { return m_Data; }
+		T* GetData() { return this->m_Data; }
 		uint32_t GetSize() { return this->m_Size; }
-		uint32_t GetCapacity() { return m_Capacity; }
+		uint32_t GetCapacity() { return this->m_Capacity; }
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
@@ -42,12 +42,12 @@ namespace ds
 			}
 
 			this->m_Size = size;
-			this->m_Capacity = size * 2;
+			this->m_Capacity = size;
 			this->m_Data = new T[size];
 
 			for(uint32_t i = 0; i < this->m_Size; i++)
 			{
-				m_Data[size] = arr[size];
+				this->m_Data[size] = arr[size];
 			}
 
 			LOG_INFO("DynamicArray COPIED succesfully");
@@ -56,12 +56,12 @@ namespace ds
 		DynamicArray<T>& operator=(const DynamicArray& arr) 
 		{
 			this->m_Size = arr.m_Size;
-			m_Capacity = arr.m_Capacity * 2;
-			m_Data = new T[m_Capacity];
+			this->m_Capacity = arr.m_Capacity;
+			this->m_Data = new T[this->m_Capacity];
 
 			for (uint32_t i = 0; i < arr.m_Size; ++i)
 			{
-				m_Data[i] = arr.m_Data[i];
+				this->m_Data[i] = arr.m_Data[i];
 			}
 
 			LOG_INFO("DynamicArray COPIED succesfully");
@@ -69,9 +69,9 @@ namespace ds
 		}
 		DynamicArray<T>& operator=(DynamicArray&& arr) 
 		{
-			m_Data = arr.m_Data;
+			this->m_Data = arr.m_Data;
 			this->m_Size = arr.m_Size;
-			m_Capacity = arr.m_Capacity;
+			this->m_Capacity = arr.m_Capacity;
 
 			arr.m_Data = nullptr;
 			arr.m_Size = 0;
@@ -93,14 +93,14 @@ namespace ds
 	DynamicArray<T>::DynamicArray(uint32_t startSize)
 		: m_Capacity(startSize)
 	{
-		if(m_Capacity == 0)
+		if(this->m_Capacity == 0)
 		{
 			LOG_ERROR("Max capacity of DynamicArray is 0! Setting it back to 1");
-			m_Capacity = 1;
+			this->m_Capacity = 1;
 		}
 
 		this->m_Size = 0;
-		m_Data = new T[m_Capacity];
+		this->m_Data = new T[this->m_Capacity];
 
 		LOG_INFO("DynamicArray CREATED succesfully");
 	}
@@ -117,11 +117,11 @@ namespace ds
 
 		this->m_Size = size;
 		this->m_Capacity = size;
-		this->m_Data = new T[m_Capacity];
+		this->m_Data = new T[this->m_Capacity];
 
 		for (uint32_t i = 0; i < this->m_Size; ++i) 
 		{
-			m_Data[i] = arr[i];
+			this->m_Data[i] = arr[i];
 		}
 
 		LOG_INFO("DynamicArray COPIED succesfully");
@@ -132,11 +132,11 @@ namespace ds
 		: m_Capacity(arr.m_Capacity)
 	{
 		this->m_Size = arr.m_Size;
-		m_Data = new T[m_Capacity];
+		this->m_Data = new T[this->m_Capacity];
 
 		for (uint32_t i = 0; i < this->m_Size; ++i) 
 		{
-			m_Data[i] = arr.m_Data[i];
+			this->m_Data[i] = arr.m_Data[i];
 		}
 
 		LOG_INFO("DynamicArray COPIED succesfully!");
@@ -157,9 +157,9 @@ namespace ds
 	template <typename T>
 	DynamicArray<T>::~DynamicArray()
 	{
-		delete[] m_Data;
-		m_Data = nullptr;
-		m_Capacity = 0;
+		delete[] this->m_Data;
+		this->m_Data = nullptr;
+		this->m_Capacity = 0;
 		this->m_Size = 0;
 
 		LOG_INFO("DynamicArray DELETED succesfully");
@@ -168,12 +168,12 @@ namespace ds
 	template <typename T>
 	void DynamicArray<T>::Add(T elem)
 	{
-		if (this->m_Size == m_Capacity)
+		if (this->m_Size == this->m_Capacity)
 		{
-			resize(m_Capacity * 2);
+			resize(this->m_Capacity * 2);
 		}
 
-		m_Data[this->m_Size++] = elem;
+		this->m_Data[this->m_Size++] = elem;
 
 		LOG_INFO("Adding succesful");
 	}
@@ -187,17 +187,17 @@ namespace ds
 			return;
 		}
 
-		if (this->m_Size == m_Capacity)
+		if (this->m_Size == this->m_Capacity)
 		{
-			resize(m_Capacity * 2);
+			resize(this->m_Capacity * 2);
 		}
 
 		for (uint32_t i = this->m_Size; i > index; --i)
 		{
-			m_Data[i] = m_Data[i - 1];
+			this->m_Data[i] = this->m_Data[i - 1];
 		}
 
-		m_Data[index] = elem;
+		this->m_Data[index] = elem;
 		++this->m_Size;
 
 		LOG_INFO("Inserting succesful");
@@ -214,7 +214,7 @@ namespace ds
 
 		LOG_INFO("Got element succesfully");
 
-		return m_Data[index];
+		return this->m_Data[index];
 	}
 
 	template <typename T>
@@ -227,7 +227,7 @@ namespace ds
 
 		for (size_t i = index; i < this->m_Size - 1; ++i)
 		{
-			m_Data[i] = m_Data[i + 1];
+			this->m_Data[i] = this->m_Data[i + 1];
 		}
 
 		--this->m_Size;
@@ -246,7 +246,7 @@ namespace ds
 
 		for (uint32_t i = 0; i < this->m_Size; i++)
 		{
-			std::cout << m_Data[i] << " ";
+			std::cout << this->m_Data[i] << " ";
 		}
 		std::cout << "\n";
 	}
@@ -256,12 +256,12 @@ namespace ds
 	{
 		T* newData = new T[newCap];
 		for (uint32_t i = 0; i < this->m_Size; ++i) {
-			newData[i] = m_Data[i];
+			newData[i] = this->m_Data[i];
 		}
 
-		delete[] m_Data;
-		m_Data = newData;
-		m_Capacity = newCap;
+		delete[] this->m_Data;
+		this->m_Data = newData;
+		this->m_Capacity = newCap;
 
 		LOG_DEBUG("DynamicArray has been resized");
 	}

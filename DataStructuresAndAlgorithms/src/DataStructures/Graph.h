@@ -39,19 +39,19 @@ namespace ds
     template <typename T>
     Graph<T>::Graph(GraphRepresentOption option)
     {
-        m_Option = option;
+        this->m_Option = option;
         switch (option) 
         {
             case GraphRepresentOption::LIST:
             {
-                m_Data = new LinkedList<T>();
-                m_Data = dynamic_cast<LinkedList<T>*>(m_Data);
+                this->m_Data = new LinkedList<T>();
+                this->m_Data = dynamic_cast<LinkedList<T>*>(m_Data);
                 break;
             }
             case GraphRepresentOption::MATRIX:
             {
-                //m_Data = new Matrix<T, rows, cols>(); // need a dynamic array
-                //m_Data = dynamic_cast<Matrix<T>*>(m_Data); // need a dynamic array
+                //this->m_Data = new Matrix<T, rows, cols>(); // need a dynamic array
+                //this->m_Data = dynamic_cast<Matrix<T>*>(m_Data); // need a dynamic array
                 break;
             }
             case ds::GraphRepresentOption::NONE:
@@ -65,7 +65,7 @@ namespace ds
     template <typename T>
     Graph<T>::~Graph()
     {
-        delete m_Data;
+        delete this->m_Data;
     }
 
     template <typename T>

@@ -22,7 +22,7 @@ namespace ds
 		virtual void Print() override;
 
 	public:
-		T* GetData() { return m_Data; }
+		T* GetData() { return this->m_Data; }
 		uint32_t GetMaxSize() { return maxSize; }
 
 	public:
@@ -39,7 +39,7 @@ namespace ds
 					break;
 				}
 
-				m_Data[size] = arr[size];
+				this->m_Data[size] = arr[size];
 				size++;
 			}
 
@@ -52,9 +52,9 @@ namespace ds
 		{
 			this->m_Size = arr.m_Size;
 
-			for (uint32_t i = 0; i < arr.m_Size; ++i)
+			for (uint32_t i = 0; i < this->m_Size; ++i)
 			{
-				m_Data[i] = arr.m_Data[i];
+				this->m_Data[i] = arr.m_Data[i];
 			}
 
 			LOG_INFO("Array COPIED succesfully");
@@ -64,7 +64,7 @@ namespace ds
 		{
 			this->m_Size = arr.m_Size;
 
-			for (uint32_t i = 0; i < arr.m_Size; ++i)
+			for (uint32_t i = 0; i < this->m_Size; ++i)
 			{
 				m_Data[i] = std::move(arr.m_Data[i]);
 			}
@@ -103,7 +103,7 @@ namespace ds
 				break;
 			}
 
-			m_Data[size] = arr[size];
+			this->m_Data[size] = arr[size];
 			++size;
 		}
 
@@ -118,7 +118,7 @@ namespace ds
 
 		for (uint32_t i = 0; i < this->m_Size; ++i) 
 		{
-			m_Data[i] = arr.m_Data[i];
+			this->m_Data[i] = arr.m_Data[i];
 		}
 
 		LOG_INFO("Array COPIED succesfully");
@@ -131,7 +131,7 @@ namespace ds
 
 		for (uint32_t i = 0; i < arr.m_Size; ++i)
 		{
-			m_Data[i] = std::move(arr.m_Data[i]);
+			this->m_Data[i] = std::move(arr.m_Data[i]);
 		}
 
 		arr.m_Size = 0;
@@ -154,7 +154,7 @@ namespace ds
 			return;
 		}
 
-		m_Data[this->m_Size++] = elem;
+		this->m_Data[this->m_Size++] = elem;
 		
 		LOG_INFO("Adding succesful");
 	}
@@ -176,10 +176,10 @@ namespace ds
 
 		for (uint32_t i = this->m_Size; i > index; --i)
 		{
-			m_Data[i] = m_Data[i - 1];
+			this->m_Data[i] = this->m_Data[i - 1];
 		}
 
-		m_Data[index] = elem;
+		this->m_Data[index] = elem;
 		++this->m_Size;
 
 		LOG_INFO("Insert succesful");
@@ -200,7 +200,7 @@ namespace ds
 			exit(1);
 		}
 
-		return m_Data[index];
+		return this->m_Data[index];
 	}
 
 	template <typename T, uint32_t maxSize>
@@ -220,7 +220,7 @@ namespace ds
 
 		for (uint32_t i = index; i < this->m_Size - 1; ++i)
 		{
-			m_Data[i] = m_Data[i + 1];
+			this->m_Data[i] = this->m_Data[i + 1];
 		}
 
 		--this->m_Size;
@@ -240,7 +240,7 @@ namespace ds
 		
 		for (uint32_t i = 0; i < this->m_Size; i++)
 		{
-			std::cout << m_Data[i] << " ";
+			std::cout << this->m_Data[i] << " ";
 		}
 		std::cout << "\n";
 	}

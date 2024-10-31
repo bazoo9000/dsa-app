@@ -70,7 +70,7 @@ namespace ds
 
         if (m_Root == nullptr)
         {
-            m_Root = newNode;
+            this->m_Root = newNode;
             ++this->m_Size;
             return;
         }
@@ -117,15 +117,15 @@ namespace ds
             break;
 
         case PrintOrderType::PREORDER:
-            printPRE(m_Root);
+            printPRE(this->m_Root);
             break;
 
         case PrintOrderType::INORDER:
-            printIN(m_Root);
+            printIN(this->m_Root);
             break;
 
         case PrintOrderType::POSTORDER:
-            printPOST(m_Root);
+            printPOST(this->m_Root);
             break;
 
         case PrintOrderType::LEVELORDER:

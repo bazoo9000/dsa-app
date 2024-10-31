@@ -56,18 +56,18 @@ namespace ds
 		newNode->data = elem;
 		newNode->next = nullptr;
 
-		if (m_Head == nullptr) // if Queue is empty
+		if (this->m_Head == nullptr) // if Queue is empty
 		{
-			m_Head = newNode;
-			m_Tail = newNode;
+			this->m_Head = newNode;
+			this->m_Tail = newNode;
 
 			++this->m_Size;
 
 			return;
 		}
 
-		m_Tail->next = newNode;
-		m_Tail = newNode;
+		this->m_Tail->next = newNode;
+		this->m_Tail = newNode;
 
 		++this->m_Size;
 	}
@@ -81,15 +81,15 @@ namespace ds
 			return;
 		}
 
-		Node<T>* curNode = m_Head;
-		m_Head = m_Head->next;
+		Node<T>* curNode = this->m_Head;
+		this->m_Head = this->m_Head->next;
 
 		delete curNode;
 		curNode = nullptr;
 
-		if (m_Head == nullptr) // if after deletion the Queue is empty make tail point to NULL
+		if (this->m_Head == nullptr) // if after deletion the Queue is empty make tail point to NULL
 		{
-			m_Tail = nullptr;
+			this->m_Tail = nullptr;
 		}
 
 		--this->m_Size;
@@ -104,7 +104,7 @@ namespace ds
 	template <typename T>
 	void Queue<T>::Print()
 	{
-		Node<T>* curNode = m_Head;
+		Node<T>* curNode = this->m_Head;
 		while (curNode != nullptr)
 		{
 			std::cout << curNode->data << " ";

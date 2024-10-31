@@ -53,9 +53,9 @@ namespace ds
 	{
 		Node<T>* newNode = new Node<T>;
 		newNode->data = elem;
-		newNode->next = m_Head;
+		newNode->next = this->m_Head;
 
-		m_Head = newNode;
+		this->m_Head = newNode;
 
 		++this->m_Size;
 	}
@@ -69,8 +69,8 @@ namespace ds
 			return;
 		}
 
-		Node<T>* curNode = m_Head;
-		m_Head = m_Head->next;
+		Node<T>* curNode = this->m_Head;
+		this->m_Head = this->m_Head->next;
 
 		delete curNode;
 		curNode = nullptr;
@@ -87,7 +87,7 @@ namespace ds
 	template <typename T>
 	void Stack<T>::Print() 
 	{
-		Node<T>* curNode = m_Head;
+		Node<T>* curNode = this->m_Head;
 		while(curNode != nullptr)
 		{
 			std::cout << curNode->data << " ";
