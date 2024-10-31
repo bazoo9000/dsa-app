@@ -18,6 +18,13 @@ namespace ds
             U data;
             Node* left;
             Node* right;
+
+            Node(U data, Node* left = nullptr, Node* right = nullptr)
+			{
+				this->data = data;
+				this->left = left;
+				this->right = right;
+			}
         };
 
     public:
@@ -63,10 +70,7 @@ namespace ds
     template <typename T>
     void BinaryTree<T>::Insert(T elem)
     {
-        Node<T>* newNode = new Node<T>;
-        newNode->data = elem;
-        newNode->left = nullptr;
-        newNode->right = nullptr;
+        Node<T>* newNode = new Node<T>(elem);
 
         if (m_Root == nullptr)
         {

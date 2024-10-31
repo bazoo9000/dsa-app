@@ -14,6 +14,12 @@ namespace ds
 		{
 			U data;
 			Node* next = nullptr;
+
+			Node(U data, Node* next = nullptr)
+			{
+				this->data = data;
+				this->next = next;
+			}
 		};
 
 	public:
@@ -51,7 +57,7 @@ namespace ds
 	template <typename T>
 	LinkedList<T>::~LinkedList()
 	{
-		Node<T>* curNode = m_Head;
+		Node<T>* curNode = this->m_Head;
 		Node<T>* nextNode;
 
 		while (curNode != nullptr) 
@@ -65,8 +71,7 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::Append(T elem)
 	{
-		Node<T>* newNode = new Node<T>;
-		newNode->data = elem;
+		Node<T>* newNode = new Node<T>(elem);
 
 		if (this->m_Tail == nullptr) 
 		{
@@ -84,8 +89,7 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::Prepend(T elem)
 	{
-		Node<T>* newNode = new Node<T>;
-		newNode->data = elem;
+		Node<T>* newNode = new Node<T>(elem);
 
 		if (this->m_Tail == nullptr)
 		{
@@ -128,8 +132,7 @@ namespace ds
 			prevNode = prevNode->next;
 		}
 		
-		Node<T>* newNode = new Node<T>;
-		newNode->data = elem;
+		Node<T>* newNode = new Node<T>(elem);
 
 		newNode->next = prevNode->next;
 		prevNode->next = newNode;

@@ -14,6 +14,12 @@ namespace ds
 		{
 			U data;
 			Node* next;
+
+			Node(U data, Node* next = nullptr)
+			{
+				this->data = data;
+				this->next = next;
+			}
 		};
 
 	public:
@@ -27,7 +33,7 @@ namespace ds
 		virtual void Print() override;
 
 	public:
-		T GetTop() { return m_Head->data; }
+		T GetTop() { return this->m_Head->data; }
 
 	private:
 		Node<T>* m_Head = nullptr;
@@ -51,9 +57,7 @@ namespace ds
 	template <typename T>
 	void Stack<T>::Push(T elem)
 	{
-		Node<T>* newNode = new Node<T>;
-		newNode->data = elem;
-		newNode->next = this->m_Head;
+		Node<T>* newNode = new Node<T>(elem, this->m_Head);
 
 		this->m_Head = newNode;
 

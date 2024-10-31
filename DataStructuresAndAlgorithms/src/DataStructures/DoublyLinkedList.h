@@ -15,6 +15,13 @@ namespace ds
 			U data;
 			Node* next = nullptr;
 			Node* prev = nullptr;
+
+			Node(U data, Node* next = nullptr, Node* prev = nullptr)
+			{
+				this->data = data;
+				this->next = next;
+				this->prev = prev;
+			}
 		};
 
 	public:

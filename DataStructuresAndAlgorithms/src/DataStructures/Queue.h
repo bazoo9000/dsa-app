@@ -14,6 +14,12 @@ namespace ds
 		{
 			U data;
 			Node* next;
+
+			Node(U data, Node* next = nullptr)
+			{
+				this->data = data;
+				this->next = next;
+			}
 		};
 
 	public:
@@ -52,9 +58,7 @@ namespace ds
 	template <typename T>
 	void Queue<T>::Enqueue(T elem)
 	{
-		Node<T>* newNode = new Node<T>();
-		newNode->data = elem;
-		newNode->next = nullptr;
+		Node<T>* newNode = new Node<T>(elem);
 
 		if (this->m_Head == nullptr) // if Queue is empty
 		{

@@ -3,18 +3,13 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	ds::Queue<int> q;
-	q.Enqueue(1);
-	q.Enqueue(2);
-	q.Enqueue(3);
+	ds::LinkedList<int> l;
 
-	ds::Stack<int> s;
-	s.Push(1);
-	s.Push(2);
-	s.Push(3);
+	l.Append(1);
+	l.Append(2);
 
-	q.Print();
-	s.Print();
+	l.Print();
+
 	//ds::Graph<int> graph(ds::GraphRepresentOption::LIST);
 	
 	return 0;
