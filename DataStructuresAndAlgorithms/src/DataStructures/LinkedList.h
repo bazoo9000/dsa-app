@@ -31,17 +31,17 @@ namespace ds
 		void Prepend(T elem);
 		void InsertAt(T elem, uint32_t index);
 		bool Find(T elem);
+		T GetElementAt(uint32_t index);
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
 		void Print();
 
 	public:
-		// TO BE IMPLEMENTED!!!!
-		// T GetElement(const T& elem);
-		// T GetElementAt(uint32_t index);
-		// T GetFirst();
-		// T GetLast();
-		// TO BE IMPLEMENTED
+		T GetFirst() { return this->m_Head->data; }
+		T GetLast() { return this->m_Tail->data; }
+
+	public:
+		T& operator[](uint32_t index) { return GetElementAt(index); }
 
 	private:
 		Node<T>* m_Head = nullptr;
@@ -119,7 +119,7 @@ namespace ds
 			return;
 		}
 
-		if (index == this->m_Size)
+		if (index == this->m_Size - 1)
 		{
 			Append(elem);
 			return;
@@ -269,5 +269,27 @@ namespace ds
 			aux = aux->next;
 		}
 		std::cout << "\n";
+	}
+
+	template <typename T>
+	T LinkedList<T>::GetElementAt(uint32_t index)
+	{
+		if(index == this->m_Size - 1)
+		{
+			return GetLast();
+		}
+
+		if(index == 0)
+		{
+			return GetFirst();
+		}
+
+		Node<T>* node = m_Head;
+		for(int i = 0; i < index; i++)
+		{
+			node = node->next;
+		}
+
+		return node->data;
 	}
 }
