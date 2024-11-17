@@ -27,53 +27,9 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
-		Array<T, maxSize>& operator=(const T* arr)
-		{
-			uint32_t size = 0;
-
-			while (arr[size]) 
-			{
-				if (size >= maxSize)
-				{
-					LOG_WARN("Given array is larger than this Array");
-					break;
-				}
-
-				this->m_Data[size] = arr[size];
-				size++;
-			}
-
-			this->m_Size = size;
-
-			LOG_INFO("Array COPIED succesfully");
-			return *this;
-		}
-		Array<T, maxSize>& operator=(const Array<T, maxSize>& arr)
-		{
-			this->m_Size = arr.m_Size;
-
-			for (uint32_t i = 0; i < this->m_Size; ++i)
-			{
-				this->m_Data[i] = arr.m_Data[i];
-			}
-
-			LOG_INFO("Array COPIED succesfully");
-			return *this;
-		}
-		Array<T, maxSize>& operator=(Array<T, maxSize>&& arr)
-		{
-			this->m_Size = arr.m_Size;
-
-			for (uint32_t i = 0; i < this->m_Size; ++i)
-			{
-				m_Data[i] = std::move(arr.m_Data[i]);
-			}
-
-			arr.m_Size = 0;
-			
-			LOG_INFO("Array MOVED succesfully");
-			return *this;
-		}
+		Array& operator=(const T* arr);
+		Array& operator=(const Array& arr);
+		Array& operator=(Array&& arr);
 
 	private:
 		T m_Data[maxSize]; // the data itself
@@ -243,5 +199,58 @@ namespace ds
 			std::cout << this->m_Data[i] << " ";
 		}
 		std::cout << "\n";
+	}
+
+	template <typename T, uint32_t maxSize>
+	Array<T, maxSize>& Array<T, maxSize>::operator=(const T* arr)
+	{
+		uint32_t size = 0;
+
+		while (arr[size]) 
+		{
+			if (size >= maxSize)
+			{
+				LOG_WARN("Given array is larger than this Array");
+				break;
+			}
+
+			this->m_Data[size] = arr[size];
+			size++;
+		}
+
+		this->m_Size = size;
+
+		LOG_INFO("Array COPIED succesfully");
+		return *this;
+	}
+
+	template <typename T, uint32_t maxSize>
+	Array<T, maxSize>& Array<T, maxSize>::operator=(const Array<T, maxSize>& arr)
+	{
+		this->m_Size = arr.m_Size;
+
+		for (uint32_t i = 0; i < this->m_Size; ++i)
+		{
+			this->m_Data[i] = arr.m_Data[i];
+		}
+
+		LOG_INFO("Array COPIED succesfully");
+		return *this;
+	}
+
+	template <typename T, uint32_t maxSize>
+	Array<T, maxSize>& Array<T, maxSize>::operator=(Array<T, maxSize>&& arr)
+	{
+		this->m_Size = arr.m_Size;
+
+		for (uint32_t i = 0; i < this->m_Size; ++i)
+		{
+			m_Data[i] = std::move(arr.m_Data[i]);
+		}
+
+		arr.m_Size = 0;
+		
+		LOG_INFO("Array MOVED succesfully");
+		return *this;
 	}
 }

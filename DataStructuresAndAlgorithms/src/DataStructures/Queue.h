@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
 
 namespace ds
@@ -24,35 +23,66 @@ namespace ds
 
 	public:
 		Queue();
+		Queue(const Queue& q);
+		Queue(Queue&& q);
 		~Queue();
 
 	public:
 		void Enqueue(T elem);
 		void Dequeue();
 		bool IsEmpty();
+		void Clear();
 		virtual void Print() override;
 
 	public:
 		T GetFirst() { return m_Head->data; }
 
+	public:
+		Queue& operator=(const Queue& q);
+		Queue& operator=(Queue&& q);
+
 	private:
-		Node<T>* m_Head = nullptr;
-		Node<T>* m_Tail = nullptr;
+		Node<T>* m_Head;
+		Node<T>* m_Tail;
 	};
 
 	template <typename T>
 	Queue<T>::Queue()
+		: m_Head(nullptr), m_Tail(nullptr)
 	{
 		// nimic
 	}
 
 	template <typename T>
+	Queue<T>::Queue(const Queue<T>& q)
+	{
+		Clear();
+
+		Node<T>* head = q.m_Head;
+		while(head)
+		{
+			Enqueue(head->data);
+			head = head->next;
+		}
+
+		this->m_Size = q.m_Size;
+	}
+
+	template <typename T>
+	Queue<T>::Queue(Queue<T>&& q)
+		: m_Head(q.m_Head), m_Tail(q.m_Tail)
+	{
+		this->m_Size = q.m_Size;
+
+		q.m_Head = nullptr;
+		q.m_Tail = nullptr;
+		q.m_Size = 0;
+	}
+
+	template <typename T>
 	Queue<T>::~Queue()
 	{
-		while (!IsEmpty())
-		{
-			Dequeue();
-		}
+		Clear();
 	}
 
 	template <typename T>
@@ -106,6 +136,17 @@ namespace ds
 	}
 
 	template <typename T>
+	void Queue<T>::Clear()
+	{
+		while (!IsEmpty())
+		{
+			Dequeue();
+		}
+
+		this->m_Size = 0;
+	}
+
+	template <typename T>
 	void Queue<T>::Print()
 	{
 		Node<T>* curNode = this->m_Head;
@@ -115,5 +156,38 @@ namespace ds
 			curNode = curNode->next;
 		}
 		std::cout << "\n";
+	}
+
+	template <typename T>
+	Queue<T>& Queue<T>::operator=(const Queue<T>& q)
+	{
+		Clear();
+
+		Node<T>* head = q.m_Head;
+		while(head)
+		{
+			Enqueue(head->data);
+			head = head->next;
+		}
+
+		this->m_Size = q.m_Size;
+
+		return *this;
+	}
+
+	template <typename T>
+	Queue<T>& Queue<T>::operator=(Queue<T>&& q)
+	{
+		Clear();
+
+		this->m_Size = q.m_Size;
+		this->m_Head = q.m_Head;
+		this->m_Tail = q.m_Tail;
+
+		q.m_Size = 0;
+		q.m_Head = nullptr;
+		q.m_Tail = nullptr;
+
+		return *this;
 	}
 }

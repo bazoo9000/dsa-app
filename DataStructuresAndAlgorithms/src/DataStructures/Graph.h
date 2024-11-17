@@ -28,7 +28,8 @@ namespace ds
         GraphRepresentOption GetRepresentation() { return m_Option; }
 
     public:
-        Graph& operator=(const Graph& graph) { return Graph(graph); }
+        Graph& operator=(const Graph& graph);
+        Graph& operator=(Graph&& graph);
 
     private:
         uint32_t m_EdgeCount;

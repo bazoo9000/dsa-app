@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
 #include "DynamicArray.h"
 
@@ -11,12 +10,16 @@ namespace ds
     {
     public:
         DynamicMatrix();
-        DynamicMatrix(DynamicMatrix &&) = default;
-        DynamicMatrix(const DynamicMatrix &) = default;
-        DynamicMatrix &operator=(DynamicMatrix &&) = default;
-        DynamicMatrix &operator=(const DynamicMatrix &) = default;
+        DynamicMatrix(const T** mat);
+        DynamicMatrix(const DynamicMatrix& mat);
+        DynamicMatrix(DynamicMatrix&& mat);
         ~DynamicMatrix();
     
+    public:
+        DynamicMatrix& operator=(const T** mat);
+        DynamicMatrix& operator=(const DynamicMatrix &);
+        DynamicMatrix& operator=(DynamicMatrix &&);
+
     private:
         
     };

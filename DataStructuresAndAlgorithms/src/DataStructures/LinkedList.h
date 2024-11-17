@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
 
 namespace ds
@@ -24,6 +23,8 @@ namespace ds
 
 	public:
 		LinkedList();
+		LinkedList(const LinkedList<T>& list);
+		LinkedList(LinkedList<T>&& list);
 		~LinkedList();
 
 	public:
@@ -34,6 +35,7 @@ namespace ds
 		T GetElementAt(uint32_t index);
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
+		void Clear();
 		void Print();
 
 	public:
@@ -42,30 +44,64 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
+		LinkedList& operator=(const LinkedList& list);
+		LinkedList& operator=(LinkedList&& list);
 
 	private:
-		Node<T>* m_Head = nullptr;
-		Node<T>* m_Tail = nullptr;
+		Node<T>* m_Head;
+		Node<T>* m_Tail;
 	};
 
 	template <typename T>
 	LinkedList<T>::LinkedList()
+		: m_Head(nullptr), m_Tail(nullptr)
 	{
 		// nimic
 	}
 
 	template <typename T>
+	LinkedList<T>::LinkedList(const LinkedList<T>& list)
+	{
+		Clear();
+
+		this->m_Size = list.m_Size;
+		
+		if(!list.m_Head)
+		{
+			this->m_Head = this->m_Tail = nullptr;
+			return;
+		}
+
+		this->m_Head = new Node<T>(list.m_Head->data);
+
+		Node<T>* head = this->m_Head;
+		Node<T>* nextOther = list.m_Head->next;
+
+		while (nextOther) 
+		{
+			head->next = new Node<T>(nextOther->data);
+			head = head->next;
+			nextOther = nextOther->next;
+		}
+
+		this->m_Tail = head;
+	}
+
+	template <typename T>
+	LinkedList<T>::LinkedList(LinkedList<T>&& list)
+		: m_Head(list.m_Head), m_Tail(list.m_Tail)
+	{
+		this->m_Size = list.m_Size;
+
+		list.m_Size = 0;
+		list.m_Head = nullptr;
+		list.m_Tail = nullptr;
+	}
+
+	template <typename T>
 	LinkedList<T>::~LinkedList()
 	{
-		Node<T>* curNode = this->m_Head;
-		Node<T>* nextNode;
-
-		while (curNode != nullptr) 
-		{
-			nextNode = curNode->next;
-			delete curNode;
-			curNode = nextNode;
-		}
+		Clear();
 	}
 
 	template <typename T>
@@ -262,6 +298,13 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::Print()
 	{
+		LOG_DEBUG("This is a LinkedList");
+
+		if(!m_Head)
+		{
+			LOG_DEBUG("LinkedList is empty");
+		}
+
 		Node<T>* aux = this->m_Head;
 		while (aux != nullptr)
 		{
@@ -291,5 +334,65 @@ namespace ds
 		}
 
 		return node->data;
+	}
+
+	template<typename T>
+	void LinkedList<T>::Clear()
+	{
+		Node<T>* curNode = this->m_Head;
+		Node<T>* nextNode;
+
+		while (curNode != nullptr) 
+		{
+			nextNode = curNode->next;
+			delete curNode;
+			curNode = nextNode;
+		}
+	}
+
+	template <typename T>
+	LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& list)
+	{
+		Clear();
+
+		this->m_Size = list.m_Size;
+	
+		if(!list.m_Head)
+		{
+			this->m_Head = this->m_Tail = nullptr;
+			return *this;
+		}
+
+		this->m_Head = new Node<T>(list.m_Head->data);
+
+		Node<T>* head = this->m_Head;
+		Node<T>* nextOther = list.m_Head->next;
+
+		while (nextOther) 
+		{
+			head->next = new Node<T>(nextOther->data);
+			head = head->next;
+			nextOther = nextOther->next;
+		}
+
+		this->m_Tail = head;
+
+		return *this;
+	}
+
+	template <typename T>
+	LinkedList<T>& LinkedList<T>::operator=(LinkedList<T>&& list)
+	{
+		Clear();
+
+		this->m_Size = list.m_Size;
+		this->m_Head = list.m_Head;
+		this->m_Tail = list.m_Tail;
+
+		list.m_Size = 0;
+		list.m_Head = nullptr;
+		list.m_Tail = nullptr;
+
+		return *this;
 	}
 }

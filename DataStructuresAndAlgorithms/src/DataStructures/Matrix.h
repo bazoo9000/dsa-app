@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
 #include "Array.h"
 
@@ -18,6 +17,11 @@ namespace ds
 
     public:
         virtual void Print() override;
+
+    public:
+        Matrix& operator=(const T** mat);
+        Matrix& operator=(const Matrix& mat);
+        Matrix& operator=(Matrix&& mat);
 
     private:
         Array<Array<T, maxRows>, maxCols> m_Data;

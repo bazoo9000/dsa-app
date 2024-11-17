@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
 
 namespace ds 
@@ -24,34 +23,71 @@ namespace ds
 
 	public:
 		Stack();
+		Stack(const Stack& s);
+		Stack(Stack&& s);
 		~Stack();
 
 	public:
 		void Push(T elem);
 		void Pop();
 		bool IsEmpty();
+		void Clear();
 		virtual void Print() override;
 
 	public:
 		T GetTop() { return this->m_Head->data; }
 
+	public:
+		Stack& operator=(const Stack& q);
+		Stack& operator=(Stack&& q);
+
 	private:
-		Node<T>* m_Head = nullptr;
+		Node<T>* m_Head;
 	};
 
 	template <typename T>
 	Stack<T>::Stack()
+		: m_Head(nullptr)
 	{
 		// nimic
 	}
 
 	template <typename T>
+	Stack<T>::Stack(const Stack& s)
+	{
+		Clear();
+
+		Node<T>* head = s.m_Head;
+		Stack<T> stack;
+		while(head)
+		{
+			stack.Push(head->data);
+			head = head->next;
+		}
+		
+		while(!stack.IsEmpty())
+		{
+			Push(stack.GetTop());
+			stack.Pop();
+		}
+
+		this->m_Size = s.m_Size;
+	}
+
+	template <typename T>
+	Stack<T>::Stack(Stack&& s)
+		: m_Head(s.m_Head)
+	{
+		this->m_Size = s.m_Size;
+
+		s.m_Head = nullptr;
+		s.m_Size = 0;
+	}
+
+	template <typename T>
 	Stack<T>::~Stack()
 	{
-		while (!IsEmpty())
-		{
-			Pop();
-		}
+		Clear();
 	}
 
 	template <typename T>
@@ -98,5 +134,54 @@ namespace ds
 			curNode = curNode->next;
 		}
 		std::cout << "\n";
+	}
+
+	template <typename T>
+	void Stack<T>::Clear()
+	{
+		while (!IsEmpty())
+		{
+			Pop();
+		}
+
+		this->m_Size = 0;
+	}
+
+	template <typename T>
+	Stack<T>& Stack<T>::operator=(const Stack<T>& s)
+	{
+		Clear();
+
+		Node<T>* head = s.m_Head;
+		Stack<T> stack;
+		while(head)
+		{
+			stack.Push(head->data);
+			head = head->next;
+		}
+		
+		while(!stack.IsEmpty())
+		{
+			Push(stack.GetTop());
+			stack.Pop();
+		}
+
+		this->m_Size = s.m_Size;
+		
+		return *this;
+	}
+
+	template <typename T>
+	Stack<T>& Stack<T>::operator=(Stack<T>&& s)
+	{
+		Clear();
+
+		this->m_Size = s.m_Size;
+		this->m_Head = s.m_Head;
+
+		s.m_Size = 0;
+		s.m_Head = nullptr;
+
+		return *this;
 	}
 }

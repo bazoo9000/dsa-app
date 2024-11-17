@@ -1,8 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <cstdio>
 #include <cstdint>
 #include <utility>
+
 #include "../Logger/Logger.h"
 
 namespace ds 
@@ -12,8 +15,8 @@ namespace ds
     {
     public:
         DataStructure() = default;
-        DataStructure(const DataStructure<T>& ds) = default;
-        DataStructure(DataStructure<T>&& ds) = default;
+        DataStructure(const DataStructure& ds) = default;
+        DataStructure(DataStructure&& ds) = default;
         virtual ~DataStructure() = default;
 
     public:
@@ -21,6 +24,10 @@ namespace ds
 
     public:
         virtual void Print() { LOG_DEBUG("This is a data structure"); };
+
+    public:
+        DataStructure& operator=(const DataStructure& ds) = default;
+        DataStructure& operator=(DataStructure&& ds) = default;
 
     protected:
         uint32_t m_Size = 0;

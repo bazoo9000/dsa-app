@@ -26,6 +26,8 @@ namespace ds
 
 	public:
 		DoublyLinkedList();
+		DoublyLinkedList(const DoublyLinkedList& list);
+		DoublyLinkedList(DoublyLinkedList&& list);
 		~DoublyLinkedList();
 
 	public:
@@ -36,6 +38,10 @@ namespace ds
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
 		virtual void Print() override;
+
+	public:
+		DoublyLinkedList& operator=(const DoublyLinkedList& list);
+		DoublyLinkedList& operator=(DoublyLinkedList&& list);
 
 	private:
 		Node<T>* m_Head = nullptr;

@@ -45,7 +45,7 @@
     private:
         static inline void log(const char* level, const char* msg, const char* color)
         {
-            printf("%s", color);
+            printf("%s %s ", color, __TIME__);
             printf("%s: %s", level, msg);
             printf("%s\n", COLOR_DEFAULT);
         }
