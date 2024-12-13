@@ -2,37 +2,53 @@
 
 #include "DataStructure.h"
 #include "Array.h"
-#include <algorithm>
-#include <cstdint>
+#include <utility>
 
 namespace ds 
 {
-    /*
-    THIS IS STILL UNDER IMPLEMENTATION
-    */
     template <typename T, uint32_t maxRows, uint32_t maxCols>
     class Matrix : public DataStructure<T>
     {
     public:
-        Matrix();
+        Matrix(T initial);
         Matrix(const Matrix& mat);
         Matrix(Matrix&& mat);
         ~Matrix();
 
     public:
+        void Insert(T elem, uint32_t r, uint32_t c);
+        T GetElementAt(uint32_t r, uint32_t c);
+        void Reinitialize();
         virtual void Print() override;
 
     public:
+        T GetInitialValue() { return this->m_Initial; }
+        void SetInitialValue(T init) { this->m_Initial = init; }
+        // T (&GetData())[maxRows][maxCols] { return this->m_Data; } // should this be kept?
+
+    public:
+        T* operator[](uint32_t r) { return this->m_Data[r]; }
         Matrix& operator=(const Matrix& mat);
         Matrix& operator=(Matrix&& mat);
 
     private:
-        Array<T[maxRows], maxCols> m_Data;
+        T m_Data[maxRows][maxCols];
+        T m_Initial;
     };
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>
-    Matrix<T, maxRows, maxCols>::Matrix()
+    Matrix<T, maxRows, maxCols>::Matrix(T initial)
     {
+        for(int i = 0; i < maxRows; i++)
+        {
+            for(int j = 0; j < maxCols; j++)
+            {
+                this->m_Data[i][j] = initial;
+            }
+        }
+
+        this->m_Initial = initial;
+
         LOG_INFO("Matrix CREATED succesfully");
     }
 
@@ -47,20 +63,28 @@ namespace ds
             }
         }
 
+        this->m_Initial = mat.m_Initial;
+
         LOG_INFO("Matrix COPIED succesfully");
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>
     Matrix<T, maxRows, maxCols>::Matrix(Matrix&& mat)
     {
-        this->m_Size = mat.m_Size;
-
-		for (uint32_t i = 0; i < mat.m_Size; ++i)
+		for (uint32_t i = 0; i < maxRows; ++i)
 		{
-			this->m_Data[i] = std::move(mat.m_Data[i]);
+			for (uint32_t j = 0; j < maxCols; ++j)
+            {
+                this->m_Data[i][j] = std::move(mat.m_Data[i][j]);
+            }
 		}
 
-		mat.m_Size = 0;
+        this->m_Initial = std::move(mat.m_Initial);
+
+        mat.Reinitialize();
+
+        // std::swap(this->m_Data, mat.m_Data);
+        // std::swap(this->m_Initial, mat.m_Initial);
 
 		LOG_INFO("Matrix MOVED succesfully");
     }
@@ -72,22 +96,99 @@ namespace ds
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>
+    void Matrix<T, maxRows, maxCols>::Insert(T elem, uint32_t r, uint32_t c)
+    {
+        if(maxRows <= r)
+        {
+            LOG_ERROR("Can't insert. Row index is out of bounds.");
+            return;
+        }
+
+        if(maxCols <= c)
+        {
+            LOG_ERROR("Can't insert. Column index is out of bounds.");
+            return;
+        }
+
+        this->m_Data[r][c] = elem;
+    }
+
+    template <typename T, uint32_t maxRows, uint32_t maxCols>
+    T Matrix<T, maxRows, maxCols>::GetElementAt(uint32_t r, uint32_t c)
+    {
+        if(maxRows <= r)
+        {
+            LOG_FATAL("Can't get element. Row index is out of bounds.");
+            exit(1);
+        }
+
+        if(maxCols <= c)
+        {
+            LOG_FATAL("Can't get element. Column index is out of bounds.");
+            exit(1);
+        }
+
+        return this->m_Data[r][c];
+    }
+
+    template <typename T, uint32_t maxRows, uint32_t maxCols>
+    void Matrix<T, maxRows, maxCols>::Reinitialize()
+    {
+        for (uint32_t i = 0; i < maxRows; ++i)
+		{
+			for (uint32_t j = 0; j < maxCols; ++j)
+            {
+                this->m_Data[i][j] = this->m_Initial;
+            }
+		}
+    }
+
+    template <typename T, uint32_t maxRows, uint32_t maxCols>
     void Matrix<T, maxRows, maxCols>::Print()
     {
         LOG_DEBUG("This is a Matrix");
 
-        if(this->m_Size == 0)
-        {
-            LOG_DEBUG("Matrix is empty");
-        }
-
         for(int i = 0; i < maxRows; i++)
         {
-            for(int j = 0 ; j < maxCols; j++)
+            for(int j = 0; j < maxCols; j++)
             {
                 std::cout << this->m_Data[i][j] << " ";
             }
             std::cout << "\n";
         }
     }
+
+    template <typename T, uint32_t maxRows, uint32_t maxCols>
+	Matrix<T, maxRows, maxCols>& Matrix<T, maxRows, maxCols>::operator=(const Matrix& mat)
+	{
+		for (uint32_t i = 0; i < maxRows; ++i)
+		{
+			for (uint32_t j = 0; j < maxCols; ++j)
+            {
+                this->m_Data[i][j] = mat.m_Data[i][j];
+            }
+		}
+
+		LOG_INFO("Matrix COPIED succesfully");
+		return *this;
+	}
+
+	template <typename T, uint32_t maxRows, uint32_t maxCols>
+	Matrix<T, maxRows, maxCols>& Matrix<T, maxRows, maxCols>::operator=(Matrix&& mat)
+	{
+		for (uint32_t i = 0; i < maxRows; ++i)
+		{
+			for (uint32_t j = 0; j < maxCols; ++j)
+            {
+                this->m_Data[i][j] = std::move(mat.m_Data[i][j]);
+            }
+		}
+        
+        this->m_Initial = std::move(mat.m_Initial);
+
+        mat.Reinitialize();
+
+		LOG_INFO("Matrix MOVED succesfully");
+		return *this;
+	}
 }
