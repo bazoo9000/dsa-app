@@ -22,8 +22,8 @@ namespace ds
         virtual void Print() override;
 
     public:
-        T GetInitialValue() { return this->m_Initial; }
-        void SetInitialValue(T init) { this->m_Initial = init; }
+        T GetInitial() { return this->m_Initial; }
+        void SetInitial(T init) { this->m_Initial = init; }
         // T (&GetData())[maxRows][maxCols] { return this->m_Data; } // should this be kept?
 
     public:
