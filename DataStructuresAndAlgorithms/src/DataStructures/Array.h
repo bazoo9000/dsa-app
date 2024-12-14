@@ -9,7 +9,6 @@ namespace ds
 	{
 	public:
 		Array();
-		Array(const T* arr);
 		Array(const Array& arr);
 		Array(Array&& arr);
 		~Array();
@@ -27,7 +26,6 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
-		Array& operator=(const T* arr);
 		Array& operator=(const Array& arr);
 		Array& operator=(Array&& arr);
 
@@ -44,27 +42,6 @@ namespace ds
 		{
 			LOG_WARN("The size of the created Array is 0");
 		}
-	}
-
-	template <typename T, uint32_t maxSize>
-	Array<T, maxSize>::Array(const T* arr)
-	{
-		uint32_t size = 0;
-
-		while (arr[size]) 
-		{
-			if(size > maxSize)
-			{
-				LOG_WARN("Given array is larger than this Array");
-				break;
-			}
-
-			this->m_Data[size] = arr[size];
-			++size;
-		}
-
-		this->m_Size = size;
-		LOG_INFO("Array COPIED succesfully");
 	}
 
 	template <typename T, uint32_t maxSize>
@@ -199,29 +176,6 @@ namespace ds
 			std::cout << this->m_Data[i] << " ";
 		}
 		std::cout << "\n";
-	}
-
-	template <typename T, uint32_t maxSize>
-	Array<T, maxSize>& Array<T, maxSize>::operator=(const T* arr)
-	{
-		uint32_t size = 0;
-
-		while (arr[size]) 
-		{
-			if (size >= maxSize)
-			{
-				LOG_WARN("Given array is larger than this Array");
-				break;
-			}
-
-			this->m_Data[size] = arr[size];
-			size++;
-		}
-
-		this->m_Size = size;
-
-		LOG_INFO("Array COPIED succesfully");
-		return *this;
 	}
 
 	template <typename T, uint32_t maxSize>

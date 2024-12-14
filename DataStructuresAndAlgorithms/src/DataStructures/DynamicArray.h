@@ -9,7 +9,6 @@ namespace ds
 	{
 	public:
 		DynamicArray(uint32_t startSize = 1);
-		DynamicArray(const T* arr);
 		DynamicArray(const DynamicArray& arr);
 		DynamicArray(DynamicArray&& arr);
 		~DynamicArray();
@@ -29,7 +28,6 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
-		DynamicArray& operator=(const T* arr);
 		DynamicArray& operator=(const DynamicArray& arr);
 		DynamicArray& operator=(DynamicArray&& arr);
 
@@ -55,29 +53,6 @@ namespace ds
 		this->m_Data = new T[this->m_Capacity];
 
 		LOG_INFO("DynamicArray CREATED succesfully");
-	}
-
-	template <typename T>
-	DynamicArray<T>::DynamicArray(const T* arr)
-	{
-		Clear();
-
-		uint32_t size = 0;
-		while (arr[size]) 
-		{
-			++size;
-		}
-
-		this->m_Size = size;
-		this->m_Capacity = size;
-		this->m_Data = new T[this->m_Capacity];
-
-		for (uint32_t i = 0; i < this->m_Size; ++i) 
-		{
-			this->m_Data[i] = arr[i];
-		}
-
-		LOG_INFO("DynamicArray COPIED succesfully");
 	}
 
 	template <typename T>
@@ -210,30 +185,6 @@ namespace ds
 			std::cout << this->m_Data[i] << " ";
 		}
 		std::cout << "\n";
-	}
-
-	template <typename T>
-	DynamicArray<T>& DynamicArray<T>::operator=(const T* arr) 
-	{
-		Clear();
-	
-		uint32_t size = 0;
-		while (arr[size]) 
-		{
-			size++;
-		}
-
-		this->m_Size = size;
-		this->m_Capacity = size;
-		this->m_Data = new T[size];
-
-		for(uint32_t i = 0; i < this->m_Size; i++)
-		{
-			this->m_Data[size] = arr[size];
-		}
-
-		LOG_INFO("DynamicArray COPIED succesfully");
-		return *this;
 	}
 
 	template <typename T>
