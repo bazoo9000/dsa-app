@@ -164,6 +164,12 @@ namespace ds
 	template <typename T>
 	void DynamicArray<T>::Clear()
 	{
+		if(this->m_Data == nullptr)
+		{
+			LOG_DEBUG("m_Data is nullptr");
+			return;
+		}
+
 		delete[] this->m_Data;
 		this->m_Data = nullptr;
 		this->m_Capacity = 0;
