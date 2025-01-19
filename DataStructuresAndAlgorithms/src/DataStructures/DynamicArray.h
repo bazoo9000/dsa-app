@@ -32,7 +32,7 @@ namespace ds
 		DynamicArray& operator=(DynamicArray&& arr);
 
 	private:
-		void resize(size_t newCap);
+		void resize(uint32_t newCap);
 
 	private:
 		T* m_Data; // the data itself
@@ -152,7 +152,7 @@ namespace ds
 			return;
 		}
 
-		for (size_t i = index; i < this->m_Size - 1; ++i)
+		for (uint32_t i = index; i < this->m_Size - 1; ++i)
 		{
 			this->m_Data[i] = this->m_Data[i + 1];
 		}
@@ -227,7 +227,7 @@ namespace ds
 	}
 
 	template <typename T>
-	void DynamicArray<T>::resize(size_t newCap)
+	void DynamicArray<T>::resize(uint32_t newCap)
 	{
 		T* newData = new T[newCap];
 		for (uint32_t i = 0; i < this->m_Size; ++i) {

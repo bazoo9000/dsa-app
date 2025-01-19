@@ -131,6 +131,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Algorithms\Algorithm.h" />
+    <ClInclude Include="src\Algorithms\BubbleSort.h" />
+    <ClInclude Include="src\Algorithms\InsertionSort.h" />
+    <ClInclude Include="src\Algorithms\ISort.h" />
+    <ClInclude Include="src\Algorithms\SelectionSort.h" />
+    <ClInclude Include="src\Algorithms\Sorter.h" />
     <ClInclude Include="src\DataStructures\DataStructure.h" />
     <ClInclude Include="src\DataStructures\DynamicArray.h" />
     <ClInclude Include="src\DataStructures\Array.h" />

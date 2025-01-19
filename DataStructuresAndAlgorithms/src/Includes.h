@@ -12,3 +12,7 @@
 #include "DataStructures/Graph.h"
 
 #include "Algorithms/Algorithm.h"
+#include "Algorithms/Sorter.h"
+#include "Algorithms/BubbleSort.h"
+#include "Algorithms/SelectionSort.h"
+#include "Algorithms/InsertionSort.h"

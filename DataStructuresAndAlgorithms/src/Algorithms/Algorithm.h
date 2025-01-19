@@ -1,12 +1,16 @@
 #pragma once
 
-#include <iostream>
+#include "../Logger/Logger.h"
+#include <utility>
 
-class Algorithm
+namespace alg 
 {
-public:
-	void print()
+	class Algorithm
 	{
-		std::cout << "This is an ALGORITHM!\n";
-	}
-};
+	public:
+		void Print()
+		{
+			// std::cout << "This is an ALGORITHM!\n";
+		}
+	};
+}
