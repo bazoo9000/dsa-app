@@ -65,19 +65,37 @@
     <ClInclude Include="src\Logger\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\BubbleSort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Algorithms\InsertionSort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Algorithms\SelectionSort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Algorithms\Sorter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\ISort.h">
+    <ClInclude Include="src\Algorithms\Sorter\SelectionSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Sorter\BubbleSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Sorter\Includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Sorter\InsertionSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Searcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Sorter\ISortStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Searcher\Includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Searcher\BinarySearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Searcher\LinearSearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Algorithms\Searcher\ISearchStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ISort.h"
-#include "../DataStructures/DynamicArray.h"
+#include "ISortStrategy.h"
+#include "../../DataStructures/DynamicArray.h"
 
 namespace alg 
 {
     template <typename T>
-    class BubbleSort : public ISort<T>
+    class BubbleSort : public ISortStrategy<T>
     {
     public:
         virtual void Sort(ds::DataStructure<T>* data) override;
@@ -20,7 +20,7 @@ namespace alg
         ds::DynamicArray<T>* arr = dynamic_cast<ds::DynamicArray<T>*>(data);
         if(arr == nullptr)
         {
-            LOG_ERROR("Can't sort, casting error");
+            LOG_ERROR("Can't sort, casting error (TEMPORARY)");
             return;
         }
 

@@ -131,11 +131,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Algorithms\Algorithm.h" />
-    <ClInclude Include="src\Algorithms\BubbleSort.h" />
-    <ClInclude Include="src\Algorithms\InsertionSort.h" />
-    <ClInclude Include="src\Algorithms\ISort.h" />
-    <ClInclude Include="src\Algorithms\SelectionSort.h" />
+    <ClInclude Include="src\Algorithms\Searcher.h" />
+    <ClInclude Include="src\Algorithms\Searcher\BinarySearch.h" />
+    <ClInclude Include="src\Algorithms\Searcher\Includes.h" />
+    <ClInclude Include="src\Algorithms\Searcher\ISearchStrategy.h" />
+    <ClInclude Include="src\Algorithms\Searcher\LinearSearch.h" />
     <ClInclude Include="src\Algorithms\Sorter.h" />
+    <ClInclude Include="src\Algorithms\Sorter\BubbleSort.h" />
+    <ClInclude Include="src\Algorithms\Sorter\Includes.h" />
+    <ClInclude Include="src\Algorithms\Sorter\InsertionSort.h" />
+    <ClInclude Include="src\Algorithms\Sorter\ISortStrategy.h" />
+    <ClInclude Include="src\Algorithms\Sorter\SelectionSort.h" />
     <ClInclude Include="src\DataStructures\DataStructure.h" />
     <ClInclude Include="src\DataStructures\DynamicArray.h" />
     <ClInclude Include="src\DataStructures\Array.h" />

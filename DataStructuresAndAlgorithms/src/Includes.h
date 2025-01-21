@@ -13,6 +13,6 @@
 
 #include "Algorithms/Algorithm.h"
 #include "Algorithms/Sorter.h"
-#include "Algorithms/BubbleSort.h"
-#include "Algorithms/SelectionSort.h"
-#include "Algorithms/InsertionSort.h"
+#include "Algorithms/Sorter/Includes.h"
+#include "Algorithms/Searcher.h"
+#include "Algorithms/Searcher/Includes.h"

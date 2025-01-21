@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Algorithm.h"
-#include "ISort.h"
+#include "Sorter/ISortStrategy.h"
 
 namespace alg
 {
@@ -16,26 +16,14 @@ namespace alg
         static void Sort(ds::DataStructure<T>* data);
 
     public:
-        static void SetSortStrategy(ISort<T>* strat);
+        static void SetSortStrategy(ISortStrategy<T>* strat);
 
     private:
-        static ISort<T>* s_SortStrategy;
+        static ISortStrategy<T>* s_SortStrategy;
     };
 
     template<typename T>
-    ISort<T>* Sorter<T>::s_SortStrategy = nullptr;
-
-    template <typename T>
-    void Sorter<T>::SetSortStrategy(ISort<T>* strat) 
-    { 
-        if(s_SortStrategy != nullptr)
-        {
-            LOG_DEBUG("SortStrategy changed, deleting old");
-            delete s_SortStrategy;
-        }
-
-        s_SortStrategy = strat; 
-    }
+    ISortStrategy<T>* Sorter<T>::s_SortStrategy = nullptr;
 
     template <typename T>
     void Sorter<T>::Sort(ds::DataStructure<T>* data)
@@ -47,5 +35,17 @@ namespace alg
         }
 
         s_SortStrategy->Sort(data);
+    }
+
+    template <typename T>
+    void Sorter<T>::SetSortStrategy(ISortStrategy<T>* strat) 
+    { 
+        if(s_SortStrategy != nullptr)
+        {
+            LOG_DEBUG("SortStrategy changed, deleting old");
+            delete s_SortStrategy;
+        }
+
+        s_SortStrategy = strat; 
     }
 }
