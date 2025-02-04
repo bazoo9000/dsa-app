@@ -4,8 +4,13 @@
 
 namespace ds
 {
+	template <typename T, uint32_t maxSize> class ArrayIterator;
+
+	///////////
+	// ARRAY //
+	///////////
 	template <typename T, uint32_t maxSize>
-	class Array : public DataStructure<T>
+	class Array : public DataStructure<T>, public Iterable<T>
 	{
 	public:
 		Array();
@@ -19,6 +24,7 @@ namespace ds
 		T& GetElementAt(uint32_t index);
 		void DeleteAt(int index);
 		virtual void Print() override;
+		virtual Iterator<T>* CreateIterator() override { return new ArrayIterator<T, maxSize>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }
@@ -207,4 +213,39 @@ namespace ds
 		LOG_INFO("Array MOVED succesfully");
 		return *this;
 	}
+	///////////
+	// ARRAY //
+	///////////
+
+	//////////////
+	// ITERATOR //
+	//////////////
+	template <typename T, uint32_t maxSize>
+	class ArrayIterator : public Iterator<T>
+	{
+	public:
+		ArrayIterator(Array<T, maxSize>* arr) : m_Array(arr) {}
+		~ArrayIterator() = default;
+
+	public:
+		virtual void Reset() override { this->m_Index = 0; }
+		virtual const T GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual void Next() override { this->m_Index++; }
+		virtual bool IsAtEnd() override { return this->m_Index >= this->m_Array->GetSize(); }
+
+	public:
+		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual Iterator<T>& operator++() override
+		{
+			Next();
+			return *this;
+		}
+
+	private:
+		Array<T, maxSize>* m_Array;
+		uint32_t m_Index = 0;
+	};
+	//////////////
+	// ITERATOR //
+	//////////////
 }

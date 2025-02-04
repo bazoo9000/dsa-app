@@ -4,8 +4,13 @@
 
 namespace ds
 {
+	template <typename T> class DynamicArrayIterator;
+
+	///////////////////
+	// DYNAMIC ARRAY //
+	///////////////////
 	template <typename T>
-	class DynamicArray : public DataStructure<T>
+	class DynamicArray : public DataStructure<T>, public Iterable<T>
 	{
 	public:
 		DynamicArray(uint32_t startSize = 1);
@@ -20,6 +25,7 @@ namespace ds
 		void DeleteAt(int index);
 		void Clear();
 		virtual void Print() override;
+		virtual Iterator<T>* CreateIterator() override { return new DynamicArrayIterator<T>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }
@@ -240,4 +246,39 @@ namespace ds
 
 		LOG_DEBUG("DynamicArray has been resized");
 	}
+	///////////////////
+	// DYNAMIC ARRAY //
+	///////////////////
+
+	//////////////
+	// ITERATOR //
+	//////////////
+	template <typename T>
+	class DynamicArrayIterator : public Iterator<T>
+	{
+	public:
+		DynamicArrayIterator(DynamicArray<T>* arr) : m_Array(arr) {}
+		~DynamicArrayIterator() = default;
+
+	public:
+		virtual void Reset() override { this->m_Index = 0; }
+		virtual const T GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual void Next() override { this->m_Index++; }
+		virtual bool IsAtEnd() override { return this->m_Index >= this->m_Array->GetSize(); }
+
+	public:
+		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual Iterator<T>& operator++() override
+		{
+			Next();
+			return *this;
+		}
+
+	private:
+		DynamicArray<T>* m_Array;
+		uint32_t m_Index = 0;
+	};
+	//////////////
+	// ITERATOR //
+	//////////////
 }

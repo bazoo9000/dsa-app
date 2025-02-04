@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <utility>
 
+#include "Iterator/Iterator.h"
+#include "Iterator/Iterable.h"
 #include "../Logger/Logger.h"
 
 namespace ds 
