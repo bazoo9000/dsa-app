@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "../../DataStructures/DataStructure.h"
 
 namespace alg
@@ -8,9 +9,9 @@ namespace alg
     class ISortStrategy
     {
     public:
-        virtual ~ISortStrategy();
+        virtual ~ISortStrategy() = default;
 
     public:
-        virtual void Sort(ds::DataStructure<T>* data) = 0;
+        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) = 0;
     };
 }

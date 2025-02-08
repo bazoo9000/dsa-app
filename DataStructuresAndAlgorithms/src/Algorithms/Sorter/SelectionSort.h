@@ -9,11 +9,14 @@ namespace alg
     class SelectionSort : public ISortStrategy<T>
     {
     public:
-        virtual void Sort(ds::DataStructure<T>* data) override;
+        virtual ~SelectionSort() = default;
+
+    public:
+        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) override;
     };
 
     template <typename T>
-    void SelectionSort<T>::Sort(ds::DataStructure<T>* data)
+    void SelectionSort<T>::Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc)
     {
         LOG_DEBUG("Sorting using SelectionSort");
 
@@ -29,7 +32,7 @@ namespace alg
             uint32_t selected = i;
             for(uint32_t j = i + 1; j < arr->GetSize(); j++)
             {
-                if((*arr)[selected] > (*arr)[j])
+                if(!orderFunc((*arr)[selected], (*arr)[j]))
                 {
                     selected = j;
                 }

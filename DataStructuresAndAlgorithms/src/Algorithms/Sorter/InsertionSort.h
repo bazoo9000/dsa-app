@@ -9,11 +9,14 @@ namespace alg
     class InsertionSort : public ISortStrategy<T>
     {
     public:
-        virtual void Sort(ds::DataStructure<T>* data) override;
+        virtual ~InsertionSort() = default;
+    
+    public:
+        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) override;
     };
 
     template <typename T>
-    void InsertionSort<T>::Sort(ds::DataStructure<T>* data)
+    void InsertionSort<T>::Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc)
     {
         LOG_DEBUG("Sorting using InsertionSort");
 
@@ -29,7 +32,7 @@ namespace alg
             T key = (*arr)[i];
             uint32_t j = i;
 
-            while (j > 0 && (*arr)[j - 1] > key) 
+            while (j > 0 && !orderFunc((*arr)[j - 1], key))
             {
                 (*arr)[j] = (*arr)[j - 1];
                 j--;

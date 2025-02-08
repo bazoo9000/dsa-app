@@ -9,11 +9,14 @@ namespace alg
     class BubbleSort : public ISortStrategy<T>
     {
     public:
-        virtual void Sort(ds::DataStructure<T>* data) override;
+        ~BubbleSort() = default;
+    
+    public:
+        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) override;
     };
 
     template <typename T>
-    void BubbleSort<T>::Sort(ds::DataStructure<T>* data)
+    void BubbleSort<T>::Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc)
     {
         LOG_DEBUG("Sorting using BubbleSort");
 
@@ -29,7 +32,7 @@ namespace alg
             bool isSorted = true;
             for(uint32_t j = i + 1; j < arr->GetSize(); j++)
             {
-                if((*arr)[i] > (*arr)[j])
+                if(!orderFunc((*arr)[i], (*arr)[j]))
                 {
                     isSorted = false;
                     std::swap((*arr)[i], (*arr)[j]);
