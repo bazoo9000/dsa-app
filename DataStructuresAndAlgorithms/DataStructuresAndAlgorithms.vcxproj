@@ -149,6 +149,8 @@
     <ClInclude Include="src\DataStructures\DoublyLinkedList.h" />
     <ClInclude Include="src\DataStructures\DynamicMatrix.h" />
     <ClInclude Include="src\DataStructures\Graph.h" />
+    <ClInclude Include="src\DataStructures\Iterator\Iterable.h" />
+    <ClInclude Include="src\DataStructures\Iterator\Iterator.h" />
     <ClInclude Include="src\DataStructures\LinkedList.h" />
     <ClInclude Include="src\DataStructures\Matrix.h" />
     <ClInclude Include="src\DataStructures\Queue.h" />

@@ -31,16 +31,16 @@ namespace ds
 		void Append(T elem);
 		void Prepend(T elem);
 		void InsertAt(T elem, uint32_t index);
-		bool Find(T elem);
+		void* Find(T elem);
 		T GetElementAt(uint32_t index);
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
 		void Clear();
-		void Print();
+		virtual void Print() override;
 
 	public:
-		T GetFirst() { return this->m_Head->data; }
-		T GetLast() { return this->m_Tail->data; }
+		T GetFirst() { if(!this->m_Head) { LOG_FATAL("List is empty"); } return this->m_Head->data; }
+		T GetLast() { if(!this->m_Tail) { LOG_FATAL("List is empty"); } return this->m_Tail->data; }
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
@@ -56,7 +56,7 @@ namespace ds
 	LinkedList<T>::LinkedList()
 		: m_Head(nullptr), m_Tail(nullptr)
 	{
-		// nimic
+		LOG_INFO("LinkedList CREATED succesfully");
 	}
 
 	template <typename T>
@@ -85,6 +85,8 @@ namespace ds
 		}
 
 		this->m_Tail = head;
+
+		LOG_INFO("LinkedList COPIED succesfully");
 	}
 
 	template <typename T>
@@ -96,6 +98,8 @@ namespace ds
 		list.m_Size = 0;
 		list.m_Head = nullptr;
 		list.m_Tail = nullptr;
+
+		LOG_INFO("LinkedList MOVED succesfully");
 	}
 
 	template <typename T>
@@ -143,9 +147,9 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::InsertAt(T elem, uint32_t index)
 	{
-		if (index >= this->m_Size)
+		if (index > this->m_Size)
 		{
-			std::cout << "Can't insert. Index out of range.\n";
+			LOG_ERROR("Can't insert. Index out of range.");
 			return;
 		}
 
@@ -155,7 +159,7 @@ namespace ds
 			return;
 		}
 
-		if (index == this->m_Size - 1)
+		if (index == this->m_Size)
 		{
 			Append(elem);
 			return;
@@ -177,141 +181,20 @@ namespace ds
 	}
 
 	template <typename T>
-	bool LinkedList<T>::Find(T elem)
+	void* LinkedList<T>::Find(T elem)
 	{
 		Node<T>* curNode = this->m_Head;
 		while (curNode != nullptr)
 		{
 			if (curNode->data == elem)
 			{
-				return true;
+				return curNode;
 			}
 
 			curNode = curNode->next;
 		}
 
-		return false;
-	}
-
-	template <typename T>
-	void LinkedList<T>::Delete(T elem)
-	{ 
-		if (this->m_Head == nullptr)
-		{
-			std::cout << "Can't delete. List is empty.\n";
-			return;
-		}
-
-		if (!Find(elem))
-		{
-			std::cout << "Can't delete. Element doesn't exist.\n";
-			return;
-		}
-
-		if (this->m_Head->data == elem)
-		{
-			Node<T>* tempNode = this->m_Head;
-			this->m_Head = this->m_Head->next;
-
-			delete tempNode;
-			tempNode = nullptr;
-
-			if (this->m_Head == nullptr) // in case i delete the only element in the list
-			{
-				this->m_Tail = nullptr;
-			}
-
-			--this->m_Size;
-
-			return;
-		}
-
-		Node<T>* curNode = this->m_Head;
-		while (curNode->next != nullptr && curNode->next->data != elem) 
-		{
-			curNode = curNode->next;
-		}
-
-		if (curNode->next != nullptr) {
-			Node<T>* tempNode = curNode->next;
-			curNode->next = curNode->next->next;
-
-			if (tempNode == this->m_Tail)
-			{
-				this->m_Tail = curNode;
-			}
-
-			delete tempNode;
-			tempNode = nullptr;
-
-			--this->m_Size;
-		}
-	}
-
-	template <typename T>
-	void LinkedList<T>::DeleteAt(uint32_t index)
-	{
-		if (index >= this->m_Size)
-		{
-			std::cout << "Can't delete. Index out of range.\n";
-			return;
-		}
-
-		if (index == 0)
-		{
-			Node<T>* tempNode = this->m_Head;
-			this->m_Head = this->m_Head->next;
-
-			delete tempNode;
-			tempNode = nullptr;
-
-			if (this->m_Head == nullptr) // in case i delete the only element in the list
-			{
-				this->m_Tail = nullptr;
-			}
-
-			--this->m_Size;
-
-			return;
-		}
-
-		Node<T>* curNode = this->m_Head;
-		for(uint32_t i = 0; i < index - 1; ++i)
-		{
-			curNode = curNode->next;
-		}
-
-		Node<T>* tempNode = curNode->next;
-		curNode->next = curNode->next->next;
-
-		if (tempNode == this->m_Tail)
-		{
-			this->m_Tail = curNode;
-		}
-
-		delete tempNode;
-		tempNode = nullptr;
-
-		--this->m_Size;
-	}
-
-	template <typename T>
-	void LinkedList<T>::Print()
-	{
-		LOG_DEBUG("This is a LinkedList");
-
-		if(!m_Head)
-		{
-			LOG_DEBUG("LinkedList is empty");
-		}
-
-		Node<T>* aux = this->m_Head;
-		while (aux != nullptr)
-		{
-			std::cout << aux->data << " ";
-			aux = aux->next;
-		}
-		std::cout << "\n";
+		return nullptr;
 	}
 
 	template <typename T>
@@ -334,6 +217,76 @@ namespace ds
 		}
 
 		return node->data;
+	}
+
+	template <typename T>
+	void LinkedList<T>::Delete(T elem)
+	{ 
+		if (this->m_Head == nullptr)
+		{
+			LOG_ERROR("Can't delete. List is empty.");
+			return;
+		}
+
+		Node<T>* delNode = Find(elem);
+
+		if (!delNode)
+		{
+			LOG_ERROR("Can't delete. Element doesn't exist.");
+			return;
+		}
+
+		if (this->m_Head == delNode)
+		{
+			this->m_Head = this->m_Head->next;
+
+			delete delNode;
+
+			if (this->m_Head == nullptr) // in case i delete the only element in the list
+			{
+				this->m_Tail = nullptr;
+			}
+
+			--this->m_Size;
+
+			return;
+		}
+
+		Node<T>* curNode = this->m_Head;
+		while (curNode->next != delNode) 
+		{
+			curNode = curNode->next;
+		}
+
+		curNode->next = delNode->next;
+		delete delNode;
+
+		this->m_Size--;
+	}
+
+	template <typename T>
+	void LinkedList<T>::DeleteAt(uint32_t index)
+	{
+		Delete(GetElementAt(index));
+	}
+
+	template <typename T>
+	void LinkedList<T>::Print()
+	{
+		LOG_DEBUG("This is a LinkedList");
+
+		if(!m_Head)
+		{
+			LOG_DEBUG("LinkedList is empty");
+		}
+
+		Node<T>* aux = this->m_Head;
+		while (aux != nullptr)
+		{
+			std::cout << aux->data << " ";
+			aux = aux->next;
+		}
+		std::cout << "\n";
 	}
 
 	template<typename T>
@@ -377,6 +330,7 @@ namespace ds
 
 		this->m_Tail = head;
 
+		LOG_INFO("LinkedList COPIED succesfully");
 		return *this;
 	}
 
@@ -393,6 +347,7 @@ namespace ds
 		list.m_Head = nullptr;
 		list.m_Tail = nullptr;
 
+		LOG_INFO("LinkedList MOVED succesfully");
 		return *this;
 	}
 }

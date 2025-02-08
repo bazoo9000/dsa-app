@@ -98,5 +98,11 @@
     <ClInclude Include="src\Algorithms\Searcher\ISearchStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataStructures\Iterator\Iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\Iterator\Iterable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
