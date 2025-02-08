@@ -8,7 +8,7 @@ namespace alg
     class ISearchStrategy
     {
     public:
-        virtual ~ISearchStrategy();
+        virtual ~ISearchStrategy() = default;
 
     public:
         virtual uint32_t Search(T needle, ds::DataStructure<T>* haystack) = 0;

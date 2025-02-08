@@ -9,6 +9,9 @@ namespace alg
     class BinarySearch : public ISearchStrategy<T>
     {
     public:
+        virtual ~BinarySearch() = default;
+
+    public:
         virtual uint32_t Search(T needle, ds::DataStructure<T>* haystack) override;
     };
 

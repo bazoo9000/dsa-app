@@ -9,6 +9,9 @@ namespace alg
     class LinearSearch : public ISearchStrategy<T>
     {
     public:
+        virtual ~LinearSearch() = default;
+
+    public:
         virtual uint32_t Search(T needle, ds::DataStructure<T>* haystack) override;
     };
 
