@@ -142,12 +142,12 @@
             #define LOG_TRACE(x)
         #endif // DISABLE_TRACE
         #ifndef DISABLE_DEBUG
-            #define LOG_DEBUG(x) Logger::LogDebug(x)
+            #define LOG_DEBUG(x, ...) Logger::LogDebug(x, __VA_ARGS__)
         #else
             #define LOG_DEBUG(x)
         #endif // DISABLE_DEBUG
         #ifndef DISABLE_TRACE
-            #define LOG_INFO(x) Logger::LogInfo(x)
+            #define LOG_INFO(x, ...) Logger::LogInfo(x, __VA_ARGS__)
         #else
             #define LOG_INFO(x)
         #endif // DISABLE_INFO
@@ -158,12 +158,12 @@
     #endif // DEBUG_MODE
 
     #ifndef DISABLE_WARN
-        #define LOG_WARN(x) Logger::LogWarn(x)
+        #define LOG_WARN(x, ...) Logger::LogWarn(x, __VA_ARGS__)
     #else
         #define LOG_WARN(x)
     #endif // DISABLE_WARN
-    #define LOG_ERROR(x) Logger::LogError(x)
-    #define LOG_FATAL(x) Logger::LogFatal(x)
+    #define LOG_ERROR(x, ...) Logger::LogError(x, __VA_ARGS__)
+    #define LOG_FATAL(x, ...) Logger::LogFatal(x, __VA_ARGS__)
 
 #else
 
