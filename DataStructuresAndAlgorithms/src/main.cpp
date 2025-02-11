@@ -1,13 +1,17 @@
 #include "Includes.h"
-#include "Logger/Logger.h"
 
 int main(int argc, char* argv[])
 {
-	LOG_TRACE("%d", 34);
-	LOG_DEBUG("%d", 5);
-	LOG_INFO("%d", 33);
-	LOG_WARN("%d", 54);
-	LOG_ERROR("%d", 84);
-	LOG_FATAL("%d, %d", 94, 34);
+	ds::CircularLinkedList<int> list;
+	list.Append(1);
+	list.Append(2);
+	list.Append(3);
+	list.Prepend(0);
+
+	printf("%d\n", list.GetElementAt(0));
+
+	list.Delete(2);
+
+	list.Print();
 	return 0;
 }

@@ -6,6 +6,7 @@
 #include "DataStructures/DynamicMatrix.h"
 #include "DataStructures/LinkedList.h"
 #include "DataStructures/DoublyLinkedList.h"
+#include "DataStructures/CircularLinkedList.h"
 #include "DataStructures/Stack.h"
 #include "DataStructures/Queue.h"
 #include "DataStructures/BinaryTree.h"

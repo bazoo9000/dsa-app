@@ -5,7 +5,7 @@
 namespace ds
 {
 	template <typename T>
-	class LinkedList : public DataStructure<T>
+	class CircularLinkedList : public DataStructure<T>
 	{
 	private:
 		template <typename U>
@@ -14,7 +14,7 @@ namespace ds
 			U data;
 			Node* next = nullptr;
 
-			Node(U data, Node* next = nullptr)
+			Node(U data, Node* next)
 			{
 				this->data = data;
 				this->next = next;
@@ -22,10 +22,10 @@ namespace ds
 		};
 
 	public:
-		LinkedList();
-		LinkedList(const LinkedList<T>& list);
-		LinkedList(LinkedList<T>&& list);
-		~LinkedList();
+		CircularLinkedList();
+		CircularLinkedList(const CircularLinkedList<T>& list);
+		CircularLinkedList(CircularLinkedList<T>&& list);
+		~CircularLinkedList();
 
 	public:
 		void Append(T elem);
@@ -44,8 +44,8 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
-		LinkedList& operator=(const LinkedList& list);
-		LinkedList& operator=(LinkedList&& list);
+		CircularLinkedList& operator=(const CircularLinkedList& list);
+		CircularLinkedList& operator=(CircularLinkedList&& list);
 
 	private:
 		Node<T>* m_Head;
@@ -53,14 +53,14 @@ namespace ds
 	};
 
 	template <typename T>
-	LinkedList<T>::LinkedList()
+	CircularLinkedList<T>::CircularLinkedList()
 		: m_Head(nullptr), m_Tail(nullptr)
 	{
-		LOG_INFO("LinkedList CREATED succesfully");
+		LOG_INFO("CircularLinkedList CREATED succesfully");
 	}
 
 	template <typename T>
-	LinkedList<T>::LinkedList(const LinkedList<T>& list)
+	CircularLinkedList<T>::CircularLinkedList(const CircularLinkedList<T>& list)
 	{
 		Clear();
 
@@ -85,12 +85,13 @@ namespace ds
 		}
 
 		this->m_Tail = head;
+        this->m_Tail->next = this->m_Head;
 
-		LOG_INFO("LinkedList COPIED succesfully");
+		LOG_INFO("CircularLinkedList COPIED succesfully");
 	}
 
 	template <typename T>
-	LinkedList<T>::LinkedList(LinkedList<T>&& list)
+	CircularLinkedList<T>::CircularLinkedList(CircularLinkedList<T>&& list)
 		: m_Head(list.m_Head), m_Tail(list.m_Tail)
 	{
 		this->m_Size = list.m_Size;
@@ -103,15 +104,15 @@ namespace ds
 	}
 
 	template <typename T>
-	LinkedList<T>::~LinkedList()
+	CircularLinkedList<T>::~CircularLinkedList()
 	{
 		Clear();
 	}
 
 	template <typename T>
-	void LinkedList<T>::Append(T elem)
+	void CircularLinkedList<T>::Append(T elem)
 	{
-		Node<T>* newNode = new Node<T>(elem);
+		Node<T>* newNode = new Node<T>(elem, this->m_Head);
 
 		if (this->m_Tail == nullptr) 
 		{
@@ -127,11 +128,11 @@ namespace ds
 	}
 
 	template <typename T>
-	void LinkedList<T>::Prepend(T elem)
+	void CircularLinkedList<T>::Prepend(T elem)
 	{
-		Node<T>* newNode = new Node<T>(elem);
+		Node<T>* newNode = new Node<T>(elem, this->m_Head);
 
-		if (this->m_Tail == nullptr)
+		if (this->m_Head == nullptr)
 		{
 			this->m_Head = this->m_Tail = newNode; // in case there was no element in the list
 		}
@@ -145,7 +146,7 @@ namespace ds
 	}
 
 	template <typename T>
-	void LinkedList<T>::InsertAt(T elem, uint32_t index)
+	void CircularLinkedList<T>::InsertAt(T elem, uint32_t index)
 	{
 		if (index > this->m_Size)
 		{
@@ -181,10 +182,10 @@ namespace ds
 	}
 
 	template <typename T>
-	void* LinkedList<T>::Find(T elem)
+	void* CircularLinkedList<T>::Find(T elem)
 	{
 		Node<T>* curNode = this->m_Head;
-		while (curNode != nullptr)
+		do
 		{
 			if (curNode->data == elem)
 			{
@@ -193,12 +194,13 @@ namespace ds
 
 			curNode = curNode->next;
 		}
+        while (curNode != this->m_Head);
 
 		return nullptr;
 	}
 
 	template <typename T>
-	T LinkedList<T>::GetElementAt(uint32_t index)
+	T CircularLinkedList<T>::GetElementAt(uint32_t index)
 	{
 		if(index == this->m_Size - 1)
 		{
@@ -220,7 +222,7 @@ namespace ds
 	}
 
 	template <typename T>
-	void LinkedList<T>::Delete(T elem)
+	void CircularLinkedList<T>::Delete(T elem)
 	{ 
 		if (this->m_Head == nullptr)
 		{
@@ -247,6 +249,7 @@ namespace ds
 				this->m_Tail = nullptr;
 			}
 
+            this->m_Tail->next = this->m_Head;
 			--this->m_Size;
 
 			return;
@@ -265,49 +268,50 @@ namespace ds
 	}
 
 	template <typename T>
-	void LinkedList<T>::DeleteAt(uint32_t index)
+	void CircularLinkedList<T>::DeleteAt(uint32_t index)
 	{
 		Delete(GetElementAt(index));
 	}
 
 	template <typename T>
-	void LinkedList<T>::Print()
+	void CircularLinkedList<T>::Print()
 	{
-		LOG_DEBUG("This is a LinkedList");
+		LOG_DEBUG("This is a CircularLinkedList");
 
 		if(!m_Head)
 		{
-			LOG_DEBUG("LinkedList is empty");
+			LOG_DEBUG("CircularLinkedList is empty");
 		}
 
 		Node<T>* aux = this->m_Head;
-		while (aux != nullptr)
-		{
-			std::cout << aux->data << " ";
-			aux = aux->next;
-		}
+        for(uint32_t i = 0; i < this->m_Size; i++)
+        {
+            std::cout << aux->data << " ";
+            aux = aux->next;
+        }
+
 		std::cout << "\n";
 	}
 
 	template<typename T>
-	void LinkedList<T>::Clear()
+	void CircularLinkedList<T>::Clear()
 	{
 		Node<T>* curNode = this->m_Head;
 		Node<T>* nextNode;
 
-		while (curNode != nullptr) 
+		while (this->m_Size > 0) 
 		{
 			nextNode = curNode->next;
 			delete curNode;
 			curNode = nextNode;
+            --this->m_Size;
 		}
 
 		this->m_Head = this->m_Tail = nullptr;
-		this->m_Size = 0;
 	}
 
 	template <typename T>
-	LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& list)
+	CircularLinkedList<T>& CircularLinkedList<T>::operator=(const CircularLinkedList<T>& list)
 	{
 		Clear();
 
@@ -338,7 +342,7 @@ namespace ds
 	}
 
 	template <typename T>
-	LinkedList<T>& LinkedList<T>::operator=(LinkedList<T>&& list)
+	CircularLinkedList<T>& CircularLinkedList<T>::operator=(CircularLinkedList<T>&& list)
 	{
 		Clear();
 

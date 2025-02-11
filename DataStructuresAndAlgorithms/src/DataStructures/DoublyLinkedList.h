@@ -345,6 +345,7 @@ namespace ds
 		}
 
 		this->m_Head = this->m_Tail = nullptr;
+		this->m_Size = 0;
 	}
 
 	template <typename T>
