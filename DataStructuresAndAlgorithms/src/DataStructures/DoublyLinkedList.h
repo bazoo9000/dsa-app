@@ -36,6 +36,8 @@ namespace ds
 		void InsertAt(T elem, uint32_t index);
 		void* Find(T elem);
 		T GetElementAt(uint32_t index);
+		void DeleteFirst();
+		void DeleteLast();
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
 		void Clear();
@@ -261,6 +263,46 @@ namespace ds
 	}
 
 	template <typename T>
+	void DoublyLinkedList<T>::DeleteFirst()
+	{
+		Node<T>* delNode = this->m_Head;
+		this->m_Head = this->m_Head->next;
+
+		delete delNode;
+
+		if (this->m_Head == nullptr)
+		{
+			this->m_Tail = nullptr;
+		}
+		else
+		{
+			this->m_Head->prev = nullptr;
+		}
+
+		--this->m_Size;
+	}
+
+	template <typename T>
+	void DoublyLinkedList<T>::DeleteLast()
+	{
+		Node<T>* delNode = this->m_Tail;
+		this->m_Tail = this->m_Tail->prev;
+
+		delete delNode;
+
+		if (this->m_Tail == nullptr)
+		{
+			this->m_Head = nullptr;
+		}
+		else
+		{
+			this->m_Tail->next = nullptr;
+		}
+
+		--this->m_Size;
+	}
+
+	template <typename T>
 	void DoublyLinkedList<T>::Delete(T elem)
 	{
 		if (this->m_Head == nullptr)
@@ -279,41 +321,13 @@ namespace ds
 
 		if (this->m_Head == delNode)
 		{
-			this->m_Head = this->m_Head->next;
-
-			delete delNode;
-
-			if (this->m_Head == nullptr)
-			{
-				this->m_Tail = nullptr;
-			}
-			else
-			{
-				this->m_Head->prev = nullptr;
-			}
-
-			--this->m_Size;
-
+			DeleteFirst();
 			return;
 		}
 
 		if (this->m_Tail == delNode)
 		{
-			this->m_Tail = this->m_Tail->prev;
-
-			delete delNode;
-
-			if (this->m_Tail == nullptr)
-			{
-				this->m_Head = nullptr;
-			}
-			else
-			{
-				this->m_Tail->next = nullptr;
-			}
-
-			--this->m_Size;
-
+			DeleteLast();
 			return;
 		}
 
@@ -328,7 +342,43 @@ namespace ds
 	template <typename T>
 	void DoublyLinkedList<T>::DeleteAt(uint32_t index)
 	{
-		Delete(GetElementAt(index));
+		if (this->m_Size == 0)
+		{
+			LOG_ERROR("Can't delete. List is empty.");
+			return;
+		}
+		
+		if(index >= this->m_Size)
+		{
+			LOG_ERROR("Can't delete. Index out of range.");
+			return;
+		}
+
+		if(index == 0)
+		{
+			DeleteFirst();
+			return;
+		}
+
+		if(index == this->m_Size - 1)
+		{
+			DeleteLast();
+			return;
+		}
+
+		Node<T>* delNode = this->m_Head->next;
+		for(uint32_t i = 1; i < index; i++)
+		{
+			delNode = delNode->next;
+		}
+
+		delNode->prev->next = delNode->next;
+		delNode->next->prev = delNode->prev;
+
+		delete delNode;
+
+
+		--this->m_Size;
 	}
 
 	template<typename T>

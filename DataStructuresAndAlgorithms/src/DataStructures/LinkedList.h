@@ -33,6 +33,7 @@ namespace ds
 		void InsertAt(T elem, uint32_t index);
 		void* Find(T elem);
 		T GetElementAt(uint32_t index);
+		void DeleteFirst();
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
 		void Clear();
@@ -200,6 +201,12 @@ namespace ds
 	template <typename T>
 	T LinkedList<T>::GetElementAt(uint32_t index)
 	{
+		if(index >= this->m_Size)
+		{
+			LOG_FATAL("Can't get element. Index out of range.");
+			exit(1);
+		}
+
 		if(index == this->m_Size - 1)
 		{
 			return GetLast();
@@ -217,6 +224,28 @@ namespace ds
 		}
 
 		return node->data;
+	}
+
+	template <typename T>
+	void LinkedList<T>::DeleteFirst()
+	{
+		if (this->m_Head == nullptr)
+		{
+			LOG_ERROR("Can't delete. List is empty.");
+			return;
+		}
+
+		Node<T>* delNode = this->m_Head;
+		this->m_Head = this->m_Head->next;
+
+		delete delNode;
+
+		if (this->m_Head == nullptr) // in case i delete the only element in the list
+		{
+			this->m_Tail = nullptr;
+		}
+
+		--this->m_Size;
 	}
 
 	template <typename T>
@@ -238,17 +267,7 @@ namespace ds
 
 		if (this->m_Head == delNode)
 		{
-			this->m_Head = this->m_Head->next;
-
-			delete delNode;
-
-			if (this->m_Head == nullptr) // in case i delete the only element in the list
-			{
-				this->m_Tail = nullptr;
-			}
-
-			--this->m_Size;
-
+			DeleteFirst();
 			return;
 		}
 
@@ -267,7 +286,36 @@ namespace ds
 	template <typename T>
 	void LinkedList<T>::DeleteAt(uint32_t index)
 	{
-		Delete(GetElementAt(index));
+		if (this->m_Size == 0)
+		{
+			LOG_ERROR("Can't delete. List is empty.");
+			return;
+		}
+		
+		if(index >= this->m_Size)
+		{
+			LOG_ERROR("Can't delete. Index out of range.");
+			return;
+		}
+
+		if(index == 0)
+		{
+			DeleteFirst();
+			return;
+		}
+
+		Node<T>* delNode = this->m_Head->next;
+		Node<T>* prevNode = this->m_Head;
+		for(uint32_t i = 1; i < index; i++)
+		{
+			prevNode = delNode;
+			delNode = delNode->next;
+		}
+
+		prevNode->next = delNode->next;
+		delete delNode;
+
+		--this->m_Size;
 	}
 
 	template <typename T>
