@@ -5,6 +5,7 @@
 #include "Queue.h"
 
 // !! This remains to be reimplemented !! // 
+// TODO: Make Iterator and use strategy pattern for type of traversal
 
 namespace ds
 {
@@ -29,6 +30,8 @@ namespace ds
 
     public:
         BinaryTree();
+        BinaryTree(const BinaryTree& tree);
+        BinaryTree(BinaryTree&& tree);
         ~BinaryTree();
 
     public:
@@ -41,8 +44,14 @@ namespace ds
 
     public:
         void Insert(T elem);
+        void* Find(T elem);
+        void Delete(T elem);
         virtual void Print() override { Print(PrintOrderType::NONE); }
         void Print(PrintOrderType type = PrintOrderType::NONE);
+
+    public:
+        BinaryTree& operator=(const BinaryTree& tree);
+        BinaryTree& operator=(BinaryTree&& tree);
 
     private:
         void printPRE(Node<T>* node);
