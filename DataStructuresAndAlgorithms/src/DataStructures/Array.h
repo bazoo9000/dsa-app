@@ -42,12 +42,12 @@ namespace ds
 	template <typename T, uint32_t maxSize>
 	Array<T, maxSize>::Array()
 	{
-		LOG_INFO("Array CREATED succesfully");
-
 		if(maxSize == 0)
 		{
 			LOG_WARN("The size of the created Array is 0");
 		}
+
+		LOG_INFO("Array CREATED succesfully");
 	}
 
 	template <typename T, uint32_t maxSize>
@@ -95,7 +95,7 @@ namespace ds
 
 		this->m_Data[this->m_Size++] = elem;
 		
-		LOG_INFO("Adding succesful");
+		LOG_DEBUG("Adding succesful, new size is %u", this->m_Size);
 	}
 
 	template <typename T, uint32_t maxSize>
@@ -121,7 +121,7 @@ namespace ds
 		this->m_Data[index] = elem;
 		++this->m_Size;
 
-		LOG_INFO("Insert succesful");
+		LOG_DEBUG("Inserting at index %u succesful, new size is %u", index, this->m_Size);
 	}
 
 	template <typename T, uint32_t maxSize>
@@ -138,6 +138,8 @@ namespace ds
 			LOG_FATAL("Can't get element, Array is empty");
 			exit(1);
 		}
+
+		LOG_DEBUG("Got element at index %u succesfully", index);
 
 		return this->m_Data[index];
 	}
@@ -164,7 +166,7 @@ namespace ds
 
 		--this->m_Size;
 
-		LOG_INFO("Element deleted succesfully");
+		LOG_DEBUG("Element at index %u was deleted succesfully, new size %u", index, this->m_Size);
 	}
 
 	template <typename T, uint32_t maxSize>

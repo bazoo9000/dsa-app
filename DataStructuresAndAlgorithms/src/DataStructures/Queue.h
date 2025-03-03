@@ -50,7 +50,7 @@ namespace ds
 	Queue<T>::Queue()
 		: m_Head(nullptr), m_Tail(nullptr)
 	{
-		// nimic
+		LOG_INFO("Queue CREATED successfully");
 	}
 
 	template <typename T>
@@ -66,6 +66,8 @@ namespace ds
 		}
 
 		this->m_Size = q.m_Size;
+
+		LOG_INFO("Queue COPIED successfully");
 	}
 
 	template <typename T>
@@ -77,12 +79,16 @@ namespace ds
 		q.m_Head = nullptr;
 		q.m_Tail = nullptr;
 		q.m_Size = 0;
+
+		LOG_INFO("Queue MOVED successfully");
 	}
 
 	template <typename T>
 	Queue<T>::~Queue()
 	{
 		Clear();
+
+		LOG_INFO("Queue DESTROYED successfully");
 	}
 
 	template <typename T>
@@ -97,6 +103,7 @@ namespace ds
 
 			++this->m_Size;
 
+			LOG_DEBUG("Enqueue successful, new size is %u", this->m_Size);
 			return;
 		}
 
@@ -104,6 +111,8 @@ namespace ds
 		this->m_Tail = newNode;
 
 		++this->m_Size;
+
+		LOG_DEBUG("Enqueue successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -111,7 +120,7 @@ namespace ds
 	{
 		if (IsEmpty()) 
 		{
-			std::cout << "Can't Pop. Queue is empty.\n";
+			LOG_ERROR("Can't dequeue, Queue is empty.");
 			return;
 		}
 
@@ -127,6 +136,8 @@ namespace ds
 		}
 
 		--this->m_Size;
+
+		LOG_DEBUG("Dequeue successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -144,11 +155,20 @@ namespace ds
 		}
 
 		this->m_Size = 0;
+
+		LOG_DEBUG("Queue has been cleared");
 	}
 
 	template <typename T>
 	void Queue<T>::Print()
 	{
+		LOG_DEBUG("This is a Queue");
+
+		if(IsEmpty())
+		{
+			LOG_DEBUG("Queue is empty");
+		}
+
 		Node<T>* curNode = this->m_Head;
 		while (curNode != nullptr)
 		{
@@ -172,6 +192,7 @@ namespace ds
 
 		this->m_Size = q.m_Size;
 
+		LOG_INFO("Queue COPIED successfully");
 		return *this;
 	}
 
@@ -188,6 +209,7 @@ namespace ds
 		q.m_Head = nullptr;
 		q.m_Tail = nullptr;
 
+		LOG_INFO("Queue MOVED successfully");
 		return *this;
 	}
 }

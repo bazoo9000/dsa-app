@@ -146,7 +146,7 @@
         #else
             #define LOG_DEBUG(x)
         #endif // DISABLE_DEBUG
-        #ifndef DISABLE_TRACE
+        #ifndef DISABLE_INFO
             #define LOG_INFO(x, ...) Logger::LogInfo(x, __VA_ARGS__)
         #else
             #define LOG_INFO(x)

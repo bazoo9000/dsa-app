@@ -2,14 +2,19 @@
 
 int main(int argc, char* argv[])
 {
-	ds::BinaryTree<int> tree;
-	tree.Insert(1);
-	tree.Insert(2);
-	tree.Insert(3);
-	tree.Insert(4);
-	tree.Insert(5);
+	ds::CircularLinkedList<int> list;
+	list.Append(1);
+	list.Append(2);
+	list.Append(3);
+	list.Append(4);
 
-	
+	list.Prepend(0);
+
+	list.Print();
+
+	list.DeleteFirst();
+	list.DeleteAt(3);
+	list.Delete(1);
 
 	return 0;
 }

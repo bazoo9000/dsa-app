@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
 
 namespace ds
@@ -35,6 +34,8 @@ namespace ds
 		void Prepend(T elem);
 		void InsertAt(T elem, uint32_t index);
 		void* Find(T elem);
+		T GetFirst();
+		T GetLast();
 		T GetElementAt(uint32_t index);
 		void DeleteFirst();
 		void DeleteLast();
@@ -42,10 +43,6 @@ namespace ds
 		void DeleteAt(uint32_t index);
 		void Clear();
 		virtual void Print() override;
-
-	public:
-		T GetFirst() { if(!this->m_Head) { LOG_FATAL("List is empty"); } return this->m_Head->data; }
-		T GetLast() { if(!this->m_Tail) { LOG_FATAL("List is empty"); } return this->m_Tail->data; }
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
@@ -113,6 +110,7 @@ namespace ds
 	DoublyLinkedList<T>::~DoublyLinkedList()
 	{
 		Clear();
+		LOG_INFO("DoublyLinkedList DESTROYED successfully");
 	}
 
 	template <typename T>
@@ -132,6 +130,8 @@ namespace ds
 		}
 
 		++this->m_Size;
+
+		LOG_DEBUG("Append successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -151,6 +151,8 @@ namespace ds
 		}
 
 		++this->m_Size;
+	
+		LOG_DEBUG("Prepend successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -158,7 +160,7 @@ namespace ds
 	{
 		if (index > this->m_Size)
 		{
-			LOG_ERROR("Can't insert. Index out of range.");
+			LOG_ERROR("Can't insert, index %u is out of range", index);
 			return;
 		}
 
@@ -202,6 +204,8 @@ namespace ds
 		prevNode->next = newNode;
 
 		++this->m_Size;
+
+		LOG_DEBUG("Inserting at index %u succesful, new size is %u", index, this->m_Size);
 	}
 
 	template <typename T>
@@ -212,13 +216,41 @@ namespace ds
 		{
 			if (curNode->data == elem)
 			{
+				LOG_DEBUG("Element found");
 				return curNode;
 			}
 
 			curNode = curNode->next;
 		}
 
+		LOG_DEBUG("Element NOT found");
 		return nullptr;
+	}
+
+	template <typename T>
+    T DoublyLinkedList<T>::GetFirst()
+	{
+		if(!this->m_Head) 
+		{ 
+			LOG_FATAL("List is empty"); 
+			exit(1);
+		} 
+		
+		LOG_DEBUG("Got first element succesfully");
+		return this->m_Head->data;
+	}
+
+	template <typename T>
+    T DoublyLinkedList<T>::GetLast()
+	{
+		if(!this->m_Tail) 
+		{ 
+			LOG_FATAL("List is empty"); 
+			exit(1);
+		} 
+		
+		LOG_DEBUG("Got last element succesfully");
+		return this->m_Tail->data;
 	}
 
 	template <typename T>
@@ -226,7 +258,7 @@ namespace ds
 	{
 		if(index >= this->m_Size)
 		{
-			LOG_FATAL("Can't get element. Index out of range.");
+			LOG_FATAL("Can't get element, index %u is out of range", index);
 			exit(1);
 		}
 
@@ -259,6 +291,7 @@ namespace ds
 			}
 		}
 
+		LOG_DEBUG("Got element at index %u succesfully", index);
 		return node->data;
 	}
 
@@ -280,6 +313,8 @@ namespace ds
 		}
 
 		--this->m_Size;
+
+		LOG_DEBUG("First element deleted successfully, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -300,6 +335,8 @@ namespace ds
 		}
 
 		--this->m_Size;
+
+		LOG_DEBUG("Last element deleted successfully, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -307,7 +344,7 @@ namespace ds
 	{
 		if (this->m_Head == nullptr)
 		{
-			LOG_ERROR("Can't delete. List is empty.");
+			LOG_ERROR("Can't delete, list is empty.");
 			return;
 		}
 
@@ -315,7 +352,7 @@ namespace ds
 
 		if (!delNode)
 		{
-			LOG_ERROR("Can't delete. Element doesn't exist.");
+			LOG_ERROR("Can't delete, element doesn't exist.");
 			return;
 		}
 
@@ -337,6 +374,8 @@ namespace ds
 		delete delNode;
 
 		--this->m_Size;
+
+		LOG_DEBUG("Delete successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -344,13 +383,13 @@ namespace ds
 	{
 		if (this->m_Size == 0)
 		{
-			LOG_ERROR("Can't delete. List is empty.");
+			LOG_ERROR("Can't delete, list is empty.");
 			return;
 		}
 		
 		if(index >= this->m_Size)
 		{
-			LOG_ERROR("Can't delete. Index out of range.");
+			LOG_ERROR("Can't delete, index %u is out of range", index);
 			return;
 		}
 
@@ -377,8 +416,9 @@ namespace ds
 
 		delete delNode;
 
-
 		--this->m_Size;
+
+		LOG_DEBUG("Element at index %u was deleted succesfully, new size %u", index, this->m_Size);
 	}
 
 	template<typename T>
@@ -396,6 +436,8 @@ namespace ds
 
 		this->m_Head = this->m_Tail = nullptr;
 		this->m_Size = 0;
+
+		LOG_DEBUG("DoublyLinkedList has been cleared");
 	}
 
 	template <typename T>

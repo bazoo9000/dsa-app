@@ -49,7 +49,7 @@ namespace ds
 	Stack<T>::Stack()
 		: m_Head(nullptr)
 	{
-		// nimic
+		LOG_INFO("Stack CREATED successfully");
 	}
 
 	template <typename T>
@@ -72,6 +72,8 @@ namespace ds
 		}
 
 		this->m_Size = s.m_Size;
+	
+		LOG_INFO("Stack COPIED successfully");
 	}
 
 	template <typename T>
@@ -82,12 +84,16 @@ namespace ds
 
 		s.m_Head = nullptr;
 		s.m_Size = 0;
+	
+		LOG_INFO("Stack MOVED successfully");
 	}
 
 	template <typename T>
 	Stack<T>::~Stack()
 	{
 		Clear();
+
+		LOG_INFO("Stack DESTROYED successfully");
 	}
 
 	template <typename T>
@@ -98,6 +104,8 @@ namespace ds
 		this->m_Head = newNode;
 
 		++this->m_Size;
+	
+		LOG_DEBUG("Push successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -116,6 +124,8 @@ namespace ds
 		curNode = nullptr;
 
 		--this->m_Size;
+
+		LOG_DEBUG("Pop successful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -127,6 +137,13 @@ namespace ds
 	template <typename T>
 	void Stack<T>::Print() 
 	{
+		LOG_DEBUG("This is a Stack");
+
+		if(IsEmpty())
+		{
+			LOG_DEBUG("Stack is empty");
+		}
+
 		Node<T>* curNode = this->m_Head;
 		while(curNode != nullptr)
 		{
@@ -145,6 +162,8 @@ namespace ds
 		}
 
 		this->m_Size = 0;
+
+		LOG_DEBUG("Stack has been cleared");
 	}
 
 	template <typename T>
@@ -168,6 +187,7 @@ namespace ds
 
 		this->m_Size = s.m_Size;
 		
+		LOG_INFO("Stack COPIED successfully");
 		return *this;
 	}
 
@@ -183,5 +203,7 @@ namespace ds
 		s.m_Head = nullptr;
 
 		return *this;
+
+		LOG_INFO("Stack MOVED successfully");
 	}
 }

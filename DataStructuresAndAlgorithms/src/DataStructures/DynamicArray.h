@@ -51,8 +51,7 @@ namespace ds
 	{
 		if(this->m_Capacity == 0)
 		{
-			LOG_ERROR("Max capacity of DynamicArray is 0! Setting it back to 1");
-			this->m_Capacity = 1;
+			LOG_WARN("Max capacity of DynamicArray is 0");
 		}
 
 		this->m_Size = 0;
@@ -107,7 +106,7 @@ namespace ds
 
 		this->m_Data[this->m_Size++] = elem;
 
-		LOG_INFO("Adding succesful");
+		LOG_DEBUG("Adding succesful, new size is %u", this->m_Size);
 	}
 
 	template <typename T>
@@ -115,7 +114,7 @@ namespace ds
 	{
 		if (index >= this->m_Size)
 		{
-			LOG_ERROR("Can't insert, index is out of range");
+			LOG_ERROR("Can't insert, index %u is out of range", index);
 			return;
 		}
 
@@ -132,7 +131,7 @@ namespace ds
 		this->m_Data[index] = elem;
 		++this->m_Size;
 
-		LOG_INFO("Inserting succesful");
+		LOG_DEBUG("Inserting at index %u succesful, new size is %u", index, this->m_Size);
 	}
 
 	template <typename T>
@@ -140,11 +139,11 @@ namespace ds
 	{
 		if (index >= this->m_Size)
 		{
-			LOG_FATAL("Can't get element, index is out of range");
+			LOG_FATAL("Can't get element, index %u is out of range", index);
 			exit(1);
 		}
 
-		LOG_INFO("Got element succesfully");
+		LOG_DEBUG("Got element at index %u succesfully", index);
 
 		return this->m_Data[index];
 	}
@@ -154,7 +153,7 @@ namespace ds
 	{
 		if (index >= this->m_Size)
 		{
-			LOG_ERROR("Can't delete, index is out of range");
+			LOG_ERROR("Can't delete, index %u is out of range", index);
 			return;
 		}
 
@@ -164,7 +163,7 @@ namespace ds
 		}
 
 		--this->m_Size;
-		LOG_INFO("Element deleted succesfully");
+		LOG_DEBUG("Element at index %u was deleted succesfully, new size %u", index, this->m_Size);
 	}
 
 	template <typename T>
@@ -180,6 +179,8 @@ namespace ds
 		this->m_Data = nullptr;
 		this->m_Capacity = 0;
 		this->m_Size = 0;
+
+		LOG_DEBUG("DynamicArray has been cleared");
 	}
 
 	template <typename T>
@@ -244,7 +245,7 @@ namespace ds
 		this->m_Data = newData;
 		this->m_Capacity = newCap;
 
-		LOG_DEBUG("DynamicArray has been resized");
+		LOG_DEBUG("DynamicArray has been resized to new capacity %u", newCap);
 	}
 	///////////////////
 	// DYNAMIC ARRAY //

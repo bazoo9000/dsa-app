@@ -1,8 +1,6 @@
 #pragma once
 
 #include "DataStructure.h"
-#include "Array.h"
-#include <utility>
 
 namespace ds 
 {
@@ -100,17 +98,18 @@ namespace ds
     {
         if(maxRows <= r)
         {
-            LOG_ERROR("Can't insert. Row index is out of bounds.");
+            LOG_ERROR("Can't insert, row index %u is out of bounds", r);
             return;
         }
 
         if(maxCols <= c)
         {
-            LOG_ERROR("Can't insert. Column index is out of bounds.");
+            LOG_ERROR("Can't insert, column index %u is out of bounds", c);
             return;
         }
 
         this->m_Data[r][c] = elem;
+        LOG_DEBUG("Inserting at indeces %u, %u was succesful, new size is %u", r, c, this->m_Size);
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>
@@ -118,16 +117,17 @@ namespace ds
     {
         if(maxRows <= r)
         {
-            LOG_FATAL("Can't get element. Row index is out of bounds.");
+            LOG_FATAL("Can't get element, row index %u is out of bounds", r);
             exit(1);
         }
 
         if(maxCols <= c)
         {
-            LOG_FATAL("Can't get element. Column index is out of bounds.");
+            LOG_FATAL("Can't get element, column index %u is out of bounds", r);
             exit(1);
         }
 
+		LOG_DEBUG("Got element at indeces %u, %u succesfully", r, c);
         return this->m_Data[r][c];
     }
 
@@ -141,6 +141,8 @@ namespace ds
                 this->m_Data[i][j] = this->m_Initial;
             }
 		}
+
+        LOG_DEBUG("Matrix has been reinitialized");
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>

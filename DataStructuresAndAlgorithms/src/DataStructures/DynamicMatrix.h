@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DataStructure.h"
-#include <cstdint>
 
 namespace ds 
 {
@@ -22,6 +21,7 @@ namespace ds
         void AddRows(uint32_t rows = 1);
         void AddColumns(uint32_t cols = 1);
         void AddCorner(uint32_t amount = 1);
+        void ResizeMatrix(uint32_t rows, uint32_t cols);
         virtual void Print() override;
 
     public:
@@ -52,14 +52,12 @@ namespace ds
     {
         if(this->m_Rows == 0)
 		{
-			LOG_ERROR("Row count of DynamicArray is 0! Setting it back to 1");
-			this->m_Rows = 1;
+			LOG_WARN("Row count of DynamicMatrix is 0");
 		}
 
         if(this->m_Cols == 0)
 		{
-			LOG_ERROR("Column count of DynamicArray is 0! Setting it back to 1");
-			this->m_Cols = 1;
+            LOG_WARN("Column count of DynamicMatrix is 0");
 		}
 
         this->m_Data = new T*[rows];
@@ -139,13 +137,13 @@ namespace ds
     {
         if(this->m_Rows <= r)
         {
-            LOG_ERROR("Can't insert. Row index is out of bounds.");
+            LOG_ERROR("Can't insert, row index %u is out of bounds", r);
             return;
         }
 
         if(this->m_Cols <= c)
         {
-            LOG_ERROR("Can't insert. Column index is out of bounds.");
+            LOG_ERROR("Can't insert, column index %u is out of bounds", c);
             return;
         }
 
@@ -157,13 +155,13 @@ namespace ds
     {
         if(this->m_Rows <= r)
         {
-            LOG_FATAL("Can't get element. Row index is out of bounds.");
+            LOG_FATAL("Can't get element, row index %u is out of bounds", r);
             exit(1);
         }
 
         if(this->m_Cols <= c)
         {
-            LOG_FATAL("Can't get element. Column index is out of bounds.");
+            LOG_FATAL("Can't get element, column index %u is out of bounds", r);
             exit(1);
         }
 
@@ -180,6 +178,8 @@ namespace ds
                 this->m_Data[i][j] = this->m_Initial;
             }
 		}
+
+        LOG_DEBUG("DynamicMatrix has been reinitialized");
     }
 
     template <typename T>
@@ -198,6 +198,12 @@ namespace ds
     void DynamicMatrix<T>::AddCorner(uint32_t amount)
     {
         resize(this->m_Rows + amount, this->m_Cols + amount);
+    }
+
+    template <typename T>
+    void DynamicMatrix<T>::ResizeMatrix(uint32_t rows, uint32_t cols)
+    {
+        resize(rows, cols);
     }
 
     template <typename T>
@@ -286,6 +292,6 @@ namespace ds
         this->m_Rows = newRows;
         this->m_Cols = newCols;
 
-        LOG_DEBUG("DynamicMatrix has been resized");
+        LOG_DEBUG("DynamicMatrix has been resized to %u rows and %u columns", newRows, newCols);
     }
 }
