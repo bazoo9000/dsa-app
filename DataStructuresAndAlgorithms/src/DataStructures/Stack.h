@@ -55,8 +55,6 @@ namespace ds
 	template <typename T>
 	Stack<T>::Stack(const Stack& s)
 	{
-		Clear();
-
 		Node<T>* head = s.m_Head;
 		Stack<T> stack;
 		while(head)

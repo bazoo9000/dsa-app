@@ -61,8 +61,6 @@ namespace ds
 	template <typename T>
 	LinkedList<T>::LinkedList(const LinkedList<T>& list)
 	{
-		Clear();
-
 		this->m_Size = list.m_Size;
 		
 		if(!list.m_Head)

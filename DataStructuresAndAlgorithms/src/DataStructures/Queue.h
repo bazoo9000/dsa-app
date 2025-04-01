@@ -56,8 +56,6 @@ namespace ds
 	template <typename T>
 	Queue<T>::Queue(const Queue<T>& q)
 	{
-		Clear();
-
 		Node<T>* head = q.m_Head;
 		while(head)
 		{

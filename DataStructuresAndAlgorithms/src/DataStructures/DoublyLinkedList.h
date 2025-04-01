@@ -64,8 +64,6 @@ namespace ds
 	template <typename T>
 	DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList<T>& list)
 	{
-		Clear();
-
 		this->m_Size = list.m_Size;
 	
 		if(!list.m_Head)

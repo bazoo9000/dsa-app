@@ -63,8 +63,6 @@ namespace ds
 	template <typename T>
 	DynamicArray<T>::DynamicArray(const DynamicArray<T>& arr)
 	{
-		Clear();
-
 		this->m_Size = arr.m_Size;
 		this->m_Capacity = arr.m_Capacity;
 		this->m_Data = new T[this->m_Capacity];
