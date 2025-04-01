@@ -61,7 +61,7 @@ namespace ds
     template <typename T>
     BinaryTree<T>::BinaryTree()
     {
-        // nimic
+        LOG_INFO("BinaryTree CREATED successfully");
     }
 
     template <typename T>
@@ -94,6 +94,8 @@ namespace ds
                 q.Enqueue(node->right);
             }
         }
+
+        LOG_INFO("BinaryTree COPIED successfully");
     }
 
     template <typename T>
@@ -104,12 +106,15 @@ namespace ds
 
         tree.m_Root = nullptr;
         tree.m_Size = 0;
+    
+        LOG_INFO("BinaryTree MOVED successfully");
     }
 
     template <typename T>
     BinaryTree<T>::~BinaryTree()
     {
         Clear(this->m_Root);
+        LOG_INFO("BinaryTree DESTROYED successfully");
     }
 
     template <typename T>
@@ -136,6 +141,7 @@ namespace ds
             {
                 node->left = newNode;
                 ++this->m_Size;
+                LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
                 return;
             }
             else
@@ -147,6 +153,7 @@ namespace ds
             {
                 node->right = newNode;
                 ++this->m_Size;
+                LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
                 return;
             }
             else
@@ -174,6 +181,11 @@ namespace ds
             node = nullptr;
 
             --this->m_Size;
+        }
+
+        if(this->m_Size == 0)
+        {
+            LOG_DEBUG("BinaryTree has been cleared");
         }
     }
 
@@ -360,7 +372,7 @@ namespace ds
             }
         }
         
-
+        LOG_INFO("BinaryTree COPIED successfully");
         return *this;
     }
 
@@ -375,6 +387,7 @@ namespace ds
         tree.m_Root = nullptr;
         tree.m_Size = 0;
 
+        LOG_INFO("BinaryTree MOVED successfully");
         return *this;
     }
 	/////////////////

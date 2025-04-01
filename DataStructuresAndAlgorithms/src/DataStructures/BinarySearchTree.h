@@ -32,20 +32,20 @@ namespace ds
     BinarySearchTree<T>::BinarySearchTree()
         : BinaryTree<T>()
     {
-        // nimic
+        LOG_INFO("BinarySearchTree CREATED successfully");
     }
 
     template <typename T>
     BinarySearchTree<T>::BinarySearchTree(const BinarySearchTree<T>& tree)
         : BinaryTree<T>(tree)
     {
-        // nimic
+        LOG_INFO("BinarySearchTree COPIED successfully");
     }
 
     template <typename T>
     BinarySearchTree<T>::~BinarySearchTree()
     {
-        // deletion is handled in the parent class
+        LOG_INFO("BinarySearchTree DESTROYED successfully");
     }
 
     template <typename T>
@@ -73,6 +73,7 @@ namespace ds
             {
                 node->left = newNode;
                 ++this->m_Size;
+                LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
                 return;
             }
             else
@@ -84,6 +85,7 @@ namespace ds
             {
                 node->right = newNode;
                 ++this->m_Size;
+                LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
                 return;
             }
             else
@@ -138,6 +140,7 @@ namespace ds
             }
         }
 
+        LOG_INFO("BinarySearchTree COPIED successfully");
         return *this;
     }
 
@@ -152,6 +155,7 @@ namespace ds
         tree.m_Root = nullptr;
         tree.m_Size = 0;
 
+        LOG_INFO("BinarySearchTree MOVED successfully");
         return *this;
     }
 	////////////////////////
