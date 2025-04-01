@@ -15,7 +15,25 @@ int main(int argc, char* argv[])
 		std::cout << it->GetCurrent() << " ";
 	}
 
+	ds::BinaryTree<int> tree2(tree);
+
+	for(auto it = tree2.CreateLevelorderIterator(); !it->IsAtEnd(); it->Next())
+	{
+		std::cout << it->GetCurrent() << " ";
+	}
+
+	ds::BinaryTree<int> tree3(std::move(tree2));
+
+	for (auto it = tree2.CreateLevelorderIterator(); !it->IsAtEnd(); it->Next())
+	{
+		std::cout << it->GetCurrent() << " ";
+	}
 	std::cout << std::endl;
 
+	for (auto it = tree3.CreateLevelorderIterator(); !it->IsAtEnd(); it->Next())
+	{
+		std::cout << it->GetCurrent() << " ";
+	}
+	std::cout << std::endl;
 	return 0;
 }

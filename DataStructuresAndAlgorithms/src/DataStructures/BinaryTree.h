@@ -65,6 +65,48 @@ namespace ds
     }
 
     template <typename T>
+    BinaryTree<T>::BinaryTree(const BinaryTree& tree)
+    {
+        this->m_Size = tree.m_Size;
+
+        if (tree.m_Root == nullptr)
+        {
+            return;
+        }
+
+        Queue<Node<T>*> q;
+        q.Enqueue(tree.m_Root);
+
+        while (!q.IsEmpty())
+        {
+            Node<T>* node = q.GetFirst();
+            q.Dequeue();
+
+            Insert(node->data);
+
+            if (node->left != nullptr)
+            {
+                q.Enqueue(node->left);
+            }
+
+            if (node->right != nullptr)
+            {
+                q.Enqueue(node->right);
+            }
+        }
+    }
+
+    template <typename T>
+    BinaryTree<T>::BinaryTree(BinaryTree&& tree)
+        : m_Root(tree.m_Root)
+    {
+        this->m_Size = tree.m_Size;
+
+        tree.m_Root = nullptr;
+        tree.m_Size = 0;
+    }
+
+    template <typename T>
     BinaryTree<T>::~BinaryTree()
     {
         Clear(this->m_Root);
@@ -152,7 +194,7 @@ namespace ds
     {
         if (this->m_Root == nullptr)
         {
-            return nullptr;
+            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -185,7 +227,7 @@ namespace ds
     {
         if (this->m_Root == nullptr)
         {
-            return nullptr;
+            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -216,7 +258,7 @@ namespace ds
     {
         if (this->m_Root == nullptr)
         {
-            return nullptr;
+            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -257,7 +299,7 @@ namespace ds
     {
         if (this->m_Root == nullptr)
         {
-            return nullptr;
+            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -283,6 +325,57 @@ namespace ds
         }
 
         return new BinaryTreeIterator<T>(arr);
+    }
+
+    template <typename T>
+    BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree& tree)
+    {
+        Clear(this->m_Root);
+
+        this->m_Size = tree.m_Size;
+
+        if (tree.m_Root == nullptr)
+        {
+            return *this;
+        }
+
+        Queue<Node<T>*> q;
+        q.Enqueue(tree.m_Root);
+
+        while (!q.IsEmpty())
+        {
+            Node<T>* node = q.GetFirst();
+            q.Dequeue();
+
+            Insert(node->data);
+
+            if (node->left != nullptr)
+            {
+                q.Enqueue(node->left);
+            }
+
+            if (node->right != nullptr)
+            {
+                q.Enqueue(node->right);
+            }
+        }
+        
+
+        return *this;
+    }
+
+    template <typename T>
+    BinaryTree<T>& BinaryTree<T>::operator=(BinaryTree&& tree)
+    {
+        Clear(this->m_Root);
+
+        this->m_Size = tree.m_Size;
+        this->m_Root = tree.m_Root;
+
+        tree.m_Root = nullptr;
+        tree.m_Size = 0;
+
+        return *this;
     }
 	/////////////////
 	// BINARY TREE //

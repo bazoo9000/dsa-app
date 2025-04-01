@@ -30,8 +30,16 @@ namespace ds
 
     template <typename T>
     BinarySearchTree<T>::BinarySearchTree()
+        : BinaryTree<T>()
     {
-        BinaryTree<T>::BinaryTree();
+        // nimic
+    }
+
+    template <typename T>
+    BinarySearchTree<T>::BinarySearchTree(const BinarySearchTree<T>& tree)
+        : BinaryTree<T>(tree)
+    {
+        // nimic
     }
 
     template <typename T>
@@ -95,6 +103,56 @@ namespace ds
             LOG_DEBUG("BinarySearchTree is empty");
             return;
         }
+    }
+
+    template <typename T>
+    BinarySearchTree<T>& BinarySearchTree<T>::operator=(const BinarySearchTree<T>& tree)
+    {
+        Clear(this->m_Root);
+
+        this->m_Size = tree.m_Size;
+
+        if (tree.m_Root == nullptr)
+        {
+            return *this;
+        }
+
+        Queue<typename BinaryTree<T>::template Node<T>*> q;
+        q.Enqueue(tree.m_Root);
+
+        while (!q.IsEmpty())
+        {
+            typename BinaryTree<T>::template Node<T>* node = q.GetFirst();
+            q.Dequeue();
+
+            Insert(node->data);
+
+            if (node->left != nullptr)
+            {
+                q.Enqueue(node->left);
+            }
+
+            if (node->right != nullptr)
+            {
+                q.Enqueue(node->right);
+            }
+        }
+
+        return *this;
+    }
+
+    template <typename T>
+    BinarySearchTree<T>& BinarySearchTree<T>::operator=(BinarySearchTree<T>&& tree)
+    {
+        Clear(this->m_Root);
+
+        this->m_Size = tree.m_Size;
+        this->m_Root = tree.m_Root;
+
+        tree.m_Root = nullptr;
+        tree.m_Size = 0;
+
+        return *this;
     }
 	////////////////////////
 	// BINARY SEARCH TREE //
