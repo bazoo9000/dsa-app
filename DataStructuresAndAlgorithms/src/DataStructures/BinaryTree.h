@@ -17,7 +17,7 @@ namespace ds
     template <typename T>
     class BinaryTree : public DataStructure<T>, public Iterable<T>
     {
-    private:
+    protected:
         template<typename U>
         struct Node
         {
@@ -40,9 +40,9 @@ namespace ds
         ~BinaryTree();
 
     public:
-        void Insert(T elem);
+        virtual void Insert(T elem); // this method differs based on the type of binary tree
         void Delete(T elem); // TODO: Implement this
-        void Clear(Node<T>* node);
+        void Clear(Node<T>*& node);
         virtual void Print() override;
         virtual Iterator<T>* CreateIterator() override { return CreatePreorderIterator(); }
         Iterator<T>* CreatePreorderIterator();
@@ -54,7 +54,7 @@ namespace ds
         BinaryTree& operator=(const BinaryTree& tree);
         BinaryTree& operator=(BinaryTree&& tree);
 
-    private:
+    protected:
         Node<T>* m_Root = nullptr;
     };
 
@@ -67,7 +67,7 @@ namespace ds
     template <typename T>
     BinaryTree<T>::~BinaryTree()
     {
-        Clear(m_Root);
+        // deletion occurs at the parent class
     }
 
     template <typename T>
@@ -121,7 +121,7 @@ namespace ds
     }
 
     template <typename T>
-    void BinaryTree<T>::Clear(Node<T>* node)
+    void BinaryTree<T>::Clear(Node<T>*& node)
     {
         if(node != nullptr)
         {

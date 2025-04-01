@@ -10,6 +10,7 @@
 #include "DataStructures/Stack.h"
 #include "DataStructures/Queue.h"
 #include "DataStructures/BinaryTree.h"
+#include "DataStructures/BinarySearchTree.h"
 #include "DataStructures/Graph.h"
 
 #include "Algorithms/Algorithm.h"
