@@ -1,16 +1,21 @@
 #pragma once
 
-#include <iostream>
 #include "DataStructure.h"
+#include "Stack.h"
 #include "Queue.h"
-
-// !! This remains to be reimplemented !! // 
-// TODO: Make Iterator and use strategy pattern for type of traversal
+#include "DynamicArray.h"
+#include "Iterator/Iterator.h"
+#include "Iterator/Iterable.h"
 
 namespace ds
 {
+	template <typename T> class BinaryTreeIterator;
+
+	/////////////////
+	// BINARY TREE //
+	/////////////////
     template <typename T>
-    class BinaryTree : public DataStructure<T>
+    class BinaryTree : public DataStructure<T>, public Iterable<T>
     {
     private:
         template<typename U>
@@ -35,30 +40,19 @@ namespace ds
         ~BinaryTree();
 
     public:
-        enum class PrintOrderType
-        {
-            NONE = 0,
-            PREORDER, INORDER, POSTORDER, // DFS
-            LEVELORDER                    // BFS
-        };
-
-    public:
         void Insert(T elem);
-        void* Find(T elem);
-        void Delete(T elem);
-        virtual void Print() override { Print(PrintOrderType::NONE); }
-        void Print(PrintOrderType type = PrintOrderType::NONE);
+        void Delete(T elem); // TODO: Implement this
+        void Clear(Node<T>* node);
+        virtual void Print() override;
+        virtual Iterator<T>* CreateIterator() override { return CreatePreorderIterator(); }
+        Iterator<T>* CreatePreorderIterator();
+        Iterator<T>* CreateInorderIterator();
+        Iterator<T>* CreatePostorderIterator();
+        Iterator<T>* CreateLevelorderIterator();
 
     public:
         BinaryTree& operator=(const BinaryTree& tree);
         BinaryTree& operator=(BinaryTree&& tree);
-
-    private:
-        void printPRE(Node<T>* node);
-        void printIN(Node<T>* node);
-        void printPOST(Node<T>* node);
-        void printLEVEL();
-        void deleteTree(Node<T>* node);
 
     private:
         Node<T>* m_Root = nullptr;
@@ -73,7 +67,7 @@ namespace ds
     template <typename T>
     BinaryTree<T>::~BinaryTree()
     {
-        deleteTree(m_Root);
+        Clear(m_Root);
     }
 
     template <typename T>
@@ -121,69 +115,152 @@ namespace ds
     }
 
     template <typename T>
-    void BinaryTree<T>::Print(PrintOrderType type)
+    void BinaryTree<T>::Delete(T elem)
     {
-        switch (type)
+        // remain to be implemented
+    }
+
+    template <typename T>
+    void BinaryTree<T>::Clear(Node<T>* node)
+    {
+        if(node != nullptr)
         {
-        case PrintOrderType::NONE:
-            std::cout << "Please provide a print type.\n";
-            break;
+            Clear(node->left);
+            Clear(node->right);
+            
+            delete node;
+            node = nullptr;
 
-        case PrintOrderType::PREORDER:
-            printPRE(this->m_Root);
-            break;
+            --this->m_Size;
+        }
+    }
 
-        case PrintOrderType::INORDER:
-            printIN(this->m_Root);
-            break;
+    template <typename T>
+    void BinaryTree<T>::Print()
+    {
+        LOG_DEBUG("This is a BinaryTree");
+        LOG_WARN("You can't print a BinaryTree, you have to choose an order and create an iterator for it, there are 4 methods inside this class, and default iterator creation is Preorder");
+        if (this->m_Root == nullptr)
+        {
+            LOG_DEBUG("BinaryTree is empty");
+            return;
+        }
+    }
 
-        case PrintOrderType::POSTORDER:
-            printPOST(this->m_Root);
-            break;
-
-        case PrintOrderType::LEVELORDER:
-            printLEVEL();
-            break;
-
-        default: std::cout << "Invalid print type.\n";
+    template <typename T>
+    Iterator<T>* BinaryTree<T>::CreatePreorderIterator()
+    {
+        if (this->m_Root == nullptr)
+        {
+            return nullptr;
         }
 
-        std::cout << "\n";
+        DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
+        Stack<Node<T>*> s;
+        s.Push(this->m_Root);
+
+        while (!s.IsEmpty())
+        {
+            Node<T>* node = s.GetTop();
+            s.Pop();
+
+            arr->Add(&node->data);
+
+            if (node->right != nullptr)
+            {
+                s.Push(node->right);
+            }
+
+            if (node->left != nullptr)
+            {
+                s.Push(node->left);
+            }
+        }
+
+        return new BinaryTreeIterator<T>(arr);
     }
 
     template <typename T>
-    void BinaryTree<T>::printPRE(Node<T>* node)
+    Iterator<T>* BinaryTree<T>::CreateInorderIterator()
     {
-        if (node == nullptr) return;
+        if (this->m_Root == nullptr)
+        {
+            return nullptr;
+        }
 
-        std::cout << node->data << " ";
-        printPRE(node->left);
-        printPRE(node->right);
+        DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
+        Stack<Node<T>*> s;
+        Node<T>* curNode = this->m_Root;
+
+        while (curNode != nullptr || !s.IsEmpty())
+        {
+            while (curNode != nullptr)
+            {
+                s.Push(curNode);
+                curNode = curNode->left;
+            }
+
+            Node<T>* node = s.GetTop();
+            s.Pop();
+
+            arr->Add(&node->data);
+
+            curNode = node->right;
+        }
+
+        return new BinaryTreeIterator<T>(arr);
     }
 
     template <typename T>
-    void BinaryTree<T>::printIN(Node<T>* node)
+    Iterator<T>* BinaryTree<T>::CreatePostorderIterator()
     {
-        if (node == nullptr) return;
+        if (this->m_Root == nullptr)
+        {
+            return nullptr;
+        }
 
-        printIN(node->left);
-        std::cout << node->data << " ";
-        printIN(node->right);
+        DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
+        Stack<Node<T>*> s1;
+        Stack<Node<T>*> s2;
+
+        s1.Push(this->m_Root);
+
+        while (!s1.IsEmpty())
+        {
+            Node<T>* node = s1.GetTop();
+            s1.Pop();
+            s2.Push(node);
+
+            if (node->left != nullptr)
+            {
+                s1.Push(node->left);
+            }
+
+            if (node->right != nullptr)
+            {
+                s1.Push(node->right);
+            }
+        }
+
+        while (!s2.IsEmpty())
+        {
+            Node<T>* node = s2.GetTop();
+            s2.Pop();
+            arr->Add(&node->data);
+        }
+
+        return new BinaryTreeIterator<T>(arr);
     }
 
     template <typename T>
-    void BinaryTree<T>::printPOST(Node<T>* node)
+    Iterator<T>* BinaryTree<T>::CreateLevelorderIterator()
     {
-        if (node == nullptr) return;
+        if (this->m_Root == nullptr)
+        {
+            return nullptr;
+        }
 
-        printPOST(node->left);
-        printPOST(node->right);
-        std::cout << node->data << " ";
-    }
-
-    template <typename T>
-    void BinaryTree<T>::printLEVEL()
-    {
+        DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
         Queue<Node<T>*> q;
         q.Enqueue(m_Root);
 
@@ -191,7 +268,8 @@ namespace ds
         {
             Node<T>* node = q.GetFirst();
             q.Dequeue();
-            std::cout << node->data << " ";
+        
+            arr->Add(&node->data);
 
             if (node->left != nullptr)
             {
@@ -203,20 +281,42 @@ namespace ds
                 q.Enqueue(node->right);
             }
         }
-    }
 
+        return new BinaryTreeIterator<T>(arr);
+    }
+	/////////////////
+	// BINARY TREE //
+	/////////////////
+
+	//////////////
+	// ITERATOR //
+	//////////////
     template <typename T>
-    void BinaryTree<T>::deleteTree(Node<T>* node)
+    class BinaryTreeIterator : public Iterator<T>
     {
-        if(node != nullptr)
-        {
-            deleteTree(node->left);
-            deleteTree(node->right);
-            
-            delete node;
-            node = nullptr;
+    public:
+		BinaryTreeIterator(DynamicArray<T*>* data) : m_BinaryTreeData(data) {}
+		~BinaryTreeIterator() = default;
 
-            --this->m_Size;
-        }
-    }
+	public:
+		virtual void Reset() override { this->m_Index = 0; }
+		virtual const T& GetCurrent() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
+		virtual void Next() override { this->m_Index++; }
+		virtual bool IsAtEnd() override { return this->m_Index >= this->m_BinaryTreeData->GetSize(); }
+
+	public:
+		virtual T& operator*() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
+		virtual Iterator<T>& operator++() override
+		{
+			Next();
+			return *this;
+		}
+
+	private:
+        DynamicArray<T*>* m_BinaryTreeData;
+		uint32_t m_Index = 0;
+    };
+	//////////////
+	// ITERATOR //
+	//////////////
 }

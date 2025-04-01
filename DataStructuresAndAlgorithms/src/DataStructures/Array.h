@@ -231,7 +231,7 @@ namespace ds
 
 	public:
 		virtual void Reset() override { this->m_Index = 0; }
-		virtual const T GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
 		virtual void Next() override { this->m_Index++; }
 		virtual bool IsAtEnd() override { return this->m_Index >= this->m_Array->GetSize(); }
 

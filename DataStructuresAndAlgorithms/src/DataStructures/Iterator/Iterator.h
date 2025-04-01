@@ -10,7 +10,7 @@ namespace ds
 
     public:
         virtual void Reset() = 0;
-        virtual const T GetCurrent() = 0;
+        virtual const T& GetCurrent() = 0;
         virtual void Next() = 0;
         virtual bool IsAtEnd() = 0;
 
