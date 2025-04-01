@@ -67,7 +67,7 @@ namespace ds
     template <typename T>
     BinaryTree<T>::~BinaryTree()
     {
-        // deletion occurs at the parent class
+        Clear(this->m_Root);
     }
 
     template <typename T>
