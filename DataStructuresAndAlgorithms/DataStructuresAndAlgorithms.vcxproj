@@ -143,6 +143,7 @@
     <ClInclude Include="src\Algorithms\Sorter\InsertionSort.h" />
     <ClInclude Include="src\Algorithms\Sorter\ISortStrategy.h" />
     <ClInclude Include="src\Algorithms\Sorter\SelectionSort.h" />
+    <ClInclude Include="src\DataStructures\BinarySearchTree.h" />
     <ClInclude Include="src\DataStructures\CircularLinkedList.h" />
     <ClInclude Include="src\DataStructures\DataStructure.h" />
     <ClInclude Include="src\DataStructures\DynamicArray.h" />

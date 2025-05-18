@@ -1,30 +1,43 @@
 #pragma once
 
-#include <iostream>
-#include "LinkedList.h"
+#include "DataStructure.h"
+#include "DynamicArray.h"
 
-// !! This remains to be reimplemented !! // 
-
+// remains to be implemented
 namespace ds 
 {
     template <typename T>
-    class Tree
+    class Tree : public DataStructure<T>
     {
     private:
         template <typename U>
         struct Node
         {
             U data;
-            LinkedList<Node*> node; 
+            DynamicArray<Node*> node; 
         };
         
     public:
-        Tree(/* args */);
+        Tree();
+        Tree(const Tree& tree);
+        Tree(Tree&& tree);
         ~Tree();
+
+    public:
+        void Insert(T elem);
+        void Clear();
+        virtual void Print() override;
+
+    public:
+        Tree& operator=(const Tree& tree);
+        Tree& operator=(Tree&& tree);
+
+    private:
+        Node<T>* m_Root;
     };
 
     template <typename T>
-    Tree<T>::Tree(/* args */)
+    Tree<T>::Tree()
     {
     }
 
