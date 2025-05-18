@@ -12,33 +12,43 @@ namespace alg
         virtual ~InsertionSort() = default;
     
     public:
-        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) override;
+        virtual void Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFunc) override;
     };
 
     template <typename T>
-    void InsertionSort<T>::Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc)
+    void InsertionSort<T>::Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFunc)
     {
         LOG_DEBUG("Sorting using InsertionSort");
 
-        ds::DynamicArray<T>* arr = dynamic_cast<ds::DynamicArray<T>*>(data);
-        if(arr == nullptr)
-        {
-            LOG_ERROR("Can't sort, casting error (TEMPORARY)");
-            return;
-        }
+        // i think a reverse iterator would be better for this sort
 
-        for(uint32_t i = 1; i < arr->GetSize(); i++)
-        {
-            T key = (*arr)[i];
-            uint32_t j = i;
+        // for(uint32_t i = 1; i < arr->GetSize(); i++)
+        // {
+        //     T key = (*arr)[i];
+        //     uint32_t j = i;
 
-            while (j > 0 && !orderFunc((*arr)[j - 1], key))
+        //     while (j > 0 && !orderFunc((*arr)[j - 1], key))
+        //     {
+        //         (*arr)[j] = (*arr)[j - 1];
+        //         j--;
+        //     }
+
+        //     (*arr)[j] = key;
+        // }
+
+        // THIS WONT WORK!!
+        auto prev = data->CreateIterator();
+        auto it1 = prev->Clone();
+        it1->Next();
+        for ( ; !it1->IsAtEnd(); it1->Next())
+        {
+            T key = **it1;
+            auto it2 = prev->Clone();
+
+            while (!it2->IsAtEnd() && !orderFunc(**it2, key))
             {
-                (*arr)[j] = (*arr)[j - 1];
-                j--;
+                it2->Next();
             }
-
-            (*arr)[j] = key;
         }
     }
 }

@@ -14,15 +14,12 @@ int main(int argc, char* argv[])
 		std::cout << it->GetCurrent() << " ";
 	}
 
-	ds::BinaryTree<int> tree;
-	tree.Insert(5);
-	tree.Insert(3);
-	tree.Insert(7);
+	alg::Searcher<int>::SetSearchStrategy(new alg::LinearSearch<int>());
+	alg::Searcher<int>::Search(2, &arr);
+	alg::Searcher<int>::Search(6, &arr);
 
-	for (auto it = tree.CreateIterator(); !it->IsAtEnd(); it->Next())
-	{
-		std::cout << it->GetCurrent() << " ";
-	}
-
+	alg::Searcher<int>::SetSearchStrategy(new alg::BinarySearch<int>());
+	alg::Searcher<int>::Search(2, &arr);
+	alg::Searcher<int>::Search(6, &arr);
 	return 0;
 }

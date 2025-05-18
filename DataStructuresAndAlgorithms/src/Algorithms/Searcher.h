@@ -13,7 +13,7 @@ namespace alg
         ~Searcher() { delete s_SearchStrategy; }
 
     public:
-        static uint32_t Search(T needle, ds::DataStructure<T>* haystack);
+        static uint32_t Search(T needle, ds::Iterable<T>* haystack);
 
     public:
         static void SetSearchStrategy(ISearchStrategy<T>* strat);
@@ -26,12 +26,12 @@ namespace alg
     ISearchStrategy<T>* Searcher<T>::s_SearchStrategy = nullptr;
 
     template <typename T>
-    uint32_t Searcher<T>::Search(T needle, ds::DataStructure<T>* haystack)
+    uint32_t Searcher<T>::Search(T needle, ds::Iterable<T>* haystack)
     {
         if(s_SearchStrategy == nullptr)
         {
             LOG_ERROR("Can't search, no search selected");
-            return haystack->GetSize();
+            return UINT32_MAX;
         }
 
         return s_SearchStrategy->Search(needle, haystack);

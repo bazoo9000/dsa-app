@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 namespace ds 
 {
     template <typename T>
@@ -13,6 +14,7 @@ namespace ds
         virtual const T& GetCurrent() = 0;
         virtual void Next() = 0;
         virtual bool IsAtEnd() = 0;
+        virtual std::shared_ptr<Iterator> Clone() = 0;
 
     public:
         virtual T& operator*() = 0;

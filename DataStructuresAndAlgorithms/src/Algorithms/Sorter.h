@@ -13,7 +13,7 @@ namespace alg
         ~Sorter() { delete s_SortStrategy; }
 
     public:
-        static void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFun = ascending);
+        static void Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFun = ascending);
 
     public:
         static void SetSortStrategy(ISortStrategy<T>* strat);
@@ -29,7 +29,7 @@ namespace alg
     ISortStrategy<T>* Sorter<T>::s_SortStrategy = nullptr;
 
     template <typename T>
-    void Sorter<T>::Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc)
+    void Sorter<T>::Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFunc)
     {
         if(s_SortStrategy == nullptr)
         {

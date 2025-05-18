@@ -24,7 +24,7 @@ namespace ds
 		T& GetElementAt(uint32_t index);
 		void DeleteAt(int index);
 		virtual void Print() override;
-		virtual Iterator<T>* CreateIterator() override { return new ArrayIterator<T, maxSize>(this); }
+		virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return std::make_shared<ArrayIterator<T, maxSize>>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }
@@ -234,6 +234,12 @@ namespace ds
 		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
 		virtual void Next() override { this->m_Index++; }
 		virtual bool IsAtEnd() override { return this->m_Index >= this->m_Array->GetSize(); }
+		virtual std::shared_ptr<Iterator<T>> Clone() override
+		{
+			auto it = std::make_shared<ArrayIterator<T, maxSize>>(this->m_Array);
+			it->m_Index = this->m_Index;
+			return it;
+		}
 
 	public:
 		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }

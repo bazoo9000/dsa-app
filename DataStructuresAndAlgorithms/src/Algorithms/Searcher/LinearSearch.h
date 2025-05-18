@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ISearchStrategy.h"
-#include "../../DataStructures/DynamicArray.h"
+#include <cstdint>
 
 namespace alg
 {
@@ -12,31 +12,26 @@ namespace alg
         virtual ~LinearSearch() = default;
 
     public:
-        virtual uint32_t Search(T needle, ds::DataStructure<T>* haystack) override;
+        virtual uint32_t Search(T needle, ds::Iterable<T>* haystack) override;
     };
 
     template <typename T>
-    uint32_t LinearSearch<T>::Search(T needle, ds::DataStructure<T>* haystack)
+    uint32_t LinearSearch<T>::Search(T needle, ds::Iterable<T>* haystack)
     {
         LOG_DEBUG("Searching using LinearSearch");
 
-        ds::DynamicArray<T>* arr = dynamic_cast<ds::DynamicArray<T>*>(haystack);
-        if(arr == nullptr)
+        uint32_t index = 0;
+        for (auto it = haystack->CreateIterator(); !it->IsAtEnd(); it->Next())
         {
-            LOG_ERROR("Can't search, casting error (TEMPORARY)");
-            return haystack->GetSize();
-        }
-
-        for(uint32_t i = 0; i < arr->GetSize(); i++)
-        {
-            if((*arr)[i] == needle)
+            if (it->GetCurrent() == needle)
             {
                 LOG_TRACE("Element found");
-                return i;
+                return index;
             }
+            index++;
         }
 
         LOG_TRACE("Element NOT found");
-        return arr->GetSize();
+        return UINT32_MAX;
     }
 }

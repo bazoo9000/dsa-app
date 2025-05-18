@@ -12,34 +12,29 @@ namespace alg
         ~BubbleSort() = default;
     
     public:
-        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) override;
+        virtual void Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFunc) override;
     };
 
     template <typename T>
-    void BubbleSort<T>::Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc)
+    void BubbleSort<T>::Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFunc)
     {
         LOG_DEBUG("Sorting using BubbleSort");
 
-        ds::DynamicArray<T>* arr = dynamic_cast<ds::DynamicArray<T>*>(data);
-        if(arr == nullptr)
-        {
-            LOG_ERROR("Can't sort, casting error (TEMPORARY)");
-            return;
-        }
-
-        for(uint32_t i = 0; i < arr->GetSize(); i++)
+        for (auto it1 = data->CreateIterator(); !it1->IsAtEnd(); it1->Next())
         {
             bool isSorted = true;
-            for(uint32_t j = i + 1; j < arr->GetSize(); j++)
+            auto it2 = it1->Clone();
+            it2->Next();
+            for ( ; !it2->IsAtEnd(); it2->Next())
             {
-                if(!orderFunc((*arr)[i], (*arr)[j]))
+                if (!orderFunc(**it1, **it2))
                 {
                     isSorted = false;
-                    std::swap((*arr)[i], (*arr)[j]);
+                    std::swap(**it1, **it2);
                 }
             }
 
-            if(isSorted)
+            if (isSorted)
             {
                 break;
             }

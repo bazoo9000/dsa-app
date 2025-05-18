@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../DataStructures/DataStructure.h"
+#include "../../DataStructures/Iterator/Iterable.h"
 
 namespace alg
 {
@@ -11,6 +11,6 @@ namespace alg
         virtual ~ISearchStrategy() = default;
 
     public:
-        virtual uint32_t Search(T needle, ds::DataStructure<T>* haystack) = 0;
+        virtual uint32_t Search(T needle, ds::Iterable<T>* haystack) = 0;
     };
 }

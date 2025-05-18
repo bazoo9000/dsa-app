@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include "../../DataStructures/DataStructure.h"
+#include "../../DataStructures/Iterator/Iterable.h"
 
 namespace alg
 {
@@ -12,6 +12,6 @@ namespace alg
         virtual ~ISortStrategy() = default;
 
     public:
-        virtual void Sort(ds::DataStructure<T>* data, std::function<bool(T, T)> orderFunc) = 0;
+        virtual void Sort(ds::Iterable<T>* data, std::function<bool(T, T)> orderFunc) = 0;
     };
 }

@@ -6,7 +6,6 @@
 #include "DynamicArray.h"
 #include "Iterator/Iterator.h"
 #include "Iterator/Iterable.h"
-#include <memory>
 
 namespace ds
 {
@@ -45,11 +44,11 @@ namespace ds
         void Delete(T elem); // TODO: Implement this
         void Clear(Node<T>*& node);
         virtual void Print() override;
-        virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return CreatePreorderIterator(); }
-        std::unique_ptr<Iterator<T>> CreatePreorderIterator();
-        std::unique_ptr<Iterator<T>> CreateInorderIterator();
-        std::unique_ptr<Iterator<T>> CreatePostorderIterator();
-        std::unique_ptr<Iterator<T>> CreateLevelorderIterator();
+        virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return CreatePreorderIterator(); }
+        std::shared_ptr<Iterator<T>> CreatePreorderIterator();
+        std::shared_ptr<Iterator<T>> CreateInorderIterator();
+        std::shared_ptr<Iterator<T>> CreatePostorderIterator();
+        std::shared_ptr<Iterator<T>> CreateLevelorderIterator();
 
     public:
         BinaryTree& operator=(const BinaryTree& tree);
@@ -203,11 +202,11 @@ namespace ds
     }
 
     template <typename T>
-    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreatePreorderIterator()
+    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreatePreorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -232,15 +231,15 @@ namespace ds
             }
         }
 
-        return std::make_unique<BinaryTreeIterator<T>>(arr);
+        return std::make_shared<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreateInorderIterator()
+    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreateInorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -263,15 +262,15 @@ namespace ds
             curNode = node->right;
         }
 
-        return std::make_unique<BinaryTreeIterator<T>>(arr);
+        return std::make_shared<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreatePostorderIterator()
+    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreatePostorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -304,15 +303,15 @@ namespace ds
             arr->Add(&node->data);
         }
 
-        return std::make_unique<BinaryTreeIterator<T>>(arr);
+        return std::make_shared<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreateLevelorderIterator()
+    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreateLevelorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -337,7 +336,7 @@ namespace ds
             }
         }
 
-        return std::make_unique<BinaryTreeIterator<T>>(arr);
+        return std::make_shared<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
@@ -410,6 +409,12 @@ namespace ds
 		virtual const T& GetCurrent() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
 		virtual void Next() override { this->m_Index++; }
 		virtual bool IsAtEnd() override { return this->m_Index >= this->m_BinaryTreeData->GetSize(); }
+        virtual std::shared_ptr<Iterator<T>> Clone() override
+		{
+			auto it = std::make_shared<BinaryTreeIterator<T>>(this->m_BinaryTreeData);
+			it->m_Index = this->m_Index;
+			return it;
+		}
 
 	public:
 		virtual T& operator*() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
