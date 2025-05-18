@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DataStructure.h"
+#include <memory>
 
 namespace ds
 {
@@ -25,7 +26,7 @@ namespace ds
 		void DeleteAt(int index);
 		void Clear();
 		virtual void Print() override;
-		virtual Iterator<T>* CreateIterator() override { return new DynamicArrayIterator<T>(this); }
+		virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return std::make_unique<DynamicArrayIterator<T>>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }

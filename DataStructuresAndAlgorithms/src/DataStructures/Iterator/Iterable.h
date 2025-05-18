@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Iterator.h"
 
 namespace ds 
@@ -11,6 +12,6 @@ namespace ds
         virtual ~Iterable() = default;
 
     public:
-        virtual Iterator<T>* CreateIterator() = 0;
+        virtual std::unique_ptr<Iterator<T>> CreateIterator() = 0;
     };
 }

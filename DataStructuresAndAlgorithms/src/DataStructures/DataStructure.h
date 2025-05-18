@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <utility>
+#include <memory>
 
 #include "Iterator/Iterator.h"
 #include "Iterator/Iterable.h"

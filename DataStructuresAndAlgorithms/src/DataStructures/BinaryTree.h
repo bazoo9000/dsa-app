@@ -6,6 +6,7 @@
 #include "DynamicArray.h"
 #include "Iterator/Iterator.h"
 #include "Iterator/Iterable.h"
+#include <memory>
 
 namespace ds
 {
@@ -44,11 +45,11 @@ namespace ds
         void Delete(T elem); // TODO: Implement this
         void Clear(Node<T>*& node);
         virtual void Print() override;
-        virtual Iterator<T>* CreateIterator() override { return CreatePreorderIterator(); }
-        Iterator<T>* CreatePreorderIterator();
-        Iterator<T>* CreateInorderIterator();
-        Iterator<T>* CreatePostorderIterator();
-        Iterator<T>* CreateLevelorderIterator();
+        virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return CreatePreorderIterator(); }
+        std::unique_ptr<Iterator<T>> CreatePreorderIterator();
+        std::unique_ptr<Iterator<T>> CreateInorderIterator();
+        std::unique_ptr<Iterator<T>> CreatePostorderIterator();
+        std::unique_ptr<Iterator<T>> CreateLevelorderIterator();
 
     public:
         BinaryTree& operator=(const BinaryTree& tree);
@@ -202,11 +203,11 @@ namespace ds
     }
 
     template <typename T>
-    Iterator<T>* BinaryTree<T>::CreatePreorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreatePreorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -231,15 +232,15 @@ namespace ds
             }
         }
 
-        return new BinaryTreeIterator<T>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    Iterator<T>* BinaryTree<T>::CreateInorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreateInorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -262,15 +263,15 @@ namespace ds
             curNode = node->right;
         }
 
-        return new BinaryTreeIterator<T>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    Iterator<T>* BinaryTree<T>::CreatePostorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreatePostorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -303,15 +304,15 @@ namespace ds
             arr->Add(&node->data);
         }
 
-        return new BinaryTreeIterator<T>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    Iterator<T>* BinaryTree<T>::CreateLevelorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreateLevelorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return new BinaryTreeIterator<T>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -336,7 +337,7 @@ namespace ds
             }
         }
 
-        return new BinaryTreeIterator<T>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
