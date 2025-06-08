@@ -14,12 +14,7 @@ int main(int argc, char* argv[])
 		std::cout << it->GetCurrent() << " ";
 	}
 
-	alg::Searcher<int>::SetSearchStrategy(new alg::LinearSearch<int>());
-	alg::Searcher<int>::Search(2, &arr);
-	alg::Searcher<int>::Search(6, &arr);
-
 	alg::Searcher<int>::SetSearchStrategy(new alg::BinarySearch<int>());
-	alg::Searcher<int>::Search(2, &arr);
-	alg::Searcher<int>::Search(6, &arr);
+	alg::Searcher<int>::Search(3, &arr);
 	return 0;
 }
