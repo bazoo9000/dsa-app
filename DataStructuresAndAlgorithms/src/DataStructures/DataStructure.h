@@ -9,7 +9,9 @@
 #include <memory>
 
 #include "Iterator/Iterator.h"
+#include "Iterator/ReverseIterator.h"
 #include "Iterator/Iterable.h"
+#include "Iterator/ReverseIterable.h"
 #include "../Logger/Logger.h"
 
 namespace ds 

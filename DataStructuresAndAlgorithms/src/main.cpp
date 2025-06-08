@@ -14,7 +14,10 @@ int main(int argc, char* argv[])
 		std::cout << it->GetCurrent() << " ";
 	}
 
-	alg::Searcher<int>::SetSearchStrategy(new alg::BinarySearch<int>());
-	alg::Searcher<int>::Search(3, &arr);
+	for (auto it = arr.CreateReverseIterator(); !it->IsAtBegin(); it->Prev())
+	{
+		std::cout << it->GetCurrent() << " ";
+	}
+
 	return 0;
 }
