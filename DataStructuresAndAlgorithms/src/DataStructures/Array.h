@@ -1,16 +1,18 @@
 #pragma once
 
 #include "DataStructure.h"
+#include "Iterator/ReverseIterable.h"
 
 namespace ds
 {
 	template <typename T, uint32_t maxSize> class ArrayIterator;
+	template <typename T, uint32_t maxSize> class ArrayReverseIterator;
 
 	///////////
 	// ARRAY //
 	///////////
 	template <typename T, uint32_t maxSize>
-	class Array : public DataStructure<T>, public Iterable<T>
+	class Array : public DataStructure<T>, public Iterable<T>, public ReverseIterable<T>
 	{
 	public:
 		Array();
@@ -25,6 +27,7 @@ namespace ds
 		void DeleteAt(int index);
 		virtual void Print() override;
 		virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return std::make_shared<ArrayIterator<T, maxSize>>(this); }
+		virtual std::shared_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_shared<ArrayReverseIterator<T, maxSize>>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }
@@ -246,6 +249,38 @@ namespace ds
 		virtual Iterator<T>& operator++() override
 		{
 			Next();
+			return *this;
+		}
+
+	private:
+		Array<T, maxSize>* m_Array;
+		uint32_t m_Index = 0;
+	};
+
+	template <typename T, uint32_t maxSize>
+	class ArrayReverseIterator : public ReverseIterator<T>
+	{
+	public:
+		ArrayReverseIterator(Array<T, maxSize>* arr) : m_Array(arr) { m_Index = arr->GetSize() - 1; }
+		~ArrayReverseIterator() = default;
+
+	public:
+		virtual void Reset() override { this->m_Index = m_Array->GetSize() - 1; }
+		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual void Prev() override { this->m_Index--; }
+		virtual bool IsAtBegin() override { return this->m_Index == UINT32_MAX; }
+		virtual std::shared_ptr<ReverseIterator<T>> Clone() override
+		{
+			auto it = std::make_shared<ArrayReverseIterator<T, maxSize>>(this->m_Array);
+			it->m_Index = this->m_Index;
+			return it;
+		}
+
+	public:
+		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
+		virtual ReverseIterator<T>& operator++() override
+		{
+			Prev();
 			return *this;
 		}
 
