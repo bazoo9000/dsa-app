@@ -12,6 +12,6 @@ namespace ds
         virtual ~Iterable() = default;
 
     public:
-        virtual std::shared_ptr<Iterator<T>> CreateIterator() = 0;
+        virtual std::unique_ptr<Iterator<T>> CreateIterator() = 0;
     };
 }

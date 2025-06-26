@@ -29,7 +29,7 @@ namespace ds
 		void DeleteAt(int index);
 		void Clear();
 		virtual void Print() override;
-		virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return std::make_shared<DynamicArrayIterator<T>>(this); }
+		virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return std::make_unique<DynamicArrayIterator<T>>(this); }
 		virtual std::shared_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_shared<DynamicArrayReverseIterator<T>>(this); }
 
 	public:
@@ -269,19 +269,41 @@ namespace ds
 		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
 		virtual void Next() override { this->m_Index++; }
 		virtual bool IsAtEnd() override { return this->m_Index >= this->m_Array->GetSize(); }
-		virtual std::shared_ptr<Iterator<T>> Clone() override
+		virtual std::unique_ptr<Iterator<T>> Clone() override
 		{
-			auto it = std::make_shared<DynamicArrayIterator<T>>(this->m_Array);
+			auto it = std::make_unique<DynamicArrayIterator<T>>(this->m_Array);
 			it->m_Index = this->m_Index;
 			return it;
 		}
 
 	public:
 		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
-		virtual Iterator<T>& operator++() override
+		virtual std::unique_ptr<Iterator<T>> operator++() override
 		{
+			auto it = std::make_unique<DynamicArrayIterator<T>>(this->m_Array);
+			it->m_Index = this->m_Index;
 			Next();
-			return *this;
+			return it;
+		}
+		virtual std::unique_ptr<Iterator<T>> operator+(uint32_t idx) override
+		{
+			auto it = std::make_unique<DynamicArrayIterator<T>>(this->m_Array);
+			it->m_Index = this->m_Index;
+
+			if (it->m_Index + idx >= it->m_Array->GetSize())
+			{
+				it->m_Index = it->m_Array->GetSize();
+			}
+			else
+			{
+				it->m_Index += idx;
+			}
+
+			return it;
+		}
+        virtual std::unique_ptr<Iterator<T>> operator=(std::unique_ptr<Iterator<T>> it) override
+		{
+			return it->Clone();
 		}
 
 	private:

@@ -9,7 +9,7 @@
 #endif
 
 #ifdef ENABLE_LOGGING
-    #define DEBUG_MODE
+    //#define DEBUG_MODE
 
     #include <cstdio>
     #include <string>
