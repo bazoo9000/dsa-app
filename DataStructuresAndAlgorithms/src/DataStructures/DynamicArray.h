@@ -30,7 +30,7 @@ namespace ds
 		void Clear();
 		virtual void Print() override;
 		virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return std::make_unique<DynamicArrayIterator<T>>(this); }
-		virtual std::shared_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_shared<DynamicArrayReverseIterator<T>>(this); }
+		virtual std::unique_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_unique<DynamicArrayReverseIterator<T>>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }
@@ -280,10 +280,14 @@ namespace ds
 		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
 		virtual std::unique_ptr<Iterator<T>> operator++() override
 		{
-			auto it = std::make_unique<DynamicArrayIterator<T>>(this->m_Array);
-			it->m_Index = this->m_Index;
 			Next();
-			return it;
+			return Clone();
+		}
+		virtual std::unique_ptr<Iterator<T>> operator++(int) override
+		{
+			auto old = Clone();
+			Next();
+			return old;
 		}
 		virtual std::unique_ptr<Iterator<T>> operator+(uint32_t idx) override
 		{
@@ -321,21 +325,47 @@ namespace ds
 	public:
 		virtual void Reset() override { this->m_Index = m_Array->GetSize() - 1; }
 		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
-		virtual void Prev() override { this->m_Index--; }
+		virtual void Prev() override { if (this->m_Index == 0) { this->m_Index = UINT32_MAX; return; } this->m_Index--; }
 		virtual bool IsAtBegin() override { return this->m_Index == UINT32_MAX; }
-		virtual std::shared_ptr<ReverseIterator<T>> Clone() override
+		virtual std::unique_ptr<ReverseIterator<T>> Clone() override
 		{
-			auto it = std::make_shared<DynamicArrayReverseIterator<T>>(this->m_Array);
+			auto it = std::make_unique<DynamicArrayReverseIterator<T>>(this->m_Array);
 			it->m_Index = this->m_Index;
 			return it;
 		}
 
 	public:
 		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
-		virtual ReverseIterator<T>& operator++() override
+		virtual std::unique_ptr<ReverseIterator<T>> operator++() override
 		{
 			Prev();
-			return *this;
+			return Clone();
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator++(int) override
+		{
+			auto old = Clone();
+			Prev();
+			return old;
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator+(uint32_t idx) override
+		{
+			auto it = std::make_unique<DynamicArrayReverseIterator<T>>(this->m_Array);
+			it->m_Index = this->m_Index;
+			
+			if (it->m_Index < idx)
+			{
+				it->m_Index = 0;
+			}
+			else
+			{
+				it->m_Index -= idx;
+			}
+
+			return it;
+		}
+        virtual std::unique_ptr<ReverseIterator<T>> operator=(std::unique_ptr<ReverseIterator<T>> it) override
+		{
+			return it->Clone();
 		}
 
 	private:

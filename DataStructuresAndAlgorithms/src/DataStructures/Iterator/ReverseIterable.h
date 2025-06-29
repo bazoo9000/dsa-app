@@ -12,6 +12,6 @@ namespace ds
         virtual ~ReverseIterable() = default;
 
     public:
-        virtual std::shared_ptr<ReverseIterator<T>> CreateReverseIterator() = 0;
+        virtual std::unique_ptr<ReverseIterator<T>> CreateReverseIterator() = 0;
     };
 }

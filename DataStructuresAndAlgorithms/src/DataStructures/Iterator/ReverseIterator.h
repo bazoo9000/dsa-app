@@ -14,10 +14,13 @@ namespace ds
         virtual const T& GetCurrent() = 0;
         virtual void Prev() = 0;
         virtual bool IsAtBegin() = 0;
-        virtual std::shared_ptr<ReverseIterator> Clone() = 0;
+        virtual std::unique_ptr<ReverseIterator> Clone() = 0;
 
     public:
         virtual T& operator*() = 0;
-        virtual ReverseIterator& operator++() = 0;
+        virtual std::unique_ptr<ReverseIterator> operator++() = 0;
+        virtual std::unique_ptr<ReverseIterator> operator++(int) = 0;
+        virtual std::unique_ptr<ReverseIterator> operator+(uint32_t idx) = 0;
+        virtual std::unique_ptr<ReverseIterator> operator=(std::unique_ptr<ReverseIterator> it) = 0;
     };
 }

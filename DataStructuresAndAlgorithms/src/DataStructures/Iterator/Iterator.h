@@ -19,6 +19,7 @@ namespace ds
     public:
         virtual T& operator*() = 0;
         virtual std::unique_ptr<Iterator> operator++() = 0;
+        virtual std::unique_ptr<Iterator> operator++(int) = 0;
         virtual std::unique_ptr<Iterator> operator+(uint32_t idx) = 0;
         virtual std::unique_ptr<Iterator> operator=(std::unique_ptr<Iterator> it) = 0;
     };
