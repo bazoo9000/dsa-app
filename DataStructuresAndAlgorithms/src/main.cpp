@@ -2,30 +2,61 @@
 
 int main(int argc, char* argv[])
 {
-	ds::DynamicArray<int> arr(5);
-	arr.Add(1);
-	arr.Add(2);
-	arr.Add(3);
-	arr.Add(4);
-	arr.Add(5);
+	ds::BinaryTree<int> tree;
+	tree.Insert(1);
+	tree.Insert(2);
+	tree.Insert(3);
+	tree.Insert(4);
+	tree.Insert(5);
 
-	auto it = arr.CreateReverseIterator();
-	for (auto it2 = (*it + 3); !it2->IsAtBegin(); (*it2)++)
+	for (auto it = tree.CreateIterator(); !it->IsAtEnd(); it->Next())
 	{
-		std::cout << it2->GetCurrent() << " ";
+		std::cout << *(*it) << " ";
 	}
-	std::cout << std::endl;
-	for (auto it3 = (*it)++; !it3->IsAtBegin(); it3->Prev())
+
+	tree.Delete(1);
+
+	for (auto it = tree.CreateIterator(); !it->IsAtEnd(); it->Next())
 	{
-		std::cout << it3->GetCurrent() << " ";
+		std::cout << *(*it) << " ";
 	}
-	it->Reset();
-	std::cout << std::endl;
-	for (auto it4 = ++(*it); !it4->IsAtBegin(); ++(*it4))
+
+	tree.Delete(2);
+	tree.Delete(3);
+	tree.Delete(4);
+	tree.Delete(6);
+	tree.Delete(5);
+	tree.Delete(7);
+
+	// SEPARATOR //
+
+	ds::BinarySearchTree<int> bst;
+	bst.Insert(2);
+	bst.Insert(2);
+	bst.Insert(5);
+	bst.Insert(1);
+	bst.Insert(3);
+	bst.Insert(4);
+
+	for (auto it = bst.CreateIterator(); !it->IsAtEnd(); it->Next())
 	{
-		std::cout << it4->GetCurrent() << " ";
+		std::cout << *(*it) << " ";
 	}
-	it->Reset();
+
+	bst.Delete(2);
+
+	for (auto it = bst.CreateIterator(); !it->IsAtEnd(); it->Next())
+	{
+		std::cout << *(*it) << " ";
+	}
+
+	bst.Delete(1);
+	bst.Delete(2);
+	bst.Delete(3);
+	bst.Delete(4);
+	bst.Delete(6);
+	bst.Delete(5);
+	bst.Delete(7);
 
 	return 0;
 }

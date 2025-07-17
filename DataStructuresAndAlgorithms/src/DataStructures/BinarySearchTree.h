@@ -21,7 +21,14 @@ namespace ds
 
     public:
         virtual void Insert(T elem) override;
+        virtual void Delete(T elem) override;
         virtual void Print() override;
+
+    private:
+        uint32_t childCount(typename BinaryTree<T>::template Node<T>*& node);
+        void deleteZeroChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent);
+        void deleteOneChild(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent);
+        void deleteTwoChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent);
 
     public:
         BinarySearchTree& operator=(const BinarySearchTree& tree);
@@ -51,7 +58,6 @@ namespace ds
     template <typename T>
     void BinarySearchTree<T>::Insert(T elem)
     {
-        // c++ be like :(
         typename BinaryTree<T>::template Node<T>* newNode = new typename BinaryTree<T>::template Node<T>(elem);
 
         if (this->m_Root == nullptr)
@@ -61,38 +67,98 @@ namespace ds
             return;
         }
 
-        Queue<typename BinaryTree<T>::template Node<T>*> q;
-        q.Enqueue(this->m_Root);
-
-        while (!q.IsEmpty())
+        typename BinaryTree<T>::template Node<T>* temp = this->m_Root;
+        while (true)
         {
-            typename BinaryTree<T>::template Node<T>* node = q.GetFirst();
-            q.Dequeue();
-
-            if (node->left == nullptr && elem < node->data)
+            if (temp->data == elem)
             {
-                node->left = newNode;
-                ++this->m_Size;
-                LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
+                LOG_ERROR("Can't insert, element already exists");
+                delete newNode;
                 return;
             }
-            else
+
+            if (elem < temp->data)
             {
-                q.Enqueue(node->left);
+                if (temp->left == nullptr)
+                {
+                    temp->left = newNode;
+                    this->m_Size++;
+                    LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
+                    return;
+                }
+
+                temp = temp->left;
             }
 
-            if (node->right == nullptr && elem > node->data)
+            if (elem > temp->data)
             {
-                node->right = newNode;
-                ++this->m_Size;
-                LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
-                return;
-            }
-            else
-            {
-                q.Enqueue(node->right);
+                if (temp->right == nullptr)
+                {
+                    temp->right = newNode;
+                    this->m_Size++;
+                    LOG_DEBUG("Inserting succesful, new size is %u", this->m_Size);
+                    return;
+                }
+
+                temp = temp->right;
             }
         }
+    }
+
+    template <typename T>
+    void BinarySearchTree<T>::Delete(T elem)
+    {
+        if (this->m_Root == nullptr)
+        {
+            LOG_ERROR("Can't delete, BST is empty");
+            return;
+        }
+
+        typename BinaryTree<T>::template Node<T>* delNode = this->m_Root;
+        typename BinaryTree<T>::template Node<T>* parent = nullptr;
+
+        while(delNode != nullptr)
+        {
+            if (delNode->data == elem)
+            {
+                break;
+            }
+
+            parent = delNode;
+
+            if (elem < delNode->data)
+            {
+                delNode = delNode->left;
+            }
+            else
+            {
+                delNode = delNode->right;
+            }
+        }
+
+        if (delNode == nullptr)
+        {
+            LOG_ERROR("Can't delete, element doesn't exist");
+            return;
+        }
+
+        uint32_t count = childCount(delNode);
+        switch (count)
+        {
+            case 0:
+                deleteZeroChildren(delNode, parent);
+                break;
+            case 1:
+                deleteOneChild(delNode, parent);
+                break;
+            case 2:
+                deleteTwoChildren(delNode, parent);
+                break;
+            default:
+                LOG_FATAL("Node has more than 2 children, somehow"); exit(1);
+        }
+
+        LOG_DEBUG("Deleting succesful, new size is %u", this->m_Size);
     }
 
     template <typename T>
@@ -105,6 +171,77 @@ namespace ds
             LOG_DEBUG("BinarySearchTree is empty");
             return;
         }
+    }
+
+    template <typename T>
+    uint32_t BinarySearchTree<T>::childCount(typename BinaryTree<T>::template Node<T>*& node)
+    {
+        int count = 0;
+
+        if (node->left != nullptr)  count++;
+        if (node->right != nullptr) count++;
+
+        return count;
+    }
+
+    template <typename T>
+    void BinarySearchTree<T>::deleteZeroChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent)
+    {
+        if (parent == nullptr)
+        {
+            delete this->m_Root;
+            this->m_Root = nullptr;
+            this->m_Size = 0;
+            return;
+        }
+
+        if (parent->left == node)
+        {
+            delete parent->left;
+            parent->left = nullptr;
+        }
+        else
+        {
+            delete parent->right;
+            parent->right = nullptr;
+        }
+
+        this->m_Size--;
+        LOG_DEBUG("Element deleted successfully, new size is %u", this->m_Size);
+    }
+
+    template <typename T>
+    void BinarySearchTree<T>::deleteOneChild(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent)
+    {
+        typename BinaryTree<T>::template Node<T>* child = (node->left != nullptr) ? node->left : node->right;
+
+        if (parent == nullptr)
+        {
+            delete this->m_Root;
+            this->m_Root = child;
+        }
+        else if (parent->left == node)
+        {
+            parent->left = child;
+            delete node;
+            node = nullptr;
+        }
+        else
+        {
+            parent->right = child;
+            delete node;
+            node = nullptr;
+        }
+
+        this->m_Size--;
+        LOG_DEBUG("Element deleted successfully, new size is %u", this->m_Size);
+
+    }
+
+    template <typename T>
+    void BinarySearchTree<T>::deleteTwoChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent)
+    {
+        LOG_ERROR("Can't delete, found element has two children");
     }
 
     template <typename T>

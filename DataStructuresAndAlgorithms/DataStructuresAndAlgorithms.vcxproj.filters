@@ -120,5 +120,6 @@
   <ItemGroup>
     <None Include="src\DataStructures\Iterator\Implementations\DynamicArrayReverseIterator.tpp" />
     <None Include="src\DataStructures\Iterator\Implementations\DynamicArrayIterator.tpp" />
+    <None Include="src\DataStructures\DynamicArray.tpp" />
   </ItemGroup>
 </Project>

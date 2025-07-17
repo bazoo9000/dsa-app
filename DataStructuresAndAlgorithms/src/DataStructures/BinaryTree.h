@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DataStructure.h"
+#include "Iterator/ReverseIterator.h"
 #include "Stack.h"
 #include "Queue.h"
 #include "DynamicArray.h"
@@ -41,21 +42,24 @@ namespace ds
 
     public:
         virtual void Insert(T elem); // this method differs based on the type of binary tree
-        void Delete(T elem); // TODO: Implement this
+        virtual void Delete(T elem); // different binary tree have different delete methods, this is default
         void Clear(Node<T>*& node);
         virtual void Print() override;
-        virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return CreatePreorderIterator(); }
-        virtual std::shared_ptr<ReverseIterator<T>> CreateReverseIterator() override { return CreatePreorderReverseIterator(); }
+        virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return CreatePreorderIterator(); }
+        virtual std::unique_ptr<ReverseIterator<T>> CreateReverseIterator() override { return CreatePreorderReverseIterator(); }
+
+    protected:
+        Node<T>* getParent(Node<T>*& child);
 
     public:
-        std::shared_ptr<Iterator<T>> CreatePreorderIterator();
-        std::shared_ptr<Iterator<T>> CreateInorderIterator();
-        std::shared_ptr<Iterator<T>> CreatePostorderIterator();
-        std::shared_ptr<Iterator<T>> CreateLevelorderIterator();
-        std::shared_ptr<ReverseIterator<T>> CreatePreorderReverseIterator();
-        std::shared_ptr<ReverseIterator<T>> CreateInorderReverseIterator();
-        std::shared_ptr<ReverseIterator<T>> CreatePostorderReverseIterator();
-        std::shared_ptr<ReverseIterator<T>> CreateLevelorderReverseIterator();
+        std::unique_ptr<Iterator<T>> CreatePreorderIterator();
+        std::unique_ptr<Iterator<T>> CreateInorderIterator();
+        std::unique_ptr<Iterator<T>> CreatePostorderIterator();
+        std::unique_ptr<Iterator<T>> CreateLevelorderIterator();
+        std::unique_ptr<ReverseIterator<T>> CreatePreorderReverseIterator();
+        std::unique_ptr<ReverseIterator<T>> CreateInorderReverseIterator();
+        std::unique_ptr<ReverseIterator<T>> CreatePostorderReverseIterator();
+        std::unique_ptr<ReverseIterator<T>> CreateLevelorderReverseIterator();
 
     public:
         BinaryTree& operator=(const BinaryTree& tree);
@@ -173,7 +177,77 @@ namespace ds
     template <typename T>
     void BinaryTree<T>::Delete(T elem)
     {
-        // remain to be implemented
+        if (this->m_Root == nullptr)
+        {
+            LOG_ERROR("Can't delete, BinaryTree is empty");
+            return;
+        }
+
+        Queue<Node<T>*> q;
+        q.Enqueue(this->m_Root);
+
+        Node<T>* delNode = nullptr;
+        Node<T>* lastNode = nullptr;
+        while (!q.IsEmpty()) 
+        {
+            lastNode = q.GetFirst();
+            q.Dequeue();
+        
+            // delNode == nullptr is for assuring that we delete the first element found
+            // for precise deletion, we need to use pointers, which sucks :(
+            if (lastNode->data == elem && delNode == nullptr) 
+            {
+                delNode = lastNode;
+            }
+
+            if (lastNode->left != nullptr)
+            {
+                q.Enqueue(lastNode->left);
+            }
+
+            if (lastNode->right != nullptr) 
+            {
+                q.Enqueue(lastNode->right);
+            }
+        }
+
+        if (delNode == nullptr)
+        {
+            LOG_ERROR("Can't delete, element doesn't exist");
+            return;
+        }
+
+        if (lastNode == this->m_Root)
+        {
+            delete this->m_Root;
+            this->m_Root = nullptr;
+            this->m_Size = 0;
+            LOG_DEBUG("Element deleted successfully, new size is %u", this->m_Size);
+            return;
+        }
+
+        delNode->data = lastNode->data;
+        Node<T>* parent = getParent(lastNode);
+        if (parent == nullptr)
+        {
+            LOG_FATAL("Parent node not found, very bad!");
+            exit(1);
+        }
+
+        if (parent->left == lastNode) 
+        {
+            delete parent->left;
+            parent->left = nullptr;
+        }
+
+        if (parent->right == lastNode) 
+        {
+            delete parent->right;
+            parent->right = nullptr;
+        }
+    
+        this->m_Size--;
+        LOG_DEBUG("Element deleted successfully, new size is %u", this->m_Size);
     }
 
     template <typename T>
@@ -208,12 +282,41 @@ namespace ds
         }
     }
 
+    template<typename T>
+    typename BinaryTree<T>::template Node<T>* BinaryTree<T>::getParent(BinaryTree<T>::Node<T>*& child)
+    {
+        Queue<Node<T>*> q;
+        q.Enqueue(this->m_Root);
+        while (!q.IsEmpty()) 
+        {
+            Node<T>* node = q.GetFirst();
+            q.Dequeue();
+        
+            if (node->left == child || node->right == child) 
+            {
+                return node;
+            }
+
+            if (node->left != nullptr)
+            {
+                q.Enqueue(node->left);
+            }
+
+            if (node->right != nullptr) 
+            {
+                q.Enqueue(node->right);
+            }
+        }
+
+        return nullptr; // This should never happen, unless something EXTREMELY wrong happens
+    }
+
     template <typename T>
-    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreatePreorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreatePreorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -238,15 +341,15 @@ namespace ds
             }
         }
 
-        return std::make_shared<BinaryTreeIterator<T>>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreateInorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreateInorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -269,15 +372,15 @@ namespace ds
             curNode = node->right;
         }
 
-        return std::make_shared<BinaryTreeIterator<T>>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreatePostorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreatePostorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -310,15 +413,15 @@ namespace ds
             arr->Add(&node->data);
         }
 
-        return std::make_shared<BinaryTreeIterator<T>>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<Iterator<T>> BinaryTree<T>::CreateLevelorderIterator()
+    std::unique_ptr<Iterator<T>> BinaryTree<T>::CreateLevelorderIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -343,15 +446,15 @@ namespace ds
             }
         }
 
-        return std::make_shared<BinaryTreeIterator<T>>(arr);
+        return std::make_unique<BinaryTreeIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<ReverseIterator<T>> BinaryTree<T>::CreatePreorderReverseIterator()
+    std::unique_ptr<ReverseIterator<T>> BinaryTree<T>::CreatePreorderReverseIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -376,15 +479,15 @@ namespace ds
             }
         }
 
-        return std::make_shared<BinaryTreeReverseIterator<T>>(arr);
+        return std::make_unique<BinaryTreeReverseIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<ReverseIterator<T>> BinaryTree<T>::CreateInorderReverseIterator()
+    std::unique_ptr<ReverseIterator<T>> BinaryTree<T>::CreateInorderReverseIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -407,15 +510,15 @@ namespace ds
             curNode = node->right;
         }
 
-        return std::make_shared<BinaryTreeReverseIterator<T>>(arr);
+        return std::make_unique<BinaryTreeReverseIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<ReverseIterator<T>> BinaryTree<T>::CreatePostorderReverseIterator()
+    std::unique_ptr<ReverseIterator<T>> BinaryTree<T>::CreatePostorderReverseIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -448,15 +551,15 @@ namespace ds
             arr->Add(&node->data);
         }
 
-        return std::make_shared<BinaryTreeReverseIterator<T>>(arr);
+        return std::make_unique<BinaryTreeReverseIterator<T>>(arr);
     }
 
     template <typename T>
-    std::shared_ptr<ReverseIterator<T>> BinaryTree<T>::CreateLevelorderReverseIterator()
+    std::unique_ptr<ReverseIterator<T>> BinaryTree<T>::CreateLevelorderReverseIterator()
     {
         if (this->m_Root == nullptr)
         {
-            return std::make_shared<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
+            return std::make_unique<BinaryTreeReverseIterator<T>>(new DynamicArray<T*>(0));
         }
 
         DynamicArray<T*>* arr = new DynamicArray<T*>(this->m_Size);
@@ -481,7 +584,7 @@ namespace ds
             }
         }
 
-        return std::make_shared<BinaryTreeReverseIterator<T>>(arr);
+        return std::make_unique<BinaryTreeReverseIterator<T>>(arr);
     }
 
     template <typename T>
@@ -554,19 +657,31 @@ namespace ds
 		virtual const T& GetCurrent() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
 		virtual void Next() override { this->m_Index++; }
 		virtual bool IsAtEnd() override { return this->m_Index >= this->m_BinaryTreeData->GetSize(); }
-        virtual std::shared_ptr<Iterator<T>> Clone() override
+        virtual std::unique_ptr<Iterator<T>> Clone() override
 		{
-			auto it = std::make_shared<BinaryTreeIterator<T>>(this->m_BinaryTreeData);
+			auto it = std::make_unique<BinaryTreeIterator<T>>(this->m_BinaryTreeData);
 			it->m_Index = this->m_Index;
 			return it;
 		}
 
 	public:
 		virtual T& operator*() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
-		virtual Iterator<T>& operator++() override
+		virtual std::unique_ptr<Iterator<T>> operator++() override
 		{
 			Next();
-			return *this;
+			return Clone();
+		}
+		virtual std::unique_ptr<Iterator<T>> operator++(int) override
+		{
+			return Clone(); // implmenet
+		}
+		virtual std::unique_ptr<Iterator<T>> operator+(uint32_t idx) override
+		{
+			return Clone(); // implmenet
+		}
+		virtual std::unique_ptr<Iterator<T>> operator=(std::unique_ptr<Iterator<T>> it) override
+		{
+			return it->Clone();
 		}
 
 	private:
@@ -586,19 +701,31 @@ namespace ds
 		virtual const T& GetCurrent() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
 		virtual void Prev() override { this->m_Index--; }
 		virtual bool IsAtBegin() override { return this->m_Index == UINT32_MAX; }
-        virtual std::shared_ptr<ReverseIterator<T>> Clone() override
+        virtual std::unique_ptr<ReverseIterator<T>> Clone() override
 		{
-			auto it = std::make_shared<BinaryTreeReverseIterator<T>>(this->m_BinaryTreeData);
+			auto it = std::make_unique<BinaryTreeReverseIterator<T>>(this->m_BinaryTreeData);
 			it->m_Index = this->m_Index;
 			return it;
 		}
 
 	public:
 		virtual T& operator*() override { return *this->m_BinaryTreeData->GetElementAt(m_Index); }
-		virtual ReverseIterator<T>& operator++() override
+		virtual std::unique_ptr<ReverseIterator<T>> operator++() override
 		{
 			Prev();
-			return *this;
+			return Clone();
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator++(int) override
+		{
+			return Clone(); // implmenet
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator+(uint32_t idx) override
+		{
+			return Clone(); // implmenet
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator=(std::unique_ptr<ReverseIterator<T>> it) override
+		{
+			return it->Clone();
 		}
 
 	private:
