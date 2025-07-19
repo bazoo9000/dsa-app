@@ -28,7 +28,7 @@ namespace ds
         uint32_t childCount(typename BinaryTree<T>::template Node<T>*& node);
         void deleteZeroChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent);
         void deleteOneChild(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent);
-        void deleteTwoChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent);
+        void deleteTwoChildren(typename BinaryTree<T>::template Node<T>*& node);
 
     public:
         BinarySearchTree& operator=(const BinarySearchTree& tree);
@@ -152,7 +152,7 @@ namespace ds
                 deleteOneChild(delNode, parent);
                 break;
             case 2:
-                deleteTwoChildren(delNode, parent);
+                deleteTwoChildren(delNode);
                 break;
             default:
                 LOG_FATAL("Node has more than 2 children, somehow"); exit(1);
@@ -239,9 +239,37 @@ namespace ds
     }
 
     template <typename T>
-    void BinarySearchTree<T>::deleteTwoChildren(typename BinaryTree<T>::template Node<T>*& node, typename BinaryTree<T>::template Node<T>*& parent)
+    void BinarySearchTree<T>::deleteTwoChildren(typename BinaryTree<T>::template Node<T>*& node)
     {
-        LOG_ERROR("Can't delete, found element has two children");
+        typename BinaryTree<T>::template Node<T>* successorParent = node;
+        typename BinaryTree<T>::template Node<T>* successor = node->right;
+        while (successor->left != nullptr)
+        {
+            successorParent = successor;
+            successor = successor->left;
+        }
+
+        node->data = successor->data;
+
+        if (successorParent->left == successor)
+        {
+            if (successor->right)
+            {
+                successorParent->left = successor->right;
+            }
+            else
+            {
+                successorParent->left = nullptr;
+            }
+        }
+        else
+        {
+            successorParent->right = successor->right;
+        }
+
+        delete successor;
+        this->m_Size--;
+        LOG_DEBUG("Element deleted successfully, new size is %u", this->m_Size);
     }
 
     template <typename T>
@@ -298,14 +326,4 @@ namespace ds
 	////////////////////////
 	// BINARY SEARCH TREE //
 	////////////////////////
-
-	//////////////
-	// ITERATOR //
-	//////////////
-    
-    // already defined in BinaryTree.h
-
-	//////////////
-	// ITERATOR //
-	//////////////
 }
