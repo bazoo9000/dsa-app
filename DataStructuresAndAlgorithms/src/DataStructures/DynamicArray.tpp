@@ -86,7 +86,34 @@ void DynamicArray<T>::Insert(T elem, uint32_t index)
 }
 
 template <typename T>
+void DynamicArray<T>::Fill(T elem)
+{
+    for (uint32_t i = 0; i < this->m_Capacity; i++)
+    {
+        this->m_Data[i] = elem;
+    }
+
+    this->m_Size = m_Capacity;
+
+    LOG_DEBUG("DynamicArray filled succesfully");
+}
+
+template <typename T>
 T& DynamicArray<T>::GetElementAt(uint32_t index)
+{
+    if (index >= this->m_Size)
+    {
+        LOG_FATAL("Can't get element, index %u is out of range", index);
+        exit(1);
+    }
+
+    LOG_DEBUG("Got element at index %u succesfully", index);
+
+    return this->m_Data[index];
+}
+
+template <typename T>
+const T& DynamicArray<T>::GetElementAt(uint32_t index) const
 {
     if (index >= this->m_Size)
     {

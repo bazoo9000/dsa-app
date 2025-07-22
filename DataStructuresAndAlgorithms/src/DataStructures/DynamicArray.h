@@ -1,9 +1,6 @@
 #pragma once
 
 #include "DataStructure.h"
-#include "Iterator/ReverseIterable.h"
-#include <cstdint>
-#include <memory>
 
 namespace ds
 {
@@ -25,7 +22,9 @@ namespace ds
 	public:
 		void Add(T elem);
 		void Insert(T elem, uint32_t index);
+		void Fill(T elem);
 		T& GetElementAt(uint32_t index);
+		const T& GetElementAt(uint32_t index) const;
 		void DeleteAt(int index);
 		void Clear();
 		virtual void Print() override;
@@ -39,6 +38,7 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
+		const T& operator[](uint32_t index) const { return GetElementAt(index); }
 		DynamicArray& operator=(const DynamicArray& arr);
 		DynamicArray& operator=(DynamicArray&& arr);
 

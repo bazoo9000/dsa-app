@@ -1,62 +1,58 @@
 #include "Includes.h"
 
+struct Test
+{
+	int a;
+	int b;
+
+	bool operator==(const Test& other) const
+	{
+		return a == other.a && b == other.b;
+	}
+};
+
+namespace ds
+{
+	template<>
+	struct HashFunction<Test>
+	{
+		uint32_t operator()(const Test& key) const
+		{
+			return static_cast<uint32_t>(key.a + key.b + key.a * key.b);
+		}
+	};
+}
+
 int main(int argc, char* argv[])
 {
-	ds::BinaryTree<int> tree;
-	tree.Insert(1);
-	tree.Insert(2);
-	tree.Insert(3);
-	tree.Insert(4);
-	tree.Insert(5);
+	ds::HashMap<int, int> map(10);
 
-	for (auto it = tree.CreateIterator(); !it->IsAtEnd(); it->Next())
+	map.Insert(1, 100);
+	map.Insert(2, 200);
+	map.Insert(2, 201);
+	map.Insert(11, 100);
+	map.Insert(51, 151);
+	map.Insert(13, 300);
+
+	auto vals = map.GetValues();
+	for (auto it = vals.CreateIterator(); !it->IsAtEnd(); it->Next())
 	{
-		std::cout << *(*it) << " ";
+		std::cout << it->GetCurrent() << " ";
 	}
+	std::cout << std::endl;
 
-	tree.Delete(1);
-
-	for (auto it = tree.CreateIterator(); !it->IsAtEnd(); it->Next())
+	auto keys = map.GetKeys();
+	for (auto it = keys.CreateIterator(); !it->IsAtEnd(); it->Next())
 	{
-		std::cout << *(*it) << " ";
+		std::cout << it->GetCurrent() << " ";
 	}
+	std::cout << std::endl;
 
-	tree.Delete(2);
-	tree.Delete(3);
-	tree.Delete(4);
-	tree.Delete(6);
-	tree.Delete(5);
-	tree.Delete(7);
+	ds::HashMap<const char*, int> map1(10);
+	map1.Insert("one", 1);
 
-	// SEPARATOR //
-
-	ds::BinarySearchTree<int> bst;
-	bst.Insert(2);
-	bst.Insert(2);
-	bst.Insert(5);
-	bst.Insert(1);
-	bst.Insert(3);
-	bst.Insert(4);
-
-	for (auto it = bst.CreateIterator(); !it->IsAtEnd(); it->Next())
-	{
-		std::cout << *(*it) << " ";
-	}
-
-	bst.Delete(2);
-
-	for (auto it = bst.CreateIterator(); !it->IsAtEnd(); it->Next())
-	{
-		std::cout << *(*it) << " ";
-	}
-
-	bst.Delete(1);
-	bst.Delete(2);
-	bst.Delete(3);
-	bst.Delete(4);
-	bst.Delete(6);
-	bst.Delete(5);
-	bst.Delete(7);
+	ds::HashMap<Test, int> map2(10);
+	map2.Insert({ 1, 2 }, 100);
 
 	return 0;
 }

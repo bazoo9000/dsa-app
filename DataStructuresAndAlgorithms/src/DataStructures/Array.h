@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DataStructure.h"
-#include "Iterator/ReverseIterable.h"
 
 namespace ds
 {
@@ -23,7 +22,9 @@ namespace ds
 	public:
 		void Add(T elem);
 		void Insert(T elem, uint32_t index);
+		void Fill(T elem);
 		T& GetElementAt(uint32_t index);
+		const T& GetElementAt(uint32_t index) const;
 		void DeleteAt(int index);
 		virtual void Print() override;
 		virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return std::make_shared<ArrayIterator<T, maxSize>>(this); }
@@ -35,6 +36,7 @@ namespace ds
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
+		const T& operator[](uint32_t index) const { return GetElementAt(index); }
 		Array& operator=(const Array& arr);
 		Array& operator=(Array&& arr);
 
@@ -128,7 +130,40 @@ namespace ds
 	}
 
 	template <typename T, uint32_t maxSize>
+	void Array<T, maxSize>::Fill(T elem)
+	{
+		for (uint32_t i = 0; i < maxSize; i++)
+		{
+			this->m_Data[i] = elem;
+		}
+
+		this->m_Size = maxSize;
+
+		LOG_DEBUG("Array filled succesfully");
+	}
+
+	template <typename T, uint32_t maxSize>
 	T& Array<T, maxSize>::GetElementAt(uint32_t index)
+	{
+		if (index >= this->m_Size)
+		{
+			LOG_FATAL("Can't get element, index is out of range");
+			exit(1);
+		}
+
+		if (this->m_Size == 0)
+		{
+			LOG_FATAL("Can't get element, Array is empty");
+			exit(1);
+		}
+
+		LOG_DEBUG("Got element at index %u succesfully", index);
+
+		return this->m_Data[index];
+	}
+
+	template <typename T, uint32_t maxSize>
+	const T& Array<T, maxSize>::GetElementAt(uint32_t index) const
 	{
 		if (index >= this->m_Size)
 		{

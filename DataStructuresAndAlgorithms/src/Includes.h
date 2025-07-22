@@ -12,6 +12,7 @@
 #include "DataStructures/BinaryTree.h"
 #include "DataStructures/BinarySearchTree.h"
 #include "DataStructures/Graph.h"
+#include "DataStructures/HashMap.h"
 
 #include "Algorithms/Algorithm.h"
 #include "Algorithms/Sorter.h"
