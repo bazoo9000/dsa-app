@@ -673,11 +673,21 @@ namespace ds
 		}
 		virtual std::unique_ptr<Iterator<T>> operator++(int) override
 		{
-			return Clone(); // implmenet
+			auto old = Clone();
+            Next();
+            return old;
 		}
 		virtual std::unique_ptr<Iterator<T>> operator+(uint32_t idx) override
 		{
-			return Clone(); // implmenet
+			auto it = Clone();
+            it->m_Index += idx;
+
+            if (it->m_Index >= it->m_BinaryTreeData->GetSize())
+            {
+                it->m_Index = it->m_BinaryTreeData->GetSize();
+            }
+
+            return it;
 		}
 		virtual std::unique_ptr<Iterator<T>> operator=(std::unique_ptr<Iterator<T>> it) override
 		{
@@ -717,11 +727,24 @@ namespace ds
 		}
 		virtual std::unique_ptr<ReverseIterator<T>> operator++(int) override
 		{
-			return Clone(); // implmenet
+			auto old = Clone();
+            Prev();
+            return old;
 		}
 		virtual std::unique_ptr<ReverseIterator<T>> operator+(uint32_t idx) override
 		{
-			return Clone(); // implmenet
+			auto it = Clone();
+
+            if (it->m_Index < idx)
+            {
+                it->m_Index = UINT32_MAX;
+            }
+            else
+            {
+                it->m_Index -= idx;
+            }
+
+            return it;
 		}
 		virtual std::unique_ptr<ReverseIterator<T>> operator=(std::unique_ptr<ReverseIterator<T>> it) override
 		{

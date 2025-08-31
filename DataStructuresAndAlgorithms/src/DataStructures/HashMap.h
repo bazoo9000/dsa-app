@@ -509,8 +509,8 @@ namespace ds
     public:
         void Reset() override { this->m_Index = m_Data.GetSize() - 1; }
         const std::pair<K*, V*>& GetCurrent() override { return this->m_Data[m_Index]; }
-        void Prev() override { if (this->m_Index == 0 ) { m_Index = this->m_Data.GetSize(); return; } this->m_Index--; }
-        bool IsAtBegin() override { return m_Index == m_Data.GetSize();}
+        void Prev() override { if (this->m_Index == 0 ) { m_Index = UINT32_MAX; return; } this->m_Index--; }
+        bool IsAtBegin() override { return m_Index == UINT32_MAX;}
         std::unique_ptr<Iterator<std::pair<K*, V*>>> Clone() override { return std::make_unique<HashMapReverseIterator<K, V>>(this->m_Data); }
 
     public:
@@ -548,7 +548,7 @@ namespace ds
 
         if (it->m_Index < idx)
         {
-            it->m_Index = it->m_Data.GetSize();
+            it->m_Index = UINT32_MAX;
         }
         else
         {
