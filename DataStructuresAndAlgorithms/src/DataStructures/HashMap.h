@@ -11,13 +11,13 @@ namespace ds
 {
     template <typename K> struct HashFunction;
     template <typename K, typename V> class HashMapIterator;
-    // template <typename K, typename V> class HashMapReverseIterator; // TODO: implement reverse iterator
+    template <typename K, typename V> class HashMapReverseIterator;
 
     //////////////
     // HASH MAP //
     //////////////
     template <typename K, typename V>
-    class HashMap : public DataStructure<V>, public Iterable<std::pair<K*, V*>>//, public ReverseIterable<std::pair<K*, V*>>
+    class HashMap : public DataStructure<V>, public Iterable<std::pair<K*, V*>>, public ReverseIterable<std::pair<K*, V*>>
     {
         template <typename _K, typename _V>
         struct HashNode
@@ -42,6 +42,7 @@ namespace ds
         void Delete(const K& key);
         virtual void Print() override;
         virtual std::unique_ptr<Iterator<std::pair<K*, V*>>> CreateIterator() override;
+        virtual std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> CreateReverseIterator() override;
 
     public:
         uint32_t GetCapacity() const { return m_Capacity; }
@@ -441,7 +442,6 @@ namespace ds
     // ITERATOR //
     //////////////
 
-    // TODO: implement
     template <typename K, typename V>
     class HashMapIterator : public Iterator<std::pair<K*, V*>>
     {
@@ -486,13 +486,76 @@ namespace ds
     template <typename K, typename V>
     std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapIterator<K, V>::operator+(uint32_t idx)
     {
-        m_Index += idx;
-        if (m_Index >= m_Data.GetSize())
+        auto it = std::make_unique<HashMapIterator<K, V>>(m_Data);
+        it->m_Index = this->m_Index;
+        it->m_Index += idx;
+    
+        if (it->m_Index >= it->m_Data.GetSize())
         {
-            m_Index = m_Data.GetSize();
+            it->m_Index = it->m_Data.GetSize();
         }
 
+        return it;
+    }
+
+
+    template <typename K, typename V>
+    class HashMapReverseIterator : public ReverseIterator<std::pair<K*, V*>>
+    {
+    public:
+        HashMapReverseIterator(DynamicArray<std::pair<K*, V*>> data) : m_Data(data) { m_Index = m_Data.GetSize() - 1; }
+        ~HashMapReverseIterator() = default;
+
+    public:
+        void Reset() override { this->m_Index = m_Data.GetSize() - 1; }
+        const std::pair<K*, V*>& GetCurrent() override { return this->m_Data[m_Index]; }
+        void Prev() override { if (this->m_Index == 0 ) { m_Index = this->m_Data.GetSize(); return; } this->m_Index--; }
+        bool IsAtBegin() override { return m_Index == m_Data.GetSize();}
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> Clone() override { return std::make_unique<HashMapReverseIterator<K, V>>(this->m_Data); }
+
+    public:
+        std::pair<K*, V*>& operator*() override { return this->m_Data[this->m_Index]; }
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator++() override;
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator++(int) override;
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator+(uint32_t idx) override;
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator=(std::unique_ptr<Iterator<std::pair<K*, V*>>> it) override { return Clone(); }
+
+    private:
+        DynamicArray<std::pair<K*, V*>> m_Data;
+        uint32_t m_Index;
+    };
+
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator++()
+    {
+        Prev();
         return Clone();
+    }
+    
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator++(int)
+    {
+        auto old = Clone();
+        Prev();
+        return old;
+    }
+
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator+(uint32_t idx)
+    {
+        auto it = std::make_unique<HashMapReverseIterator<K, V>>(this->m_Data);
+        it->m_Index = this->m_Index;
+
+        if (it->m_Index < idx)
+        {
+            it->m_Index = it->m_Data.GetSize();
+        }
+        else
+        {
+            it->m_Index -= idx;
+        }
+
+        return it;
     }
 
     //////////////
