@@ -2,7 +2,7 @@
 
 #include "ISearchStrategy.h"
 #include "../../DataStructures/BinarySearchTree.h"
-#include <memory>
+#include <cstdint>
 
 namespace alg
 {
@@ -20,30 +20,34 @@ namespace alg
     uint32_t BinarySearch<T>::Search(T needle, ds::Iterable<T>* haystack)
     {
         LOG_DEBUG("Searching using BinarySearch");
-        
-        std::unique_ptr<ds::BinarySearchTree<T>> tree = std::unique_ptr<ds::BinarySearchTree<T>>(dynamic_cast<ds::BinarySearchTree<T>*>(haystack));
-        if (tree == nullptr)
-        {
-            LOG_WARN("haystack is not a BinarySearchTree");
-            tree = std::make_unique<ds::BinarySearchTree<T>>();
-            for (auto it = haystack->CreateIterator(); !it->IsAtEnd(); it->Next())
-            {
-                tree->Insert(it->GetCurrent());
-            }
-        }
 
-        uint32_t index = 0;
-        for (auto it = tree->CreateIterator(); !it->IsAtEnd(); it->Next())
+        uint32_t size = dynamic_cast<ds::DataStructure<T>*>(haystack)->GetSize();
+
+        auto it = haystack->CreateIterator();
+        uint32_t first = 0;
+        uint32_t last = size - 1;
+
+        while(first <= last)
         {
-            if (it->GetCurrent() == needle)
+            uint32_t mid = first + (last - first) / 2;
+        
+            if ((*it + mid)->GetCurrent() == needle)
             {
                 LOG_TRACE("Element found");
-                return index;
+                return mid;
             }
-            index++;
+
+            if ((*it + mid)->GetCurrent() < needle)
+            {
+                first = mid + 1;
+            }
+            else
+            {
+                last = mid - 1;
+            }
         }
 
         LOG_TRACE("Element NOT found");
-        return UINT32_MAX;
+        return NOT_FOUND;
     }
 }

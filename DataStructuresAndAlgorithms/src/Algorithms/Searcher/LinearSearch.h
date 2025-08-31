@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ISearchStrategy.h"
-#include <cstdint>
 
 namespace alg
 {
@@ -32,6 +31,6 @@ namespace alg
         }
 
         LOG_TRACE("Element NOT found");
-        return UINT32_MAX;
+        return NOT_FOUND;
     }
 }

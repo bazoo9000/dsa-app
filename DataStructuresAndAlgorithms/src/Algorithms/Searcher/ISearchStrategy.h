@@ -1,6 +1,10 @@
 #pragma once
 
 #include "../../DataStructures/Iterator/Iterable.h"
+#include <memory>
+#include <cstdint>
+
+#define NOT_FOUND UINT32_MAX
 
 namespace alg
 {

@@ -1,69 +1,20 @@
 #include "Includes.h"
 
-struct Test
-{
-	int a;
-	int b;
-
-	bool operator==(const Test& other) const
-	{
-		return a == other.a && b == other.b;
-	}
-};
-
-namespace ds
-{
-	template<>
-	struct HashFunction<Test>
-	{
-		uint32_t operator()(const Test& key) const
-		{
-			return static_cast<uint32_t>(key.a + key.b + key.a * key.b);
-		}
-	};
-}
-
 int main(int argc, char* argv[])
 {
-	ds::HashMap<int, int> map(10);
+	ds::DynamicArray<int> arr;
+	arr.Add(1);
+	arr.Add(2);
+	arr.Add(3);
+	arr.Add(4);
+	arr.Add(5);
 
-	map.Insert(1, 100);
-	map.Insert(2, 200);
-	map.Insert(2, 201);
-	map.Insert(11, 100);
-	map.Insert(51, 151);
-	map.Insert(13, 300);
+	alg::Searcher<int>::SetSearchStrategy(new alg::BinarySearch<int>());
+	int idx1 = alg::Searcher<int>::Search(4, &arr);
+	int idx2 = alg::Searcher<int>::Search(6, &arr);
 
-	auto vals = map.GetValues();
-	for (auto it = vals.CreateIterator(); !it->IsAtEnd(); it->Next())
-	{
-		std::cout << it->GetCurrent() << " ";
-	}
-	std::cout << std::endl;
-
-	auto keys = map.GetKeys();
-	for (auto it = keys.CreateIterator(); !it->IsAtEnd(); it->Next())
-	{
-		std::cout << it->GetCurrent() << " ";
-	}
-	std::cout << std::endl;
-
-	ds::HashMap<const char*, int> map1(10);
-	map1.Insert("one", 1);
-	std::cout << map1["one"] << std::endl;
-
-	ds::HashMap<Test, int> map2(10);
-	map2.Insert({ 1, 2 }, 100);
-
-	ds::HashMap<Test, int> map3(map2);
-
-	map2.Delete({ 1, 2 });
-
-	for (auto it = map3.CreateIterator(); !it->IsAtEnd(); it->Next())
-	{
-		// jesus christ, will think about this later
-		std::cout << *(**it).second;
-	}
+	std::cout << "Index of 4: " << idx1 << std::endl;
+	std::cout << "Index of 6: " << (idx2 == NOT_FOUND ? "Not found" : "Found") << std::endl;
 
 	return 0;
 }
