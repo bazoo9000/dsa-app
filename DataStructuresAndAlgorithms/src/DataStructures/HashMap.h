@@ -2,6 +2,10 @@
 
 #include "DataStructure.h"
 #include "DynamicArray.h"
+#include "Iterator/ReverseIterable.h"
+#include <cstdint>
+#include <memory>
+#include <utility>
 
 namespace ds
 {
@@ -13,11 +17,8 @@ namespace ds
     // HASH MAP //
     //////////////
     template <typename K, typename V>
-    class HashMap : public DataStructure<V>, public Iterable<V>
+    class HashMap : public DataStructure<V>, public Iterable<std::pair<K*, V*>>//, public ReverseIterable<std::pair<K*, V*>>
     {
-        friend class HashMapIterator<K, V>;
-
-    private:
         template <typename _K, typename _V>
         struct HashNode
         {
@@ -40,17 +41,18 @@ namespace ds
         const V& GetElement(const K& key) const;
         void Delete(const K& key);
         virtual void Print() override;
-        virtual std::unique_ptr<Iterator<V>> CreateIterator() override { return std::make_unique<HashMapIterator<K, V>>(this); }
+        virtual std::unique_ptr<Iterator<std::pair<K*, V*>>> CreateIterator() override;
 
     public:
         uint32_t GetCapacity() const { return m_Capacity; }
-        DynamicArray<V> GetValues() const;
-        DynamicArray<K> GetKeys() const;
+        DynamicArray<V> GetValues() const; // size = m_Size
+        DynamicArray<K> GetKeys() const; // size = m_Capacity - nullptrs
         uint32_t GetKeyHash(const K& key) const { return m_Hasher(key) % m_Capacity; }
 
     public:
-        HashMap& operator=(const HashMap& map) = default;
-        HashMap& operator=(HashMap&& map) = default;
+        HashMap& operator=(const HashMap& map);
+        HashMap& operator=(HashMap&& map);
+        V& operator[](const K& key) { return GetElement(key); }
 
     private:
         DynamicArray<HashNode<K, V>*> m_Data; // this is the hash table
@@ -78,7 +80,29 @@ namespace ds
     HashMap<K, V>::HashMap(const HashMap<K, V>& map)
     {
         this->m_Capacity = map.m_Capacity;
-        this->m_Data = map.m_Data;
+        this->m_Size = map.m_Size;
+        this->m_Data = DynamicArray<HashNode<K, V>*>(this->m_Capacity);
+        this->m_Data.Fill(nullptr);
+
+        for (uint32_t i = 0; i < this->m_Capacity; i++)
+        {
+            if (map.m_Data[i] == nullptr)
+            {
+                this->m_Data[i] = nullptr;
+                continue;
+            }
+
+            this->m_Data[i] = new HashNode<K, V>(map.m_Data[i]->key, map.m_Data[i]->value);
+            HashNode<K, V>* node = map.m_Data[i];
+            HashNode<K, V>* next = node->next;
+
+            while (next != nullptr)
+            {
+                node->next = new HashNode<K, V>(next->key, next->value);
+                node = node->next;
+                next = next->next;
+            }
+        }
 
         LOG_INFO("HashMap COPIED successfully");
     }
@@ -87,6 +111,7 @@ namespace ds
     HashMap<K, V>::HashMap(HashMap<K, V>&& map)
     {
         this->m_Capacity = map.m_Capacity;
+        this->m_Size = map.m_Size;
         this->m_Data = std::move(map.m_Data);
         map.m_Capacity = 0;
         map.m_Data.Clear();
@@ -136,7 +161,8 @@ namespace ds
                     curNode->value = value;
                     delete newNode;
 
-                    LOG_DEBUG("Inserting key '%s' was successful, key already exists, size remains the same", typeid(key).name());
+                    this->m_Size++;
+                    LOG_DEBUG("Inserting key '%s' was successful, key already exists, new size is %u", typeid(key).name(), this->m_Size);
                     return;
                 }
                 prevNode = curNode;
@@ -148,7 +174,7 @@ namespace ds
         }
 
         this->m_Size++;
-        LOG_DEBUG("Inserting key '%s' was succesfull, new size is %u", typeid(key).name(), this->m_Size);
+        LOG_DEBUG("Inserting was succesfull, new size is %u", this->m_Size);
     }
 
     template <typename K, typename V>
@@ -161,7 +187,7 @@ namespace ds
         {
             if (node->key == key)
             {
-                LOG_DEBUG("Got element with key '%s' successfully", typeid(key).name());
+                LOG_DEBUG("Got element successfully");
                 return node->value;
             }
             node = node->next;
@@ -211,7 +237,7 @@ namespace ds
 
                 delete delNode;
                 this->m_Size--;
-                LOG_DEBUG("Deleted element with key '%s' successfully, new size is %u", typeid(key).name(), this->m_Size);
+                LOG_DEBUG("Deleted element successfully, new size is %u", this->m_Size);
                 return;
             }
             prevNode = delNode;
@@ -243,7 +269,7 @@ namespace ds
     template <typename K, typename V>
     DynamicArray<K> HashMap<K, V>::GetKeys() const
     {
-        DynamicArray<K> keys(this->m_Size);
+        DynamicArray<K> keys(this->m_Capacity);
 
         for (uint32_t i = 0; i < this->m_Capacity; i++)
         {
@@ -263,9 +289,50 @@ namespace ds
     {
         LOG_DEBUG("This is a HashMap");
     }
+
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMap<K, V>::CreateIterator()
+    {
+        DynamicArray<std::pair<K*, V*>> arr(this->m_Size);
+
+        for (uint32_t i = 0; i < this->m_Capacity; i++)
+        {
+            HashNode<K, V>* node = this->m_Data[i];
+            while (node != nullptr)
+            {
+                arr.Add({ &node->key, &node->value });
+                node = node->next;
+            }
+        }
+
+        return std::make_unique<HashMapIterator<K, V>>(arr);
+    }
+
+    template <typename K, typename V>
+    HashMap<K, V>& HashMap<K, V>::operator=(const HashMap<K, V>& map)
+    {
+        this->m_Capacity = map.m_Capacity;
+        this->m_Data = map.m_Data;
+
+        LOG_INFO("HashMap COPIED successfully");
+        return *this;
+    }
+
+    template <typename K, typename V>
+    HashMap<K, V>& HashMap<K, V>::operator=(HashMap<K, V>&& map)
+    {
+        this->m_Capacity = map.m_Capacity;
+        this->m_Data = std::move(map.m_Data);
+        map.m_Capacity = 0;
+        map.m_Data.Clear();
+
+        LOG_INFO("HashMap MOVED successfully");
+        return *this;
+    }
     //////////////
     // HASH MAP //
     //////////////
+
 
     ////////////////////////////
     // HASH FUNCTION ABSTRACT //
@@ -284,6 +351,7 @@ namespace ds
     ////////////////////////////
     // HASH FUNCTION ABSTRACT //
     ////////////////////////////
+
 
     ///////////////////////////////////
     // HASH FUNCTION IMPLEMENTATIONS //
@@ -368,39 +436,64 @@ namespace ds
     // HASH FUNCTION IMPLEMENTATIONS //
     ///////////////////////////////////
 
+
     //////////////
     // ITERATOR //
     //////////////
 
     // TODO: implement
     template <typename K, typename V>
-    class HashMapIterator : public Iterator<V>
+    class HashMapIterator : public Iterator<std::pair<K*, V*>>
     {
     public:
-        HashMapIterator(HashMap<K, V>* map) {}
+        HashMapIterator(DynamicArray<std::pair<K*, V*>> data) : m_Data(data) {}
         ~HashMapIterator() = default;
 
     public:
-        void Reset() override {}
-        const V& GetCurrent() override { return m_Data[m_Index]->value; }
-        const K& GetKey() override { return m_Data[m_Index]->key; }
-        void Next() override {}
-        bool IsAtEnd() override { return false;}
-        std::unique_ptr<Iterator<V>> Clone() override { return std::make_unique<HashMapIterator<K, V>>(nullptr); }
+        void Reset() override { m_Index = 0; }
+        const std::pair<K*, V*>& GetCurrent() override { return this->m_Data[m_Index]; }
+        void Next() override { m_Index++; }
+        bool IsAtEnd() override { return m_Index == m_Data.GetSize();}
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> Clone() override { return std::make_unique<HashMapIterator<K, V>>(m_Data); }
 
     public:
-        V& operator*() override { return m_Data[m_Index]->value; }
-        std::unique_ptr<Iterator<V>> operator++() override { return std::make_unique<HashMapIterator<K, V>>(nullptr); }
-        std::unique_ptr<Iterator<V>> operator++(int) override { return std::make_unique<HashMapIterator<K, V>>(nullptr); }
-        std::unique_ptr<Iterator<V>> operator+(uint32_t idx) override { return std::make_unique<HashMapIterator<K, V>>(nullptr); }
-        std::unique_ptr<Iterator<V>> operator=(std::unique_ptr<Iterator<V>> it) override { return std::make_unique<HashMapIterator<K, V>>(nullptr); }
+        std::pair<K*, V*>& operator*() override { return this->m_Data[m_Index]; }
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator++() override;
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator++(int) override;
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator+(uint32_t idx) override;
+        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator=(std::unique_ptr<Iterator<std::pair<K*, V*>>> it) override { return Clone(); }
 
     private:
-        DynamicArray<typename HashMap<K, V>::template HashNode<K, V>*> m_Data;
+        DynamicArray<std::pair<K*, V*>> m_Data;
         uint32_t m_Index = 0;
     };
 
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapIterator<K, V>::operator++()
+    {
+        Next();
+        return Clone();
+    }
     
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapIterator<K, V>::operator++(int)
+    {
+        auto old = Clone();
+        Next();
+        return old;
+    }
+
+    template <typename K, typename V>
+    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapIterator<K, V>::operator+(uint32_t idx)
+    {
+        m_Index += idx;
+        if (m_Index >= m_Data.GetSize())
+        {
+            m_Index = m_Data.GetSize();
+        }
+
+        return Clone();
+    }
 
     //////////////
     // ITERATOR //

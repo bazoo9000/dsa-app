@@ -50,9 +50,20 @@ int main(int argc, char* argv[])
 
 	ds::HashMap<const char*, int> map1(10);
 	map1.Insert("one", 1);
+	std::cout << map1["one"] << std::endl;
 
 	ds::HashMap<Test, int> map2(10);
 	map2.Insert({ 1, 2 }, 100);
+
+	ds::HashMap<Test, int> map3(map2);
+
+	map2.Delete({ 1, 2 });
+
+	for (auto it = map3.CreateIterator(); !it->IsAtEnd(); it->Next())
+	{
+		// jesus christ, will think about this later
+		std::cout << *(**it).second;
+	}
 
 	return 0;
 }

@@ -173,7 +173,7 @@ void DynamicArray<T>::Print()
 
     for (uint32_t i = 0; i < this->m_Size; i++)
     {
-        std::cout << this->m_Data[i] << " ";
+        //std::cout << this->m_Data[i] << " ";
     }
     std::cout << "\n";
 }
