@@ -2,6 +2,7 @@
 
 #include "ISortStrategy.h"
 #include "../../DataStructures/DynamicArray.h"
+#include <cstdint>
 
 namespace alg
 {
@@ -20,35 +21,23 @@ namespace alg
     {
         LOG_DEBUG("Sorting using InsertionSort");
 
-        // i think a reverse iterator would be better for this sort
-
-        // for(uint32_t i = 1; i < arr->GetSize(); i++)
-        // {
-        //     T key = (*arr)[i];
-        //     uint32_t j = i;
-
-        //     while (j > 0 && !orderFunc((*arr)[j - 1], key))
-        //     {
-        //         (*arr)[j] = (*arr)[j - 1];
-        //         j--;
-        //     }
-
-        //     (*arr)[j] = key;
-        // }
-
-        // THIS WONT WORK!!
-        auto prev = data->CreateIterator();
-        auto it1 = prev->Clone();
-        it1->Next();
-        for ( ; !it1->IsAtEnd(); it1->Next())
+        uint32_t cnt = 1;
+        for (auto it = (*data->CreateIterator()) + 1; !it->IsAtEnd(); it->Next())
         {
-            T key = **it1;
-            auto it2 = prev->Clone();
+            T key = **it;
+            uint32_t j = cnt - 1;
+            auto compIt = data->CreateIterator();
 
-            while (!it2->IsAtEnd() && !orderFunc(**it2, key))
+            while (j != UINT32_MAX && orderFunc(key, (*compIt + j)->GetCurrent()))
             {
-                it2->Next();
+                // horrible, terrible, disgusting syntax, but iterators are implemented by me :(
+                **(*compIt + (j + 1)) = ((*compIt + j)->GetCurrent());
+                j--;
             }
+
+            **(*compIt + (j + 1)) = key;
+
+            cnt++;
         }
     }
 }

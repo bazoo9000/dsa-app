@@ -3,18 +3,19 @@
 int main(int argc, char* argv[])
 {
 	ds::DynamicArray<int> arr;
-	arr.Add(1);
-	arr.Add(2);
-	arr.Add(3);
-	arr.Add(4);
 	arr.Add(5);
+	arr.Add(2);
+	arr.Add(1);
+	arr.Add(4);
+	arr.Add(3);
 
-	alg::Searcher<int>::SetSearchStrategy(new alg::BinarySearch<int>());
-	int idx1 = alg::Searcher<int>::Search(4, &arr);
-	int idx2 = alg::Searcher<int>::Search(6, &arr);
+	alg::Sorter<int>::SetSortStrategy(new alg::InsertionSort<int>());
+	alg::Sorter<int>::Sort(&arr);
 
-	std::cout << "Index of 4: " << idx1 << std::endl;
-	std::cout << "Index of 6: " << (idx2 == NOT_FOUND ? "Not found" : "Found") << std::endl;
+	for (auto it = arr.CreateIterator(); !it->IsAtEnd(); it->Next())
+	{
+		std::cout << **it << " ";
+	}
 
 	return 0;
 }
