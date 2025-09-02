@@ -162,20 +162,9 @@ void DynamicArray<T>::Clear()
 }
 
 template <typename T>
-void DynamicArray<T>::Print()
+void DynamicArray<T>::DebugDetails()
 {
-    LOG_DEBUG("This is an DynamicArray");
-
-    if(this->m_Size == 0)
-    {
-        LOG_DEBUG("DynamicArray is empty");
-    }
-
-    for (uint32_t i = 0; i < this->m_Size; i++)
-    {
-        //std::cout << this->m_Data[i] << " ";
-    }
-    std::cout << "\n";
+    LOG_DEBUG("This is an DynamicArray\nSize: %u\nCapacity: %u\nBytes: %u", this->m_Size, this->m_Capacity, this->m_Capacity * sizeof(T));
 }
 
 template <typename T>

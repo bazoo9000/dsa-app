@@ -40,7 +40,7 @@ namespace ds
         V& GetElement(const K& key);
         const V& GetElement(const K& key) const;
         void Delete(const K& key);
-        virtual void Print() override;
+        virtual void DebugDetails() override;
         virtual std::unique_ptr<Iterator<std::pair<K*, V*>>> CreateIterator() override;
         virtual std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> CreateReverseIterator() override;
 
@@ -286,9 +286,9 @@ namespace ds
     }
 
     template <typename K, typename V>
-    void HashMap<K, V>::Print()
+    void HashMap<K, V>::DebugDetails()
     {
-        LOG_DEBUG("This is a HashMap");
+        LOG_DEBUG("This is a HashMap\nSize: %u\nCapacity(size of hash table): %u\nBytes: %u", this->m_Size, this->m_Capacity, this->m_Capacity * sizeof(HashNode<K, V>*));
     }
 
     template <typename K, typename V>
@@ -307,6 +307,24 @@ namespace ds
         }
 
         return std::make_unique<HashMapIterator<K, V>>(arr);
+    }
+
+    template <typename K, typename V>
+    std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> HashMap<K, V>::CreateReverseIterator()
+    {
+        DynamicArray<std::pair<K*, V*>> arr(this->m_Size);
+
+        for (uint32_t i = 0; i < this->m_Capacity; i++)
+        {
+            HashNode<K, V>* node = this->m_Data[i];
+            while (node != nullptr)
+            {
+                arr.Add({ &node->key, &node->value });
+                node = node->next;
+            }
+        }
+
+        return std::make_unique<HashMapReverseIterator<K, V>>(arr);
     }
 
     template <typename K, typename V>
@@ -511,14 +529,14 @@ namespace ds
         const std::pair<K*, V*>& GetCurrent() override { return this->m_Data[m_Index]; }
         void Prev() override { if (this->m_Index == 0 ) { m_Index = UINT32_MAX; return; } this->m_Index--; }
         bool IsAtBegin() override { return m_Index == UINT32_MAX;}
-        std::unique_ptr<Iterator<std::pair<K*, V*>>> Clone() override { return std::make_unique<HashMapReverseIterator<K, V>>(this->m_Data); }
+        std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> Clone() override { return std::make_unique<HashMapReverseIterator<K, V>>(this->m_Data); }
 
     public:
         std::pair<K*, V*>& operator*() override { return this->m_Data[this->m_Index]; }
-        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator++() override;
-        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator++(int) override;
-        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator+(uint32_t idx) override;
-        std::unique_ptr<Iterator<std::pair<K*, V*>>> operator=(std::unique_ptr<Iterator<std::pair<K*, V*>>> it) override { return Clone(); }
+        std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> operator++() override;
+        std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> operator++(int) override;
+        std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> operator+(uint32_t idx) override;
+        std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> operator=(std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> it) override { return Clone(); }
 
     private:
         DynamicArray<std::pair<K*, V*>> m_Data;
@@ -526,14 +544,14 @@ namespace ds
     };
 
     template <typename K, typename V>
-    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator++()
+    std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator++()
     {
         Prev();
         return Clone();
     }
     
     template <typename K, typename V>
-    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator++(int)
+    std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator++(int)
     {
         auto old = Clone();
         Prev();
@@ -541,7 +559,7 @@ namespace ds
     }
 
     template <typename K, typename V>
-    std::unique_ptr<Iterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator+(uint32_t idx)
+    std::unique_ptr<ReverseIterator<std::pair<K*, V*>>> HashMapReverseIterator<K, V>::operator+(uint32_t idx)
     {
         auto it = std::make_unique<HashMapReverseIterator<K, V>>(this->m_Data);
         it->m_Index = this->m_Index;

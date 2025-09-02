@@ -26,7 +26,7 @@ namespace ds
     public:
         void Insert(T elem);
         void Clear();
-        virtual void Print() override;
+        virtual void DebugDetails() override;
 
     public:
         Tree& operator=(const Tree& tree);

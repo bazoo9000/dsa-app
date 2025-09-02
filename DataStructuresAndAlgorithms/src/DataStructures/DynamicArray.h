@@ -27,7 +27,7 @@ namespace ds
 		const T& GetElementAt(uint32_t index) const;
 		void DeleteAt(int index);
 		void Clear();
-		virtual void Print() override;
+		virtual void DebugDetails() override;
 		virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return std::make_unique<DynamicArrayIterator<T>>(this); }
 		virtual std::unique_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_unique<DynamicArrayReverseIterator<T>>(this); }
 

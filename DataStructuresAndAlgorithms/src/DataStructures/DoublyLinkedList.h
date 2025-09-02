@@ -42,7 +42,7 @@ namespace ds
 		void Delete(T elem);
 		void DeleteAt(uint32_t index);
 		void Clear();
-		virtual void Print() override;
+		virtual void DebugDetails() override;
 
 	public:
 		T& operator[](uint32_t index) { return GetElementAt(index); }
@@ -439,22 +439,9 @@ namespace ds
 	}
 
 	template <typename T>
-	void DoublyLinkedList<T>::Print()
+	void DoublyLinkedList<T>::DebugDetails()
 	{
-		LOG_DEBUG("This is a DoublyLinkedList");
-
-		if(!m_Head)
-		{
-			LOG_DEBUG("DoublyLinkedList is empty");
-		}
-
-		Node<T>* aux = this->m_Head;
-		while (aux != nullptr)
-		{
-			std::cout << aux->data << " ";
-			aux = aux->next;
-		}
-		std::cout << "\n";
+		LOG_DEBUG("This is a DoublyLinkedList\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
 	}
 
 	template <typename T>

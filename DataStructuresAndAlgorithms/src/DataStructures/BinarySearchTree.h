@@ -22,7 +22,7 @@ namespace ds
     public:
         virtual void Insert(T elem) override;
         virtual void Delete(T elem) override;
-        virtual void Print() override;
+        virtual void DebugDetails() override;
 
     private:
         uint32_t childCount(typename BinaryTree<T>::template Node<T>*& node);
@@ -162,15 +162,9 @@ namespace ds
     }
 
     template <typename T>
-    void BinarySearchTree<T>::Print()
+    void BinarySearchTree<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a BinarySearchTree");
-        LOG_WARN("You can't print a BinarySearchTree, you have to choose an order and create an iterator for it, there are 4 methods inside this class, and default iterator creation is Preorder");
-        if (this->m_Root == nullptr)
-        {
-            LOG_DEBUG("BinarySearchTree is empty");
-            return;
-        }
+        LOG_DEBUG("This is a BinarySearchTree\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(typename BinaryTree<T>::template Node<T>));
     }
 
     template <typename T>

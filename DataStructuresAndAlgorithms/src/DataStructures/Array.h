@@ -1,6 +1,9 @@
 #pragma once
 
 #include "DataStructure.h"
+#include "Iterator/Iterable.h"
+#include <cstdint>
+#include <memory>
 
 namespace ds
 {
@@ -26,9 +29,9 @@ namespace ds
 		T& GetElementAt(uint32_t index);
 		const T& GetElementAt(uint32_t index) const;
 		void DeleteAt(int index);
-		virtual void Print() override;
-		virtual std::shared_ptr<Iterator<T>> CreateIterator() override { return std::make_shared<ArrayIterator<T, maxSize>>(this); }
-		virtual std::shared_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_shared<ArrayReverseIterator<T, maxSize>>(this); }
+		virtual void DebugDetails() override;
+		virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return std::make_unique<ArrayIterator<T, maxSize>>(this); }
+		virtual std::unique_ptr<ReverseIterator<T>> CreateReverseIterator() override { return std::make_unique<ArrayReverseIterator<T, maxSize>>(this); }
 
 	public:
 		T* GetData() { return this->m_Data; }
@@ -208,20 +211,9 @@ namespace ds
 	}
 
 	template <typename T, uint32_t maxSize>
-	void Array<T, maxSize>::Print()
+	void Array<T, maxSize>::DebugDetails()
 	{
-		LOG_DEBUG("This is an Array");
-
-		if(this->m_Size == 0)
-		{
-			LOG_DEBUG("Array is empty");
-		}
-		
-		for (uint32_t i = 0; i < this->m_Size; i++)
-		{
-			std::cout << this->m_Data[i] << " ";
-		}
-		std::cout << "\n";
+		LOG_DEBUG("This is an Array\nSize: %u\nMax size: %u\nBytes: %u", this->m_Size, maxSize, sizeof(this->m_Data));
 	}
 
 	template <typename T, uint32_t maxSize>
@@ -272,19 +264,45 @@ namespace ds
 		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
 		virtual void Next() override { this->m_Index++; }
 		virtual bool IsAtEnd() override { return this->m_Index >= this->m_Array->GetSize(); }
-		virtual std::shared_ptr<Iterator<T>> Clone() override
+		virtual std::unique_ptr<Iterator<T>> Clone() override
 		{
-			auto it = std::make_shared<ArrayIterator<T, maxSize>>(this->m_Array);
+			auto it = std::make_unique<ArrayIterator<T, maxSize>>(this->m_Array);
 			it->m_Index = this->m_Index;
 			return it;
 		}
 
 	public:
 		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
-		virtual Iterator<T>& operator++() override
+		virtual std::unique_ptr<Iterator<T>> operator++() override
 		{
 			Next();
-			return *this;
+			return Clone();
+		}
+		virtual std::unique_ptr<Iterator<T>> operator++(int) override
+		{
+			auto old = Clone();
+			Next();
+			return old;
+		}
+		virtual std::unique_ptr<Iterator<T>> operator+(uint32_t idx) override
+		{
+			auto it = std::make_unique<ArrayIterator<T, maxSize>>(this->m_Array);
+			it->m_Index = this->m_Index;
+
+			if (it->m_Index + idx >= it->m_Array->GetSize())
+			{
+				it->m_Index = it->m_Array->GetSize();
+			}
+			else
+			{
+				it->m_Index += idx;
+			}
+
+			return it;
+		}
+		virtual std::unique_ptr<Iterator<T>> operator=(std::unique_ptr<Iterator<T>> it) override
+		{
+			return Clone();
 		}
 
 	private:
@@ -304,19 +322,45 @@ namespace ds
 		virtual const T& GetCurrent() override { return this->m_Array->GetElementAt(m_Index); }
 		virtual void Prev() override { this->m_Index--; }
 		virtual bool IsAtBegin() override { return this->m_Index == UINT32_MAX; }
-		virtual std::shared_ptr<ReverseIterator<T>> Clone() override
+		virtual std::unique_ptr<ReverseIterator<T>> Clone() override
 		{
-			auto it = std::make_shared<ArrayReverseIterator<T, maxSize>>(this->m_Array);
+			auto it = std::make_unique<ArrayReverseIterator<T, maxSize>>(this->m_Array);
 			it->m_Index = this->m_Index;
 			return it;
 		}
 
 	public:
 		virtual T& operator*() override { return this->m_Array->GetElementAt(m_Index); }
-		virtual ReverseIterator<T>& operator++() override
+		virtual std::unique_ptr<ReverseIterator<T>> operator++() override
 		{
 			Prev();
-			return *this;
+			return Clone();
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator++(int) override
+		{
+			auto old = Clone();
+			Prev();
+			return old;
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator+(uint32_t idx) override
+		{
+			auto it = std::make_unique<ArrayReverseIterator<T, maxSize>>(this->m_Array);
+			it->m_Index = this->m_Index;
+
+			if (it->m_Index < idx)
+			{
+				it->m_Index = it->m_Array->GetSize();
+			}
+			else
+			{
+				it->m_Index -= idx;
+			}
+
+			return it;
+		}
+		virtual std::unique_ptr<ReverseIterator<T>> operator=(std::unique_ptr<ReverseIterator<T>> it) override
+		{
+			return Clone();
 		}
 
 	private:

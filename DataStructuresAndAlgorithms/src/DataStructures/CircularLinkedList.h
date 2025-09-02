@@ -39,7 +39,7 @@ namespace ds
         void Delete(T elem);
         void DeleteAt(uint32_t index);
         void Clear();
-        virtual void Print() override;
+        virtual void DebugDetails() override;
 
     public:
         T& operator[](uint32_t index) { return GetElementAt(index); }
@@ -359,23 +359,9 @@ namespace ds
     }
 
     template <typename T>
-    void CircularLinkedList<T>::Print()
+    void CircularLinkedList<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a CircularLinkedList");
-
-        if(!m_Head)
-        {
-            LOG_DEBUG("CircularLinkedList is empty");
-        }
-
-        Node<T>* aux = this->m_Head;
-        for(uint32_t i = 0; i < this->m_Size; i++)
-        {
-            std::cout << aux->data << " ";
-            aux = aux->next;
-        }
-
-        std::cout << "\n";
+        LOG_DEBUG("This is a CircularLinkedList\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
     }
 
     template<typename T>

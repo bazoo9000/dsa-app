@@ -71,7 +71,7 @@ std::unique_ptr<ReverseIterator<T>> DynamicArrayReverseIterator<T>::operator+(ui
 
     if (it->m_Index < idx)
     {
-        it->m_Index = 0;
+        it->m_Index = it->m_Array->GetSize();
     }
     else
     {

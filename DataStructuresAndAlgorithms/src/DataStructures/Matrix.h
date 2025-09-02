@@ -17,7 +17,7 @@ namespace ds
         void Insert(T elem, uint32_t r, uint32_t c);
         T GetElementAt(uint32_t r, uint32_t c);
         void Reinitialize();
-        virtual void Print() override;
+        virtual void DebugDetails() override;
 
     public:
         T GetInitial() { return this->m_Initial; }
@@ -146,18 +146,9 @@ namespace ds
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>
-    void Matrix<T, maxRows, maxCols>::Print()
+    void Matrix<T, maxRows, maxCols>::DebugDetails()
     {
-        LOG_DEBUG("This is a Matrix");
-
-        for(int i = 0; i < maxRows; i++)
-        {
-            for(int j = 0; j < maxCols; j++)
-            {
-                std::cout << this->m_Data[i][j] << " ";
-            }
-            std::cout << "\n";
-        }
+        LOG_DEBUG("This is a Matrix\nMax Rows: %u\nMax Cols: %u\nBytes: %u", maxRows, maxCols, maxRows * maxCols * sizeof(T));
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>

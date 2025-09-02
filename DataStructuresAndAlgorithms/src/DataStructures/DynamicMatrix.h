@@ -22,7 +22,7 @@ namespace ds
         void AddColumns(uint32_t cols = 1);
         void AddCorner(uint32_t amount = 1);
         void ResizeMatrix(uint32_t rows, uint32_t cols);
-        virtual void Print() override;
+        virtual void DebugDetails() override;
 
     public:
         T** GetData() { return this->m_Data; }
@@ -207,24 +207,9 @@ namespace ds
     }
 
     template <typename T>
-    void DynamicMatrix<T>::Print()
+    void DynamicMatrix<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a DynamicMatrix");
-
-        if(m_Data == nullptr)
-        {
-            LOG_DEBUG("Can't print, m_Data is nullptr");
-            return;
-        }
-
-        for(int i = 0; i < this->m_Rows; i++)
-        {
-            for(int j = 0; j < this->m_Cols; j++)
-            {
-                std::cout << this->m_Data[i][j] << " ";
-            }
-            std::cout << "\n";
-        }
+        LOG_DEBUG("This is a DynamicMatrix\nRows: %u\nColumns: %u\nBytes: %u", this->m_Rows, this->m_Cols, this->m_Rows * this->m_Cols * sizeof(T));
     }
 
     template <typename T>

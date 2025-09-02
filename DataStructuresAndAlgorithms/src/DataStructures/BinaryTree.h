@@ -44,7 +44,7 @@ namespace ds
         virtual void Insert(T elem); // this method differs based on the type of binary tree
         virtual void Delete(T elem); // different binary tree have different delete methods, this is default
         void Clear(Node<T>*& node);
-        virtual void Print() override;
+        virtual void DebugDetails() override;
         virtual std::unique_ptr<Iterator<T>> CreateIterator() override { return CreatePreorderIterator(); }
         virtual std::unique_ptr<ReverseIterator<T>> CreateReverseIterator() override { return CreatePreorderReverseIterator(); }
 
@@ -271,15 +271,9 @@ namespace ds
     }
 
     template <typename T>
-    void BinaryTree<T>::Print()
+    void BinaryTree<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a BinaryTree");
-        LOG_WARN("You can't print a BinaryTree, you have to choose an order and create an iterator for it, there are 4 methods inside this class, and default iterator creation is Preorder");
-        if (this->m_Root == nullptr)
-        {
-            LOG_DEBUG("BinaryTree is empty");
-            return;
-        }
+        LOG_DEBUG("This is a BinaryTree\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
     }
 
     template<typename T>
@@ -679,7 +673,7 @@ namespace ds
 		}
 		virtual std::unique_ptr<Iterator<T>> operator+(uint32_t idx) override
 		{
-			auto it = Clone();
+			auto it = std::make_unique<BinaryTreeIterator<T>>(this->m_BinaryTreeData);
             it->m_Index += idx;
 
             if (it->m_Index >= it->m_BinaryTreeData->GetSize())
@@ -733,7 +727,7 @@ namespace ds
 		}
 		virtual std::unique_ptr<ReverseIterator<T>> operator+(uint32_t idx) override
 		{
-			auto it = Clone();
+			auto it = std::make_unique<BinaryTreeReverseIterator<T>>(this->m_BinaryTreeData);
 
             if (it->m_Index < idx)
             {

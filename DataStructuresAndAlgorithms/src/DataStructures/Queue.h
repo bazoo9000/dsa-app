@@ -32,7 +32,7 @@ namespace ds
 		void Dequeue();
 		bool IsEmpty();
 		void Clear();
-		virtual void Print() override;
+		virtual void DebugDetails() override;
 
 	public:
 		T GetFirst() { return m_Head->data; }
@@ -158,22 +158,9 @@ namespace ds
 	}
 
 	template <typename T>
-	void Queue<T>::Print()
+	void Queue<T>::DebugDetails()
 	{
-		LOG_DEBUG("This is a Queue");
-
-		if(IsEmpty())
-		{
-			LOG_DEBUG("Queue is empty");
-		}
-
-		Node<T>* curNode = this->m_Head;
-		while (curNode != nullptr)
-		{
-			std::cout << curNode->data << " ";
-			curNode = curNode->next;
-		}
-		std::cout << "\n";
+		LOG_DEBUG("This is a Queue\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
 	}
 
 	template <typename T>

@@ -22,7 +22,7 @@ namespace ds
         ~Graph();
     
     public:
-        virtual void Print() override;
+        virtual void DebugDetails() override;
 
     public:
         GraphRepresentOption GetRepresentation() { return m_Option; }
@@ -70,9 +70,9 @@ namespace ds
     }
 
     template <typename T>
-    void Graph<T>::Print()
+    void Graph<T>::DebugDetails()
     {
-        std::cout << "ceva\n";
+        LOG_DEBUG("This is a Graph");
     }
     
 }

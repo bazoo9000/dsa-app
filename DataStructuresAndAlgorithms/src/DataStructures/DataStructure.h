@@ -29,7 +29,7 @@ namespace ds
         uint32_t GetSize() { return m_Size; }
 
     public:
-        virtual void Print() { LOG_DEBUG("This is a data structure"); };
+        virtual void DebugDetails() { LOG_DEBUG("This is a data structure, unimplemented, no more information"); };
 
     public:
         DataStructure& operator=(const DataStructure& ds) = default;

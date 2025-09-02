@@ -32,7 +32,7 @@ namespace ds
 		void Pop();
 		bool IsEmpty();
 		void Clear();
-		virtual void Print() override;
+		virtual void DebugDetails() override;
 
 	public:
 		T GetTop() { return this->m_Head->data; }
@@ -133,22 +133,9 @@ namespace ds
 	}
 
 	template <typename T>
-	void Stack<T>::Print() 
+	void Stack<T>::DebugDetails() 
 	{
-		LOG_DEBUG("This is a Stack");
-
-		if(IsEmpty())
-		{
-			LOG_DEBUG("Stack is empty");
-		}
-
-		Node<T>* curNode = this->m_Head;
-		while(curNode != nullptr)
-		{
-			std::cout << curNode->data << " ";
-			curNode = curNode->next;
-		}
-		std::cout << "\n";
+		LOG_DEBUG("This is a Stack\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
 	}
 
 	template <typename T>
