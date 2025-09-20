@@ -3,9 +3,6 @@
 #include "DataStructure.h"
 #include "DynamicArray.h"
 #include "Iterator/ReverseIterable.h"
-#include <cstdint>
-#include <memory>
-#include <utility>
 
 namespace ds
 {
@@ -288,7 +285,46 @@ namespace ds
     template <typename K, typename V>
     void HashMap<K, V>::DebugDetails()
     {
-        LOG_DEBUG("This is a HashMap\nSize: %u\nCapacity(size of hash table): %u\nBytes: %u", this->m_Size, this->m_Capacity, this->m_Capacity * sizeof(HashNode<K, V>*));
+        std::ostringstream oss;
+
+        oss << "[";
+
+        for (uint32_t i = 0; i < std::min<uint32_t>(this->m_Capacity, MAX_OUTPUT_SIZE); i++)
+        {
+            oss << i << ": ( ";
+            if (this->m_Data[i] == nullptr)
+            {
+                oss << "NULL ), ";
+                continue;
+            }
+
+            HashNode<K, V>* node = this->m_Data[i];
+            while (node != nullptr)
+            {
+                oss << "{ Key: ";
+                if constexpr (IS_STREAMABLE(K)) { oss << node->key; }
+                else                            { oss << typeid(node->key).name(); }
+
+                oss << ", Val: ";
+                if constexpr (IS_STREAMABLE(V)) { oss << node->value << ", "; }
+                else                            { oss << typeid(node->value).name() << ", "; }
+
+                oss << "}, ";
+
+                node = node->next;
+            }
+
+            oss << "), ";
+        }
+
+        oss << "]";
+
+        LOG_DEBUG("This is a HashMap\nSize: %u\nCapacity(size of hash table): %u\nBytes: %u\nData: %s\n", 
+            this->m_Size,
+            this->m_Capacity,
+            this->m_Size * sizeof(HashNode<K, V>),
+            oss.str().c_str()
+        );
     }
 
     template <typename K, typename V>
@@ -460,6 +496,7 @@ namespace ds
     // ITERATOR //
     //////////////
 
+    // TODO: remake all of this garbage
     template <typename K, typename V>
     class HashMapIterator : public Iterator<std::pair<K*, V*>>
     {
@@ -469,7 +506,7 @@ namespace ds
 
     public:
         void Reset() override { m_Index = 0; }
-        const std::pair<K*, V*>& GetCurrent() override { return this->m_Data[m_Index]; }
+        const std::pair<K*, V*>& GetCurrent() override { return this->m_Data[m_Index]; } // TODO: remake this
         void Next() override { m_Index++; }
         bool IsAtEnd() override { return m_Index == m_Data.GetSize();}
         std::unique_ptr<Iterator<std::pair<K*, V*>>> Clone() override { return std::make_unique<HashMapIterator<K, V>>(m_Data); }

@@ -209,7 +209,26 @@ namespace ds
     template <typename T>
     void DynamicMatrix<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a DynamicMatrix\nRows: %u\nColumns: %u\nBytes: %u", this->m_Rows, this->m_Cols, this->m_Rows * this->m_Cols * sizeof(T));
+		std::ostringstream oss;
+
+        oss << "\n";
+        for (uint32_t i = 0; i < std::min<uint32_t>(this->m_Rows, MAX_OUTPUT_SIZE); i++)
+        {
+            oss << "[ ";
+            for (uint32_t j = 0; j < std::min<uint32_t>(this->m_Cols, MAX_OUTPUT_SIZE); j++)
+            {
+                if constexpr (IS_STREAMABLE(T)) { oss << this->m_Data[i][j] << " "; }
+                else                            { oss << typeid(this->m_Data[0][0]).name() << " "; }
+            }
+            oss << "]\n";
+        }
+
+        LOG_DEBUG("This is a DynamicMatrix\nRows: %u\nColumns: %u\nBytes: %u\nData: %s",
+            this->m_Rows,
+            this->m_Cols,
+            this->m_Rows * this->m_Cols * sizeof(T),
+            oss.str().c_str()
+        );
     }
 
     template <typename T>

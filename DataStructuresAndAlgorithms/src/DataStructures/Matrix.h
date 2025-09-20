@@ -148,7 +148,26 @@ namespace ds
     template <typename T, uint32_t maxRows, uint32_t maxCols>
     void Matrix<T, maxRows, maxCols>::DebugDetails()
     {
-        LOG_DEBUG("This is a Matrix\nMax Rows: %u\nMax Cols: %u\nBytes: %u", maxRows, maxCols, maxRows * maxCols * sizeof(T));
+        std::ostringstream oss;
+
+        oss << "\n";
+        for (uint32_t i = 0; i < std::min<uint32_t>(maxRows, MAX_OUTPUT_SIZE); i++)
+        {
+            oss << "[ ";
+            for (uint32_t j = 0; j < std::min<uint32_t>(maxCols, MAX_OUTPUT_SIZE); j++)
+            {
+                if constexpr (IS_STREAMABLE(T)) { oss << this->m_Data[i][j] << " "; }
+                else                            { oss << typeid(this->m_Data[0][0]).name() << " "; }
+            }
+            oss << "]\n";
+        }
+
+        LOG_DEBUG("This is a Matrix\nMax Rows: %u\nMax Cols: %u\nBytes: %u\nData: %s",
+            maxRows,
+            maxCols,
+            maxRows * maxCols * sizeof(T),
+            oss.str().c_str()
+        );
     }
 
     template <typename T, uint32_t maxRows, uint32_t maxCols>

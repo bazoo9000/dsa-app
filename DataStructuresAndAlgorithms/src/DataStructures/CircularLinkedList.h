@@ -361,7 +361,32 @@ namespace ds
     template <typename T>
     void CircularLinkedList<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a CircularLinkedList\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
+        std::ostringstream oss;
+
+		oss << "[ -> ";
+
+		Node<T>* curNode = this->m_Head;
+		if (curNode)
+        {
+            for (uint32_t i = 0; i < std::min<uint32_t>(this->m_Size, MAX_OUTPUT_SIZE); i++)
+            {
+                oss << "(";
+                if constexpr (IS_STREAMABLE(T)) { oss << curNode->data; }
+                else                            { oss << typeid(curNode->data).name(); }
+                oss << ", " << curNode->next << ") -> ";
+
+                curNode = curNode->next;
+            }
+        }
+        else { oss << "NULL "; }
+
+		oss << "]";
+
+        LOG_DEBUG("This is a CircularLinkedList\nSize: %u\nBytes: %u\nData: %s\n",
+            this->m_Size,
+            this->m_Size * sizeof(Node<T>),
+            oss.str().c_str()
+        );
     }
 
     template<typename T>

@@ -2,8 +2,6 @@
 
 #include "DataStructure.h"
 #include "Iterator/Iterable.h"
-#include <cstdint>
-#include <memory>
 
 namespace ds
 {
@@ -213,7 +211,32 @@ namespace ds
 	template <typename T, uint32_t maxSize>
 	void Array<T, maxSize>::DebugDetails()
 	{
-		LOG_DEBUG("This is an Array\nSize: %u\nMax size: %u\nBytes: %u", this->m_Size, maxSize, sizeof(this->m_Data));
+		std::ostringstream oss;
+
+		oss << "[ ";
+		
+		for (uint32_t i = 0; i < std::min<uint32_t>(this->m_Size, MAX_OUTPUT_SIZE); i++)
+		{
+			if constexpr (IS_STREAMABLE(T)) { oss << this->m_Data[i] << " "; }
+			else 							{ oss << typeid(this->m_Data[0]).name() << " "; }
+		}
+
+		if (this->m_Size > MAX_OUTPUT_SIZE) { oss << "... "; }
+		else
+		{
+			for (uint32_t i = this->m_Size; i < std::min<uint32_t>(maxSize, MAX_OUTPUT_SIZE); i++)
+			{
+				oss << "NULL ";
+			}
+		}
+
+		oss << "]";
+
+		LOG_DEBUG("This is an Array\nSize: %u\nMax size: %u\nBytes: %u\nData: %s\n",
+			this->m_Size, maxSize,
+			sizeof(this->m_Data),
+			oss.str().c_str()
+		);
 	}
 
 	template <typename T, uint32_t maxSize>

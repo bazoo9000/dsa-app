@@ -20,6 +20,14 @@
         #include <vector>
     #endif
 
+    // Check if T has operator<< overloaded
+    template<typename T, typename = void>
+    struct has_ostream_operator : std::false_type {};
+
+    // specialization that does have the operator<<
+    template<typename T>
+    struct has_ostream_operator<T, decltype(void(std::declval<std::ostream&>() << std::declval<T>()))> : std::true_type {};
+
     class Logger
     {
     public:
@@ -136,6 +144,8 @@
     };
 
     #ifdef DEBUG_MODE
+        #define IS_STREAMABLE(Type) has_ostream_operator<Type>::value
+
         #ifndef DISABLE_TRACE
             #define LOG_TRACE(x, ...) Logger::LogTrace(x, __VA_ARGS__)
         #else
@@ -152,6 +162,8 @@
             #define LOG_INFO(x, ...)
         #endif // DISABLE_INFO
     #else
+        #define IS_STREAMABLE(Type)
+
         #define LOG_TRACE(x, ...)
         #define LOG_DEBUG(x, ...)
         #define LOG_INFO(x, ...)

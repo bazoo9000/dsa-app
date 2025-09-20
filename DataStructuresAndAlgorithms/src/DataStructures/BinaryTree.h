@@ -5,7 +5,6 @@
 #include "Stack.h"
 #include "Queue.h"
 #include "DynamicArray.h"
-#include <cstdint>
 
 namespace ds
 {
@@ -50,6 +49,7 @@ namespace ds
 
     protected:
         Node<T>* getParent(Node<T>*& child);
+        void prettyPrint(Node<T>* node, std::string prefix, bool isLeft, std::ostringstream& oss);
 
     public:
         std::unique_ptr<Iterator<T>> CreatePreorderIterator();
@@ -273,7 +273,15 @@ namespace ds
     template <typename T>
     void BinaryTree<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a BinaryTree\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(Node<T>));
+        std::ostringstream oss;
+
+        this->prettyPrint(this->m_Root, "", true, oss);
+
+        LOG_DEBUG("This is a BinaryTree\nSize: %u\nBytes: %u\nData: \n%s",
+            this->m_Size,
+            this->m_Size * sizeof(Node<T>),
+            oss.str().c_str()
+        );
     }
 
     template<typename T>
@@ -303,6 +311,22 @@ namespace ds
         }
 
         return nullptr; // This should never happen, unless something EXTREMELY wrong happens
+    }
+
+    template<typename T>
+    void BinaryTree<T>::prettyPrint(Node<T>* node, std::string prefix, bool isLeft, std::ostringstream& oss)
+    {
+        if (node == nullptr)
+        {
+            oss << prefix << (isLeft ? "\\-- " : "|-- ") << "NULL\n";
+            return;
+        }
+
+        oss << prefix << (isLeft ? "\\-- " : "|-- ") << node->data << "\n";
+
+        std::string childPrefix = prefix + (isLeft ? "    " : "|   ");
+        prettyPrint(node->left, childPrefix, false, oss);
+        prettyPrint(node->right, childPrefix, true, oss);
     }
 
     template <typename T>

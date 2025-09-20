@@ -3,16 +3,21 @@
 // TODO: Precompile those headers
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <cstdio>
 #include <cstdint>
 #include <utility>
 #include <memory>
+#include <algorithm>
+#include <type_traits>
 
 #include "Iterator/Iterator.h"
 #include "Iterator/ReverseIterator.h"
 #include "Iterator/Iterable.h"
 #include "Iterator/ReverseIterable.h"
 #include "../Logger/Logger.h"
+
+#define MAX_OUTPUT_SIZE 10
 
 namespace ds 
 {
@@ -29,7 +34,7 @@ namespace ds
         uint32_t GetSize() { return m_Size; }
 
     public:
-        virtual void DebugDetails() { LOG_DEBUG("This is a data structure, unimplemented, no more information"); };
+        virtual void DebugDetails() { LOG_DEBUG("This is an unimplemented data structure, no information"); };
 
     public:
         DataStructure& operator=(const DataStructure& ds) = default;

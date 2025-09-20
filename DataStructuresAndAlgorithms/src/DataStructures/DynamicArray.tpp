@@ -164,7 +164,33 @@ void DynamicArray<T>::Clear()
 template <typename T>
 void DynamicArray<T>::DebugDetails()
 {
-    LOG_DEBUG("This is an DynamicArray\nSize: %u\nCapacity: %u\nBytes: %u", this->m_Size, this->m_Capacity, this->m_Capacity * sizeof(T));
+    std::ostringstream oss;
+
+    oss << "[ ";
+
+    for (uint32_t i = 0; i < std::min<uint32_t>(this->m_Size, MAX_OUTPUT_SIZE); i++)
+    {
+        if constexpr (IS_STREAMABLE(T)) { oss << this->m_Data[i] << " "; }
+        else                            { oss << typeid(this->m_Data[0]).name() << " "; }
+    }
+
+    if (this->m_Size > MAX_OUTPUT_SIZE) { oss << "... "; }
+    else
+    {
+        for (uint32_t i = this->m_Size; i < std::min<uint32_t>(this->m_Capacity, MAX_OUTPUT_SIZE); i++)
+        {
+            oss << "NULL ";
+        }
+    }
+
+    oss << "]";
+
+    LOG_DEBUG("This is an DynamicArray\nSize: %u\nCapacity: %u\nBytes: %u\nData: %s\n",
+        this->m_Size,
+        this->m_Capacity,
+        this->m_Capacity * sizeof(T),
+        oss.str().c_str()
+    );
 }
 
 template <typename T>

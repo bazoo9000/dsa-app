@@ -164,7 +164,15 @@ namespace ds
     template <typename T>
     void BinarySearchTree<T>::DebugDetails()
     {
-        LOG_DEBUG("This is a BinarySearchTree\nSize: %u\nBytes: %u", this->m_Size, this->m_Size * sizeof(typename BinaryTree<T>::template Node<T>));
+        std::ostringstream oss;
+
+        this->prettyPrint(this->m_Root, "", true, oss);
+
+        LOG_DEBUG("This is a BinarySearchTree\nSize: %u\nBytes: %u\nData: \n%s",
+            this->m_Size,
+            this->m_Size * sizeof(typename BinaryTree<T>::template Node<T>),
+            oss.str().c_str()
+        );
     }
 
     template <typename T>
