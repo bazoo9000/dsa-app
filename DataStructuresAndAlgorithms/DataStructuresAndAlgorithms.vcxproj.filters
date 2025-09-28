@@ -15,114 +15,109 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Algorithms\Algorithm.h">
+    <ClInclude Include="headers\Algorithms\Algorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Array.h">
+    <ClInclude Include="headers\DataStructures\Array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Includes.h">
+    <ClInclude Include="headers\DSACore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\LinkedList.h">
+    <ClInclude Include="headers\DataStructures\LinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Stack.h">
+    <ClInclude Include="headers\DataStructures\Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\DoublyLinkedList.h">
+    <ClInclude Include="headers\DataStructures\DoublyLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Queue.h">
+    <ClInclude Include="headers\DataStructures\Queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\BinaryTree.h">
+    <ClInclude Include="headers\DataStructures\BinaryTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Tree.h">
+    <ClInclude Include="headers\DataStructures\Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\DynamicArray.h">
+    <ClInclude Include="headers\DataStructures\DynamicArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Matrix.h">
+    <ClInclude Include="headers\DataStructures\Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\DataStructure.h">
+    <ClInclude Include="headers\DataStructures\DataStructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Graph.h">
+    <ClInclude Include="headers\DataStructures\Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\DynamicMatrix.h">
+    <ClInclude Include="headers\DataStructures\DynamicMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Logger\Logger.h">
+    <ClInclude Include="headers\Logger\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Sorter.h">
+    <ClInclude Include="headers\Algorithms\Sorter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Sorter\SelectionSort.h">
+    <ClInclude Include="headers\Algorithms\Sorter\SelectionSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Sorter\BubbleSort.h">
+    <ClInclude Include="headers\Algorithms\Sorter\BubbleSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Sorter\Includes.h">
+    <ClInclude Include="headers\Algorithms\Sorter\Includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Sorter\InsertionSort.h">
+    <ClInclude Include="headers\Algorithms\Sorter\InsertionSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Searcher.h">
+    <ClInclude Include="headers\Algorithms\Searcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Sorter\ISortStrategy.h">
+    <ClInclude Include="headers\Algorithms\Sorter\ISortStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Searcher\Includes.h">
+    <ClInclude Include="headers\Algorithms\Searcher\Includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Searcher\BinarySearch.h">
+    <ClInclude Include="headers\Algorithms\Searcher\BinarySearch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Searcher\LinearSearch.h">
+    <ClInclude Include="headers\Algorithms\Searcher\LinearSearch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Algorithms\Searcher\ISearchStrategy.h">
+    <ClInclude Include="headers\Algorithms\Searcher\ISearchStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Iterator\Iterator.h">
+    <ClInclude Include="headers\DataStructures\Iterator\Iterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Iterator\Iterable.h">
+    <ClInclude Include="headers\DataStructures\Iterator\Iterable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\CircularLinkedList.h">
+    <ClInclude Include="headers\DataStructures\CircularLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\BinarySearchTree.h">
+    <ClInclude Include="headers\DataStructures\BinarySearchTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Iterator\ReverseIterator.h">
+    <ClInclude Include="headers\DataStructures\Iterator\ReverseIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\Iterator\ReverseIterable.h">
+    <ClInclude Include="headers\DataStructures\Iterator\ReverseIterable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\HashMap.h">
+    <ClInclude Include="headers\DataStructures\HashMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\DataStructures\Iterator\Implementations\DynamicArrayReverseIterator.tpp" />
-    <None Include="src\DataStructures\Iterator\Implementations\DynamicArrayIterator.tpp" />
-    <None Include="src\DataStructures\DynamicArray.tpp" />
+    <None Include="headers\DataStructures\Iterator\Implementations\DynamicArrayReverseIterator.tpp" />
+    <None Include="headers\DataStructures\Iterator\Implementations\DynamicArrayIterator.tpp" />
+    <None Include="headers\DataStructures\DynamicArray.tpp" />
   </ItemGroup>
 </Project>

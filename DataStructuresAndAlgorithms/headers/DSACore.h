@@ -1,4 +1,11 @@
 #pragma once
+#include "Logger/Logger.h"
+
+#include "DataStructures/Iterator/Iterator.h"
+#include "DataStructures/Iterator/Iterable.h"
+#include "DataStructures/Iterator/ReverseIterator.h"
+#include "DataStructures/Iterator/ReverseIterable.h"
+
 #include "DataStructures/DataStructure.h"
 #include "DataStructures/Array.h"
 #include "DataStructures/DynamicArray.h"
