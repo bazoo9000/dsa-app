@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ISortStrategy.h"
-#include "../../DataStructures/DynamicArray.h"
 #include <cstdint>
 
 namespace alg

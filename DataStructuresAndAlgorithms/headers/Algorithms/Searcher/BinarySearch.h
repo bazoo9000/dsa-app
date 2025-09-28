@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ISearchStrategy.h"
-#include "../../DataStructures/BinarySearchTree.h"
 #include <cstdint>
 
 namespace alg

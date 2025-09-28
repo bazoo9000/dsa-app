@@ -1,6 +1,5 @@
 #pragma once
 
-// TODO: Precompile those headers
 #include <iostream>
 #include <string>
 #include <sstream>

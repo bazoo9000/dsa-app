@@ -1,3 +1,4 @@
+#include "dsa_pch.h"
 #include "DSACore.h"
 
 int main(int argc, char* argv[])
