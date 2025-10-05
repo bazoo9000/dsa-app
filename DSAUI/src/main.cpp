@@ -1,7 +1,7 @@
 #include "dsa_pch.h"
 #include "DSACore.h"
 
-#include "I18NFactory.h"
+#include "I18N/I18NFactory.h"
 
 int main(int argc, char* argv[])
 {
