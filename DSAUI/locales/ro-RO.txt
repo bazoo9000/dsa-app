@@ -1,4 +1,0 @@
-GUI.BACK Inapoi
-GUI.CLOSE Inchide
-GUI.BUTTON Buton
-GUI.WELCOME BunVenit

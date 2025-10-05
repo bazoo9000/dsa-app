@@ -1,4 +1,0 @@
-GUI.BACK Back
-GUI.CLOSE Close
-GUI.BUTTON Button
-GUI.WELCOME Welcome
