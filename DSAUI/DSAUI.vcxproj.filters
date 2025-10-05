@@ -21,10 +21,36 @@
     <ClCompile Include="src\dsa_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\I18N.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\I18NFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dsa_pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\I18N.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\I18NFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendors\json\single_include\nlohmann\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendors\json\single_include\nlohmann\json_fwd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="locales\en-US.txt" />
+    <Text Include="locales\ro-RO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="locales\en-US.json" />
+    <None Include="locales\ro-RO.json" />
   </ItemGroup>
 </Project>
