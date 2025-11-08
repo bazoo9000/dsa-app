@@ -14,5 +14,7 @@ int main(int argc, char* argv[])
 	i18n = I18NFactory::GetI18N("ro-RO");
 	LOG_GUI_TRACE(i18n->GetText("GUI.BACK").c_str());
 
+	std::cin.get();
+
 	return 0;
 }

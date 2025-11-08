@@ -1,0 +1,48 @@
+cmake_minimum_required(VERSION 3.15)
+project(DataStructuresAndAlgorithms LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Output directories
+if(MSVC)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/Debug)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/Release)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/Debug)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/Release)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/Debug)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/Release)
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+endif()
+
+# Compiler flags
+# if(MSVC)
+#     add_compile_options(/W4 /WX)
+# elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+#     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+# endif()
+
+# Put locales near the exe for all compilers
+file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
+     DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/locales/)
+
+# Put locales near the exe file for Visual Studio
+if(MSVC)
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
+         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/locales/)
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
+         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/locales/)
+endif()
+
+set(BUILD_SHARED_LIBS OFF)
+
+add_subdirectory(DataStructuresAndAlgorithms)
+add_subdirectory(DSAUI)
+
+# Set DSAUI as the startup project in Visual Studio
+if(MSVC)
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT DSAUI)
+endif()
