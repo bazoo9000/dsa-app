@@ -26,7 +26,15 @@ std::string I18N::GetCurrentLocale()
 
 std::string I18N::GetText(std::string token)
 {
-	return m_TextMap[token].template get<std::string>();
+	try
+	{
+		return m_TextMap[token].get<std::string>();
+	}
+	catch (std::exception const& e)
+	{
+		LOG_GUI_ERROR("Token %s doesn't exist", token.c_str());
+		return token;
+	}
 }
 
 void I18N::LoadTextMap(std::string locale)
