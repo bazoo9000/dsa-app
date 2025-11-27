@@ -4,15 +4,6 @@
 #include "I18N/I18N.h"
 #include "I18N/I18NFactory.h"
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "imgui.h"
-
-#define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#include "backends/imgui_impl_opengl3.h"
-#include "backends/imgui_impl_opengl3_loader.h"
-#include "backends/imgui_impl_glfw.h"
-
 static void glfw_error_callback(int error, const char* description)
 {
 	std::cerr << "GLFW Error " << error << ": " << description << "\n";
