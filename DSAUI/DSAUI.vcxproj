@@ -19,16 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Application\Application.cpp" />
+    <ClCompile Include="src\Application\Widget\Button.cpp" />
     <ClCompile Include="src\dsa_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\I18N\I18N.cpp">
+    <ClCompile Include="src\Application\I18N\I18N.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\I18N\I18NFactory.cpp">
+    <ClCompile Include="src\Application\I18N\I18NFactory.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Application\Window\Window.cpp" />
     <ClCompile Include="vendors\glad\src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -160,9 +163,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Application\Application.h" />
+    <ClInclude Include="src\Application\Transform.h" />
+    <ClInclude Include="src\Application\Widget\Button.h" />
+    <ClInclude Include="src\Application\Widget\Widget.h" />
     <ClInclude Include="src\dsa_pch.h" />
-    <ClInclude Include="src\I18N\I18N.h" />
-    <ClInclude Include="src\I18N\I18NFactory.h" />
+    <ClInclude Include="src\Application\I18N\I18N.h" />
+    <ClInclude Include="src\Application\I18N\I18NFactory.h" />
+    <ClInclude Include="src\Application\Window\Window.h" />
     <ClInclude Include="vendors\glad\include\glad\glad.h" />
     <ClInclude Include="vendors\glfw\include\GLFW\glfw3.h" />
     <ClInclude Include="vendors\glfw\include\GLFW\glfw3native.h" />
