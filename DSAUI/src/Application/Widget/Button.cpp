@@ -1,8 +1,8 @@
 #include "Button.h"
 
-Button::Button(std::string label)
+Button::Button(std::string id, std::string label)
 {
-	m_Id = "##" + label;
+	m_Id = "##" + id;
 	m_Label = label;
 }
 
@@ -12,11 +12,11 @@ Button::~Button()
 
 void Button::Draw()
 {
-	ImGui::BeginChild(m_Id.c_str());
-	//if (ImGui::Button(m_Label.c_str(), m_Transform.scale))
-	if (ImGui::Button(m_Label.c_str()))
+	ImGui::SetCursorPos(m_Transform.position);
+	//ImGui::BeginChild(m_Id.c_str());
+	if (ImGui::Button(m_Label.c_str(), m_Transform.scale))
 	{
 		m_Callback();
 	}
-	ImGui::EndChild();
+	//ImGui::EndChild();
 }

@@ -2,8 +2,6 @@
 
 #include "../../dsa_pch.h"
 #include "../Transform.h"
-#include "../I18N/I18NFactory.h"
-#include "../I18N/I18N.h"
 
 class Widget
 {
@@ -14,8 +12,14 @@ public:
 public:
 	virtual inline void Draw() = 0;
 
+public:
+	void MoveTo(ImVec2 newPos);
+	void ScaleBy(float scale);
+	void ScaleTo(ImVec2 newScale);
+	void RotateBy(float degrees);
+
 protected:
 	// std::vector<Widget*> m_Children; // Panel only
-	Transform m_Transform; // relative pos/scale/rot
-	std::string m_Id = "##";
+	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f }; // relative pos/scale/rot
+	std::string m_Id;
 };

@@ -6,7 +6,7 @@
 class Button : public Widget
 {
 public:
-	Button(std::string label);
+	Button(std::string id, std::string label);
 	~Button();
 
 public:

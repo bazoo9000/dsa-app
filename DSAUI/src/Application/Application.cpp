@@ -45,7 +45,13 @@ void Application::Run()
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoTitleBar
 		);
-		Button but(m_I18N->GetText("GUI.BACK"));
+
+		static int pos[2] = { 0, 75 };
+		static float scale = 1.0f;
+		ImGui::SliderInt2("Move button by", pos, 75, (int)(m_Window->GetWindowSize().y / 2));
+		ImGui::SliderFloat("Scale button by", &scale, 0.1f, 5.0f);
+
+		Button but("but_back", m_I18N->GetText("GUI.BACK"));
 		but.SetCallback(
 			[&close]() 
 			{ 
@@ -53,6 +59,9 @@ void Application::Run()
 				close = true; 
 			}
 		);
+		but.MoveTo({ (float)pos[0], (float)pos[1] });
+		but.ScaleTo({ 50.0f, 50.0f });
+		but.ScaleBy(scale);
 		but.Draw();
 		ImGui::End();
 
