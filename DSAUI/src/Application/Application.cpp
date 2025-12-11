@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "DSACore.h"
 #include "Widget/Button.h"
+#include "Widget/Panel.h"
 
 Application::Application()
 {
@@ -27,13 +28,40 @@ void Application::Run()
 {
 	LOG_GUI_TRACE("Application run begin");
 	GLFWwindow* window = m_Window->GetWindow(); // to avoid overhead
+
+	bool close = false;
+	Button* but = new Button("but_back", m_I18N->GetText("GUI.BACK"));
+	but->SetCallback(
+		[&close]()
+		{
+			LOG_GUI_DEBUG("Closing");
+			close = true;
+		}
+	);
+	but->MoveTo({ 100.0f, 100.0f });
+	but->ScaleTo({ 50.0f, 20.0f });
+
+	Button* but2 = new Button("but_test", m_I18N->GetText("GUI.WELCOME"));
+	but2->SetCallback(
+		[]()
+		{
+			LOG_GUI_DEBUG("HONK");
+		}
+	);
+	but2->MoveTo({ 300.0f, 300.0f });
+	but2->ScaleTo({ 150.0f, 150.0f });
+
+	Panel p("panel");
+	p.AddWidget(but);
+	p.AddWidget(but2);
+	p.MoveTo({ 400, 400 });
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		imguiCreateFrame();
 
 		// WIDGETS GO HERE
-		bool close = false;
 		ImVec2 windowSize = m_Window->GetWindowSize();
 
 		// TODO: somehow cache, to avoid reinit of all ui objects
@@ -46,23 +74,8 @@ void Application::Run()
 			ImGuiWindowFlags_NoTitleBar
 		);
 
-		static int pos[2] = { 0, 75 };
-		static float scale = 1.0f;
-		ImGui::SliderInt2("Move button by", pos, 75, (int)(m_Window->GetWindowSize().y / 2));
-		ImGui::SliderFloat("Scale button by", &scale, 0.1f, 5.0f);
+		p.Draw();
 
-		Button but("but_back", m_I18N->GetText("GUI.BACK"));
-		but.SetCallback(
-			[&close]() 
-			{ 
-				LOG_GUI_DEBUG("Closing"); 
-				close = true; 
-			}
-		);
-		but.MoveTo({ (float)pos[0], (float)pos[1] });
-		but.ScaleTo({ 50.0f, 50.0f });
-		but.ScaleBy(scale);
-		but.Draw();
 		ImGui::End();
 
 		ImGui::ShowDemoWindow();

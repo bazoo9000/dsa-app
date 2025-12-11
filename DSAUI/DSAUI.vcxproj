@@ -19,8 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application\Application.cpp" />
+    <ClCompile Include="src\Application\Application.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="src\Application\Widget\Button.cpp" />
+    <ClCompile Include="src\Application\Widget\Panel.cpp" />
     <ClCompile Include="src\Application\Widget\Widget.cpp" />
     <ClCompile Include="src\dsa_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -167,6 +170,7 @@
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\Transform.h" />
     <ClInclude Include="src\Application\Widget\Button.h" />
+    <ClInclude Include="src\Application\Widget\Panel.h" />
     <ClInclude Include="src\Application\Widget\Widget.h" />
     <ClInclude Include="src\dsa_pch.h" />
     <ClInclude Include="src\Application\I18N\I18N.h" />
