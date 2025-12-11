@@ -14,6 +14,7 @@ public:
 	virtual inline void Draw() override;
 
 public:
+	// TODO: add an interface for having the power to do hierarhical rendering
 	void AddWidget(Widget* widget);
 	void RemoveWidget(std::string id);
 

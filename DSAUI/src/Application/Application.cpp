@@ -2,6 +2,7 @@
 #include "DSACore.h"
 #include "Widget/Button.h"
 #include "Widget/Panel.h"
+#include "Widget/TextLabel.h"
 
 Application::Application()
 {
@@ -51,10 +52,11 @@ void Application::Run()
 	but2->MoveTo({ 300.0f, 300.0f });
 	but2->ScaleTo({ 150.0f, 150.0f });
 
-	Panel p("panel");
-	p.AddWidget(but);
-	p.AddWidget(but2);
-	p.MoveTo({ 400, 400 });
+	TextLabel* label = new TextLabel("label1", "PRESS TO EXIT");
+	label->MoveTo({ 80.0f, 80.0f });
+
+	std::vector<Widget*> widgets = { but, but2, label };
+	Panel p("panel", widgets);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -64,7 +66,7 @@ void Application::Run()
 		// WIDGETS GO HERE
 		ImVec2 windowSize = m_Window->GetWindowSize();
 
-		// TODO: somehow cache, to avoid reinit of all ui objects
+		// TODO: cache all ui elements to avoid reinits
 		ImGui::SetNextWindowPos({ 0, 0 });
 		ImGui::SetNextWindowSize(windowSize);
 		ImGui::Begin("##main", nullptr,
@@ -74,7 +76,9 @@ void Application::Run()
 			ImGuiWindowFlags_NoTitleBar
 		);
 
+		static int step = 0;
 		p.Draw();
+		label->ModifyText("PRESS TO EXIT " + std::to_string(step++));
 
 		ImGui::End();
 
