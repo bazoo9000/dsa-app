@@ -22,7 +22,6 @@ public:
 	std::string GetId() { return m_Id; }
 
 protected:
-	// std::vector<Widget*> m_Children; // Panel only
 	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f }; // relative pos/scale/rot
-	std::string m_Id;
+	std::string m_Id; // for labeling/caching
 };

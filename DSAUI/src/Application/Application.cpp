@@ -3,6 +3,7 @@
 #include "Widget/Button.h"
 #include "Widget/Panel.h"
 #include "Widget/TextLabel.h"
+#include "Widget/TextBox.h"
 
 Application::Application()
 {
@@ -55,7 +56,14 @@ void Application::Run()
 	TextLabel* label = new TextLabel("label1", "PRESS TO EXIT");
 	label->MoveTo({ 80.0f, 80.0f });
 
-	std::vector<Widget*> widgets = { but, but2, label };
+	TextBox* box = new TextBox(
+		"textbox",
+		"With its multiple defensive layers, high life recovery and a high max hit pool from an early stage of the game, very few other minion builds can compete with it defensively."
+	);
+	box->MoveTo({ 10.0f, 150.0f });
+	box->ScaleTo({ 350.0f, 0.0f });
+
+	std::vector<Widget*> widgets = { but, but2, label, box };
 	Panel p("panel", widgets);
 
 	while (!glfwWindowShouldClose(window))
