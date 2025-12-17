@@ -59,6 +59,6 @@ void Panel::RemoveWidget(std::string id)
 	}
 	else
 	{
-		LOG_GUI_ERROR("Can't delete '%s', doesn't exist in panel '%s'", id, m_Id);
+		LOG_GUI_ERROR("Can't delete '%s', doesn't exist in Panel '%s'", id, m_Id);
 	}
 }

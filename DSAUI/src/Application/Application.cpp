@@ -4,6 +4,7 @@
 #include "Widget/Panel.h"
 #include "Widget/TextLabel.h"
 #include "Widget/TextBox.h"
+#include "Widget/ComboBox.h"
 
 Application::Application()
 {
@@ -63,8 +64,18 @@ void Application::Run()
 	box->MoveTo({ 10.0f, 150.0f });
 	box->ScaleTo({ 350.0f, 0.0f });
 
-	std::vector<Widget*> widgets = { but, but2, label, box };
+	std::vector<std::string> comboItems =
+	{ "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII" };
+	ComboBox* combo = new ComboBox("combo", comboItems);
+	combo->MoveTo({ 10.0f, 40.0f });
+	combo->ScaleTo({ 150.0f, 100.0f });
+	combo->AddItem("TEST");
+	combo->RemoveItem("AAAA");
+	combo->RemoveItem("NOT_EXIST");
+
+	std::vector<Widget*> widgets = { but, but2, label, box, combo };
 	Panel p("panel", widgets);
+	p.RemoveWidget("NOT_EXIST");
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -84,9 +95,8 @@ void Application::Run()
 			ImGuiWindowFlags_NoTitleBar
 		);
 
-		static int step = 0;
 		p.Draw();
-		label->ModifyText("PRESS TO EXIT " + std::to_string(step++));
+		label->ModifyText(combo->GetSelected());
 
 		ImGui::End();
 
