@@ -14,6 +14,7 @@ public:
 
 public:
 	void MoveTo(ImVec2 newPos);
+	void MoveBy(ImVec2 move);
 	void ScaleBy(float scale);
 	void ScaleTo(ImVec2 newScale);
 	void RotateBy(float degrees);

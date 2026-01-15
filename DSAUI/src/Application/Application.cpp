@@ -63,6 +63,7 @@ void Application::Run()
 	);
 	box->MoveTo({ 10.0f, 150.0f });
 	box->ScaleTo({ 350.0f, 0.0f });
+	box->MoveBy({ -90.0f, 0.0f });
 
 	std::vector<std::string> comboItems =
 	{ "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII" };

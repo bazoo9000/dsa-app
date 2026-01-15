@@ -6,6 +6,12 @@ void Widget::MoveTo(ImVec2 newPos)
 	m_Transform.position = newPos;
 }
 
+void Widget::MoveBy(ImVec2 move)
+{
+	m_Transform.position.x += move.x;
+	m_Transform.position.y += move.y;
+}
+
 void Widget::ScaleBy(float scale)
 {
 	if (scale < 0.0f)

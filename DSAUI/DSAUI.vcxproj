@@ -23,6 +23,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Button.cpp" />
+    <ClCompile Include="src\Application\Widget\ComboBox.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp" />
     <ClCompile Include="src\Application\Widget\TextLabel.cpp" />
     <ClCompile Include="src\Application\Widget\Panel.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\Transform.h" />
     <ClInclude Include="src\Application\Widget\Button.h" />
+    <ClInclude Include="src\Application\Widget\ComboBox.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />
     <ClInclude Include="src\Application\Widget\TextLabel.h" />
     <ClInclude Include="src\Application\Widget\Panel.h" />
