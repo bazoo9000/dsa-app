@@ -322,4 +322,7 @@
     <None Include="locales\en-US.json" />
     <None Include="locales\ro-RO.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\Roboto-Medium.ttf" />
+  </ItemGroup>
 </Project>

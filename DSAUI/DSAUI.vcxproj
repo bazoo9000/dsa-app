@@ -220,6 +220,9 @@
     <None Include="locales\en-US.json" />
     <None Include="locales\ro-RO.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\Roboto-Medium.ttf" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

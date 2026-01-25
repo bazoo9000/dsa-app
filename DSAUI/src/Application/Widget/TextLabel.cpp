@@ -1,18 +1,21 @@
 #include "TextLabel.h"
 
-TextLabel::TextLabel(std::string id, std::string text)
-	: m_Text(text)
+TextLabel::TextLabel(std::string id, std::string text, ImFont* font)
 {
 	m_Id = "##" + id;
+	m_Text = text;
+	m_Font = font;
 }
 
 TextLabel::~TextLabel()
 {
-	m_Text.clear();
+	// nimic
 }
 
 inline void TextLabel::Draw()
 {
 	ImGui::SetCursorPos(m_Transform.position);
+	ImGui::PushFont(m_Font);
 	ImGui::Text(m_Text.c_str());
+	ImGui::PopFont();
 }

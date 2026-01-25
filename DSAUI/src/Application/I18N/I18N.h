@@ -8,7 +8,8 @@ static const std::vector<std::string> VALID_TOKENS = {
 	"GUI.BACK",
 	"GUI.CLOSE",
 	"GUI.BUTTON",
-	"GUI.WELCOME"
+	"GUI.WELCOME",
+	"GUI.OPTIONS"
 };
 
 class I18N

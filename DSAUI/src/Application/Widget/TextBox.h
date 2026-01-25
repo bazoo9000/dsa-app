@@ -1,19 +1,14 @@
 #pragma once
 
 #include "Widget.h"
+#include "BasicText.h"
 
-class TextBox : public Widget
+class TextBox : public Widget, public BasicText
 {
 public:
-	TextBox(std::string id, std::string text = "");
+	TextBox(std::string id, std::string text = "", ImFont* font = FONT_DEFAULT);
 	~TextBox();
 
 public:
 	virtual inline void Draw() override;
-
-public:
-	void ModifyText(std::string newText) { m_Text = newText; }
-
-private:
-	std::string m_Text;
 };

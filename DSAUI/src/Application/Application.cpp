@@ -1,7 +1,9 @@
 #include "Application.h"
 #include "DSACore.h"
+
 #include "Widget/Button.h"
 #include "Widget/Panel.h"
+#include "Widget/BasicText.h"
 #include "Widget/TextLabel.h"
 #include "Widget/TextBox.h"
 #include "Widget/ComboBox.h"
@@ -14,6 +16,8 @@ Application::Application()
 	initGLAD();									// GLAD init
 	initImGUI("#version 130");					// ImGUI init
 	m_I18N = I18NFactory::GetI18N("ro-RO");		// I18N init
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	LoadFonts(io);								// Load all basic fonts
 
 	LOG_GUI_DEBUG("Application CREATED succesfully");
 }
@@ -44,39 +48,22 @@ void Application::Run()
 	but->MoveTo({ 100.0f, 100.0f });
 	but->ScaleTo({ 50.0f, 20.0f });
 
-	Button* but2 = new Button("but_test", m_I18N->GetText("GUI.WELCOME"));
-	but2->SetCallback(
+	Button* opt = new Button("but_options", m_I18N->GetText("GUI.OPTIONS"));
+	opt->SetCallback(
 		[]()
 		{
-			LOG_GUI_DEBUG("HONK");
+			LOG_GUI_DEBUG("NO OPTIONS YET...");
 		}
 	);
-	but2->MoveTo({ 300.0f, 300.0f });
-	but2->ScaleTo({ 150.0f, 150.0f });
+	opt->MoveTo({ 100.0f, 130.0f });
+	opt->ScaleTo({ 50.0f, 20.0f });
 
-	TextLabel* label = new TextLabel("label1", "PRESS TO EXIT");
-	label->MoveTo({ 80.0f, 80.0f });
+	TextLabel* title = new TextLabel("title", m_I18N->GetText("GUI.WELCOME"), FONT_H1);
+	title->MoveTo({ 520.0f, 10.0f });
+	title->ScaleTo({ 300.0f, 300.0f });
 
-	TextBox* box = new TextBox(
-		"textbox",
-		"With its multiple defensive layers, high life recovery and a high max hit pool from an early stage of the game, very few other minion builds can compete with it defensively."
-	);
-	box->MoveTo({ 10.0f, 150.0f });
-	box->ScaleTo({ 350.0f, 0.0f });
-	box->MoveBy({ -90.0f, 0.0f });
-
-	std::vector<std::string> comboItems =
-	{ "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII" };
-	ComboBox* combo = new ComboBox("combo", comboItems);
-	combo->MoveTo({ 10.0f, 40.0f });
-	combo->ScaleTo({ 150.0f, 100.0f });
-	combo->AddItem("TEST");
-	combo->RemoveItem("AAAA");
-	combo->RemoveItem("NOT_EXIST");
-
-	std::vector<Widget*> widgets = { but, but2, label, box, combo };
+	std::vector<Widget*> widgets = { but, title, opt };
 	Panel p("panel", widgets);
-	p.RemoveWidget("NOT_EXIST");
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -97,7 +84,6 @@ void Application::Run()
 		);
 
 		p.Draw();
-		label->ModifyText(combo->GetSelected());
 
 		ImGui::End();
 
@@ -118,7 +104,6 @@ void Application::initImGUI(const char* glslVersion)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	ImGui::StyleColorsDark();
 

@@ -30,13 +30,19 @@ endif()
 # Put locales near the exe for all compilers
 file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
      DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/locales/)
+file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/fonts/ 
+     DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/fonts/)
 
-# Put locales near the exe file for Visual Studio
+# Put assets near the exe file for Visual Studio
 if(MSVC)
     file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
          DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/locales/)
     file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
          DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/locales/)
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/fonts/
+         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/fonts/)
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/fonts/
+         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/fonts/)
 endif()
 
 set(BUILD_SHARED_LIBS OFF)
