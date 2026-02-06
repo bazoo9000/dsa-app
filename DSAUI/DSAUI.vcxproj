@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -22,6 +22,7 @@
     <ClCompile Include="src\Application\Application.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\CacheManager\CacheManager.cpp" />
     <ClCompile Include="src\Application\Widget\Button.cpp" />
     <ClCompile Include="src\Application\Widget\ComboBox.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application\Application.h" />
+    <ClInclude Include="src\Application\CacheManager\CacheManager.h" />
     <ClInclude Include="src\Application\Transform.h" />
     <ClInclude Include="src\Application\Widget\Button.h" />
     <ClInclude Include="src\Application\Widget\ComboBox.h" />
