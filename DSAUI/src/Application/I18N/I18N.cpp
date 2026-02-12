@@ -1,20 +1,45 @@
 #include "I18N.h"
 #include "Logger/Logger.h"
 
-I18N* I18N::s_Instance = nullptr;
-
-const std::string LOCALE_PATH = "locales/";
+static const std::string LOCALE_PATH = "locales/";
 
 I18N::I18N(const std::string& locale)
 	: m_Locale(locale)
 {
-	LoadTextMap(locale);
+	validateLocale(locale);
 }
 
 I18N::~I18N()
 {
-	ClearTextMap();
 	m_Locale.clear();
+}
+
+std::vector<TV> I18N::GetTexts(std::vector<std::string> tokens)
+{
+	json textMap = readLocaleFile(m_Locale + ".json");
+
+	std::vector<TV> ret;
+	ret.reserve(tokens.size());
+
+	for (auto tok : tokens)
+	{
+		if (textMap.find(tok) != textMap.end())
+		{
+			ret.push_back({ tok, textMap[tok] });
+		}
+		else
+		{
+			LOG_GUI_ERROR("Token %s doesn't exist", tok.c_str());
+			ret.push_back({ tok, tok });
+		}
+	}
+
+	return ret;
+}
+
+TV I18N::GetText(std::string token)
+{
+	return GetTexts({ token })[0];
 }
 
 std::string I18N::GetCurrentLocale()
@@ -22,24 +47,11 @@ std::string I18N::GetCurrentLocale()
 	return m_Locale;
 }
 
-std::string I18N::GetText(std::string token)
+void I18N::validateLocale(std::string locale)
 {
-	try
-	{
-		return m_TextMap[token].get<std::string>();
-	}
-	catch (std::exception const& e)
-	{
-		LOG_GUI_ERROR("Token %s doesn't exist", token.c_str());
-		return token;
-	}
-}
+	json textMap = readLocaleFile(locale + ".json");
 
-void I18N::LoadTextMap(std::string locale)
-{
-	m_TextMap = readLocaleFile(locale + ".json");
-
-	auto missingTokens = getMissingTokens(m_TextMap);
+	auto missingTokens = getMissingTokens(textMap);
 	if (!missingTokens.empty())
 	{
 		std::ostringstream oss;
@@ -47,21 +59,13 @@ void I18N::LoadTextMap(std::string locale)
 		oss << "\n";
 		for (auto it = missingTokens.begin(); it != missingTokens.end(); it++)
 		{
-			std::string token = *it;
-
-			overrideToken(token, token); // instead have the token id instead of the word
-			oss << token << "\n";
+			oss << *it << "\n";
 		}
 
-		LOG_GUI_WARN("Missing tokens found:%s", oss.str().c_str());
+		LOG_GUI_WARN("Missing tokens found:\n%s", oss.str().c_str());
 	}
 
-	LOG_GUI_INFO("Reading locale %s was succesful", m_Locale);
-}
-
-void I18N::ClearTextMap()
-{
-	m_TextMap.clear();
+	LOG_GUI_INFO("Reading locale %s was succesful", locale);
 }
 
 json I18N::readLocaleFile(std::string localeFileName)
@@ -99,9 +103,4 @@ std::vector<std::string> I18N::getMissingTokens(json textMap)
 	}
 
 	return missingTokens;
-}
-
-void I18N::overrideToken(std::string token, std::string newVal)
-{
-	m_TextMap[token] = newVal;
 }

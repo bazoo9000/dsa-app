@@ -28,6 +28,8 @@ public:
 
 public:
 	void Cache(std::string key, T value);
+	bool IsCached(std::string key);
+	std::vector<std::string> GetMissingKeys(std::vector<std::string> keys);
 	T* Get(std::string key);
 	void Clear();
 
@@ -66,7 +68,7 @@ CacheManager<T>::~CacheManager()
 template<typename T>
 void CacheManager<T>::Cache(std::string key, T value)
 {
-	if (m_CacheMap.find(key) != m_CacheMap.end())
+	if (IsCached(key))
 	{
 		LOG_GUI_ERROR("Can't cache, '%s' key already exists in cache", key.c_str());
 		return;
@@ -95,9 +97,31 @@ void CacheManager<T>::Cache(std::string key, T value)
 }
 
 template<typename T>
+bool CacheManager<T>::IsCached(std::string key)
+{
+	return (m_CacheMap.find(key) != m_CacheMap.end());
+}
+
+template<typename T>
+inline std::vector<std::string> CacheManager<T>::GetMissingKeys(std::vector<std::string> keys)
+{
+	std::vector<std::string> missed;
+
+	for (auto key : keys)
+	{
+		if (!IsCached(key))
+		{
+			missed.push_back(key);
+		}
+	}
+
+	return missed;
+}
+
+template<typename T>
 T* CacheManager<T>::Get(std::string key)
 {
-	if (m_CacheMap.find(key) == m_CacheMap.end())
+	if (!IsCached(key))
 	{
 		LOG_GUI_ERROR("'%s' is not cached", key.c_str());
 		return nullptr;

@@ -4,6 +4,7 @@
 #include "I18N/I18N.h"
 #include "I18N/I18NFactory.h"
 #include "Widget/Widget.h"
+#include "CacheManager/CacheManager.h"
 
 class Application
 {
@@ -26,5 +27,6 @@ private:
 private:
 	Window* m_Window = nullptr;
 	I18N* m_I18N = nullptr;
-	std::map<std::string, Widget*> m_Cache;
+	CacheManager<std::string> m_TextCache;
+	CacheManager<Widget*> m_WidgetCache;
 };

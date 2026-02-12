@@ -3,6 +3,7 @@
 #include "../../dsa_pch.h"
 
 using json = nlohmann::json;
+using TV = std::pair<std::string, std::string>; // token/value pair
 
 static const std::vector<std::string> VALID_TOKENS = {
 	"GUI.BACK",
@@ -22,18 +23,15 @@ public:
 	I18N& operator=(const I18N&) = delete;
 
 public:
+	std::vector<TV> GetTexts(std::vector<std::string> tokens);
+	TV GetText(std::string token);
 	std::string GetCurrentLocale();
-	std::string GetText(std::string token);
-	void LoadTextMap(std::string locale);
-	void ClearTextMap();
-
+	
 private:
+	void validateLocale(std::string locale);
 	json readLocaleFile(std::string localeFileName);
 	std::vector<std::string> getMissingTokens(json textMap);
-	void overrideToken(std::string token, std::string newVal);
 
 private:
-	static I18N* s_Instance;
 	std::string m_Locale;
-	json m_TextMap; // token -> translated text
 };

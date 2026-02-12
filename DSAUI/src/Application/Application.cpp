@@ -18,6 +18,8 @@ Application::Application()
 	m_I18N = I18NFactory::GetI18N("ro-RO");		// I18N init
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	LoadFonts(io);								// Load all basic fonts
+	m_TextCache = CacheManager<std::string>(250);
+	m_WidgetCache = CacheManager<Widget*>(10);
 
 	LOG_GUI_DEBUG("Application CREATED succesfully");
 }
@@ -36,8 +38,22 @@ void Application::Run()
 	LOG_GUI_TRACE("Application run begin");
 	GLFWwindow* window = m_Window->GetWindow(); // to avoid overhead
 
+	// TODO: dereferencing these looks utterly terrible, probably move it somewhere else, maybe in I18N class
+	auto misses = m_TextCache.GetMissingKeys(
+		{ "GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME", "GUI.NU_EXISTA" }
+	);
+
+	if (misses.size() != 0)
+	{
+		std::vector<TV> tvs = m_I18N->GetTexts(misses);
+		for (auto tv : tvs)
+		{
+			m_TextCache.Cache(tv.first, tv.second);
+		}
+	}
+
 	bool close = false;
-	Button* but = new Button("but_back", m_I18N->GetText("GUI.BACK"));
+	Button* but = new Button("but_back", *m_TextCache.Get("GUI.BACK"));
 	but->SetCallback(
 		[&close]()
 		{
@@ -48,7 +64,7 @@ void Application::Run()
 	but->MoveTo({ 100.0f, 100.0f });
 	but->ScaleTo({ 50.0f, 20.0f });
 
-	Button* opt = new Button("but_options", m_I18N->GetText("GUI.OPTIONS"));
+	Button* opt = new Button("but_options", *m_TextCache.Get("GUI.OPTIONS"));
 	opt->SetCallback(
 		[]()
 		{
@@ -58,11 +74,14 @@ void Application::Run()
 	opt->MoveTo({ 100.0f, 130.0f });
 	opt->ScaleTo({ 50.0f, 20.0f });
 
-	TextLabel* title = new TextLabel("title", m_I18N->GetText("GUI.WELCOME"), FONT_H1);
+	TextLabel* title = new TextLabel("title", *m_TextCache.Get("GUI.WELCOME"), FONT_H1);
 	title->MoveTo({ 520.0f, 10.0f });
 	title->ScaleTo({ 300.0f, 300.0f });
 
-	std::vector<Widget*> widgets = { but, title, opt };
+	TextLabel* test = new TextLabel("test", *m_TextCache.Get("GUI.NU_EXISTA"));
+	test->MoveTo({ 100.0f, 200.0f });
+
+	std::vector<Widget*> widgets = { but, title, opt, test };
 	Panel p("panel", widgets);
 
 	while (!glfwWindowShouldClose(window))

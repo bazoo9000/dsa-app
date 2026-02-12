@@ -77,6 +77,7 @@
     private:
         static inline void log(const char* type, const char* level, const char* msg, const char* color)
         {
+            // TODO: Time bug, its only time since start of program
             printf("%s", color);
             printf("(%s) [%s] %s: %s", __TIME__, type, level, msg);
             printf("%s\n", COLOR_DEFAULT_RESET);

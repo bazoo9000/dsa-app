@@ -22,7 +22,6 @@
     <ClCompile Include="src\Application\Application.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Application\CacheManager\CacheManager.cpp" />
     <ClCompile Include="src\Application\Widget\Button.cpp" />
     <ClCompile Include="src\Application\Widget\ComboBox.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp" />

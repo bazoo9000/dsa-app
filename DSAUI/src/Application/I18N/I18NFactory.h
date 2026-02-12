@@ -11,6 +11,6 @@ public:
 	static std::string GetLocale() { return m_CurrentLocale; }
 
 private:
-	static std::map<std::string, I18N*> m_I18NInstances; // locale -> instance
+	static std::unordered_map<std::string, I18N*> m_I18NInstances; // locale -> instance
 	static std::string m_CurrentLocale;
 };
