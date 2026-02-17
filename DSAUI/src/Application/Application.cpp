@@ -18,6 +18,25 @@ Application::Application()
 	m_I18N = I18NFactory::GetI18N("ro-RO");		// I18N init
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	LoadFonts(io);								// Load all basic fonts
+	
+	// TODO: dereferencing these looks utterly terrible, probably move it somewhere else, maybe in I18N class
+	auto misses = m_TextCache.GetMissingKeys(
+		{ "GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME", "GUI.NU_EXISTA" }
+	);
+
+	if (misses.size() != 0)
+	{
+		std::vector<TV> tvs = m_I18N->GetTexts(misses);
+		for (auto tv : tvs)
+		{
+			m_TextCache.Cache(tv.first, tv.second);
+		}
+	}
+
+	Screen::SetApp(this); // set listener
+	initScreens();
+	ChangeScreen("screen_main");
+	
 	m_TextCache = CacheManager<std::string>(250);
 	m_WidgetCache = CacheManager<Widget*>(10);
 
@@ -38,53 +57,7 @@ void Application::Run()
 	LOG_GUI_TRACE("Application run begin");
 	GLFWwindow* window = m_Window->GetWindow(); // to avoid overhead
 
-	// TODO: dereferencing these looks utterly terrible, probably move it somewhere else, maybe in I18N class
-	auto misses = m_TextCache.GetMissingKeys(
-		{ "GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME", "GUI.NU_EXISTA" }
-	);
-
-	if (misses.size() != 0)
-	{
-		std::vector<TV> tvs = m_I18N->GetTexts(misses);
-		for (auto tv : tvs)
-		{
-			m_TextCache.Cache(tv.first, tv.second);
-		}
-	}
-
-	bool close = false;
-	Button* but = new Button("but_back", *m_TextCache.Get("GUI.BACK"));
-	but->SetCallback(
-		[&close]()
-		{
-			LOG_GUI_DEBUG("Closing");
-			close = true;
-		}
-	);
-	but->MoveTo({ 100.0f, 100.0f });
-	but->ScaleTo({ 50.0f, 20.0f });
-
-	Button* opt = new Button("but_options", *m_TextCache.Get("GUI.OPTIONS"));
-	opt->SetCallback(
-		[]()
-		{
-			LOG_GUI_DEBUG("NO OPTIONS YET...");
-		}
-	);
-	opt->MoveTo({ 100.0f, 130.0f });
-	opt->ScaleTo({ 50.0f, 20.0f });
-
-	TextLabel* title = new TextLabel("title", *m_TextCache.Get("GUI.WELCOME"), FONT_H1);
-	title->MoveTo({ 520.0f, 10.0f });
-	title->ScaleTo({ 300.0f, 300.0f });
-
-	TextLabel* test = new TextLabel("test", *m_TextCache.Get("GUI.NU_EXISTA"));
-	test->MoveTo({ 100.0f, 200.0f });
-
-	std::vector<Widget*> widgets = { but, title, opt, test };
-	Panel p("panel", widgets);
-
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window) && !m_ShouldClose)
 	{
 		glfwPollEvents();
 		imguiCreateFrame();
@@ -102,21 +75,80 @@ void Application::Run()
 			ImGuiWindowFlags_NoTitleBar
 		);
 
-		p.Draw();
+		m_CrtScreen->Draw();
 
 		ImGui::End();
 
 		ImGui::ShowDemoWindow();
 		// WIDGETS END HERE
 
-		if (close)
-		{
-			break;
-		}
-
 		render(window, windowSize);
 	}
 	LOG_GUI_TRACE("Application run end");
+}
+
+void Application::ChangeScreen(std::string id)
+{
+	m_CrtScreen = &m_Screens[id]; // or nullptr if id not found
+}
+
+void Application::Close()
+{
+	m_ShouldClose = true;
+}
+
+void Application::initScreens()
+{
+	// screen inits go here
+
+	// TODO: hide implementation of screen, its gonna get crowded real fast
+	Button* but = new Button("but_back", *m_TextCache.Get("GUI.BACK"));
+	but->SetCallback(
+		[]()
+		{
+			LOG_GUI_DEBUG("Closing");
+			// yes i can also use Close() method, this will be moved
+			Screen::SignalCloseApp();
+		}
+	);
+	but->MoveTo({ 100.0f, 100.0f });
+	but->ScaleTo({ 50.0f, 20.0f });
+
+	Button* opt = new Button("but_options", *m_TextCache.Get("GUI.OPTIONS"));
+	opt->SetCallback(
+		[]()
+		{
+			Screen::SignalChangeScreen("screen_options");
+		}
+	);
+	opt->MoveTo({ 100.0f, 130.0f });
+	opt->ScaleTo({ 50.0f, 20.0f });
+
+	TextLabel* title = new TextLabel("title", *m_TextCache.Get("GUI.WELCOME"), FONT_H1);
+	title->MoveTo({ 520.0f, 10.0f });
+	title->ScaleTo({ 300.0f, 300.0f });
+
+	TextLabel* test = new TextLabel("test", *m_TextCache.Get("GUI.NU_EXISTA"));
+	test->MoveTo({ 100.0f, 200.0f });
+
+	std::vector<Widget*> widgets = { but, title, opt, test };
+	Panel* p = new Panel("panel_main", widgets);
+
+	Screen main("screen_main", p);
+
+	// SEPARATOR //
+
+	TextLabel* title_options = new TextLabel("title", *m_TextCache.Get("GUI.OPTIONS"), FONT_H1);
+	title_options->MoveTo({ 520.0f, 10.0f });
+	title_options->ScaleTo({ 300.0f, 300.0f });
+
+	std::vector<Widget*> widgets1 = { but, title_options };
+	Panel* p1 = new Panel("panel_options", widgets1);
+
+	Screen options("screen_options", p1);
+
+	m_Screens["screen_main"] = main;
+	m_Screens["screen_options"] = options;
 }
 
 void Application::initImGUI(const char* glslVersion)
