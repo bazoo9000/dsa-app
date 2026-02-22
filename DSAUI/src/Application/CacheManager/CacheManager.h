@@ -3,6 +3,7 @@
 #include "../../dsa_pch.h"
 #include "Logger/Logger.h"
 
+// TODO: split into more cache managers of specific type, ridiculously restrictive
 // Uses LRU Cache
 template <typename T>
 class CacheManager
@@ -42,7 +43,7 @@ private:
 	// doubly linked list for reordering and managing LRU cache
 	// since we use pointers to data, its only allocated once
 	// deleted nodes will be marked as NULL
-	// also no raw pointers, managing them will be an absolute nightmare
+	// also no raw pointers, managing them will be an absolute nightmare (too bad)
 	std::unordered_map<std::string, CacheNode*> m_CacheMap;
 	CacheNode* m_Head; // TODO: remake linked lists so it can also use pointers to its data
 	CacheNode* m_Tail;
@@ -126,15 +127,15 @@ T* CacheManager<T>::Get(std::string key)
 		LOG_GUI_ERROR("'%s' is not cached", key.c_str());
 		return nullptr;
 	}
-	else if (m_CacheMap[key] == nullptr)
+	else if (m_CacheMap.at(key) == nullptr)
 	{
 		LOG_GUI_ERROR("'%s' has no data, it was deleted", key.c_str());
 		return nullptr;
 	}
 	else
 	{
-		prioritise(m_CacheMap[key]);
-		return &m_CacheMap[key]->value;
+		prioritise(m_CacheMap.at(key));
+		return &m_CacheMap.at(key)->value;
 	}
 }
 

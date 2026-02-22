@@ -1,3 +1,5 @@
+#include "../dsa_pch.h"
+
 #include "Application.h"
 #include "DSACore.h"
 
@@ -7,6 +9,9 @@
 #include "Widget/TextLabel.h"
 #include "Widget/TextBox.h"
 #include "Widget/ComboBox.h"
+
+#include "Widget/Screen/MainScreen.h"
+#include "Widget/Screen/OptionsScreen.h"
 
 Application::Application()
 {
@@ -35,7 +40,7 @@ Application::Application()
 
 	Screen::SetApp(this); // set listener
 	initScreens();
-	ChangeScreen("screen_main");
+	m_CrtScreen = m_Screens["screen_main"];
 	
 	m_TextCache = CacheManager<std::string>(250);
 	m_WidgetCache = CacheManager<Widget*>(10);
@@ -89,7 +94,7 @@ void Application::Run()
 
 void Application::ChangeScreen(std::string id)
 {
-	m_CrtScreen = &m_Screens[id]; // or nullptr if id not found
+	m_CrtScreen = m_Screens[id]; // or nullptr if id not found
 }
 
 void Application::Close()
@@ -100,55 +105,15 @@ void Application::Close()
 void Application::initScreens()
 {
 	// screen inits go here
+	m_Screens["screen_main"] = new MainScreen("screen_main");
+	m_Screens["screen_options"] = new OptionsScreen("screen_options");
 
-	// TODO: hide implementation of screen, its gonna get crowded real fast
-	Button* but = new Button("but_back", *m_TextCache.Get("GUI.BACK"));
-	but->SetCallback(
-		[]()
-		{
-			LOG_GUI_DEBUG("Closing");
-			// yes i can also use Close() method, this will be moved
-			Screen::SignalCloseApp();
-		}
-	);
-	but->MoveTo({ 100.0f, 100.0f });
-	but->ScaleTo({ 50.0f, 20.0f });
-
-	Button* opt = new Button("but_options", *m_TextCache.Get("GUI.OPTIONS"));
-	opt->SetCallback(
-		[]()
-		{
-			Screen::SignalChangeScreen("screen_options");
-		}
-	);
-	opt->MoveTo({ 100.0f, 130.0f });
-	opt->ScaleTo({ 50.0f, 20.0f });
-
-	TextLabel* title = new TextLabel("title", *m_TextCache.Get("GUI.WELCOME"), FONT_H1);
-	title->MoveTo({ 520.0f, 10.0f });
-	title->ScaleTo({ 300.0f, 300.0f });
-
-	TextLabel* test = new TextLabel("test", *m_TextCache.Get("GUI.NU_EXISTA"));
-	test->MoveTo({ 100.0f, 200.0f });
-
-	std::vector<Widget*> widgets = { but, title, opt, test };
-	Panel* p = new Panel("panel_main", widgets);
-
-	Screen main("screen_main", p);
-
-	// SEPARATOR //
-
-	TextLabel* title_options = new TextLabel("title", *m_TextCache.Get("GUI.OPTIONS"), FONT_H1);
-	title_options->MoveTo({ 520.0f, 10.0f });
-	title_options->ScaleTo({ 300.0f, 300.0f });
-
-	std::vector<Widget*> widgets1 = { but, title_options };
-	Panel* p1 = new Panel("panel_options", widgets1);
-
-	Screen options("screen_options", p1);
-
-	m_Screens["screen_main"] = main;
-	m_Screens["screen_options"] = options;
+	for (auto it = m_Screens.begin(); it != m_Screens.end(); it++)
+	{
+		LOG_GUI_TRACE("%s", it->second->GetId().c_str());
+		it->second->InitScreen(m_TextCache, m_WidgetCache);
+		LOG_GUI_TRACE("%s -> %p", it->second->GetId().c_str(), it->second);
+	}
 }
 
 void Application::initImGUI(const char* glslVersion)

@@ -1,3 +1,5 @@
+#include "../../dsa_pch.h"
+
 #include "Panel.h"
 #include "Logger/Logger.h"
 
@@ -26,7 +28,7 @@ Panel::~Panel()
 inline void Panel::Draw()
 {
 	ImGui::SetNextWindowPos(m_Transform.position);
-	ImGui::BeginChild(m_Id.c_str());
+	ImGui::BeginChild(m_Id.c_str(), { 0, 0 }, ImGuiChildFlags_Borders);
 
 	for (auto w : m_Children)
 	{

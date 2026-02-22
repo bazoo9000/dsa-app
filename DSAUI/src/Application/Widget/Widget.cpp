@@ -1,3 +1,5 @@
+#include "../../dsa_pch.h"
+
 #include "Widget.h"
 #include "Logger/Logger.h"
 

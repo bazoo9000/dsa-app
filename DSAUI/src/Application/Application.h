@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../dsa_pch.h"
+
 #include "IAppReceiver.h"
 
 #include "Window/Window.h"
@@ -7,7 +9,7 @@
 #include "I18N/I18NFactory.h"
 
 #include "Widget/Widget.h"
-#include "Widget/Screen.h"
+#include "Widget/Screen/Screen.h"
 
 #include "CacheManager/CacheManager.h"
 
@@ -38,7 +40,7 @@ private:
 	I18N* m_I18N = nullptr;
 
 	Screen* m_CrtScreen;
-	std::unordered_map<std::string, Screen> m_Screens; // id -> screen
+	std::unordered_map<std::string, Screen*> m_Screens; // id -> screen
 
 	CacheManager<std::string> m_TextCache;
 	CacheManager<Widget*> m_WidgetCache;

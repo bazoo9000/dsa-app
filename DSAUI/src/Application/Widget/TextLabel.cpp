@@ -1,3 +1,5 @@
+#include "../../dsa_pch.h"
+
 #include "TextLabel.h"
 
 TextLabel::TextLabel(std::string id, std::string text, ImFont* font)

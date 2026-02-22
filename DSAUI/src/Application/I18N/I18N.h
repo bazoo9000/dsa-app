@@ -3,6 +3,7 @@
 #include "../../dsa_pch.h"
 
 using json = nlohmann::json;
+// TODO: remove this and convert to hashmap, im stupid
 using TV = std::pair<std::string, std::string>; // token/value pair
 
 static const std::vector<std::string> VALID_TOKENS = {

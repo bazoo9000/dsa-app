@@ -20,26 +20,51 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Application\Widget\BasicText.cpp" />
-    <ClCompile Include="src\Application\Widget\Button.cpp" />
-    <ClCompile Include="src\Application\Widget\ComboBox.cpp" />
-    <ClCompile Include="src\Application\Widget\TextBox.cpp" />
-    <ClCompile Include="src\Application\Widget\TextLabel.cpp" />
-    <ClCompile Include="src\Application\Widget\Panel.cpp" />
-    <ClCompile Include="src\Application\Widget\Widget.cpp" />
+    <ClCompile Include="src\Application\Widget\Screen\MainScreen.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Screen\OptionsScreen.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Screen\Screen.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\BasicText.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Button.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\ComboBox.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\TextBox.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\TextLabel.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Panel.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Widget.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="src\dsa_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Application\I18N\I18N.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\I18N\I18NFactory.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Application\Window\Window.cpp" />
+    <ClCompile Include="src\Application\Window\Window.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="vendors\glad\src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -173,10 +198,14 @@
   <ItemGroup>
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\CacheManager\CacheManager.h" />
+    <ClInclude Include="src\Application\IAppReceiver.h" />
     <ClInclude Include="src\Application\Transform.h" />
     <ClInclude Include="src\Application\Widget\BasicText.h" />
     <ClInclude Include="src\Application\Widget\Button.h" />
     <ClInclude Include="src\Application\Widget\ComboBox.h" />
+    <ClInclude Include="src\Application\Widget\Screen\MainScreen.h" />
+    <ClInclude Include="src\Application\Widget\Screen\OptionsScreen.h" />
+    <ClInclude Include="src\Application\Widget\Screen\Screen.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />
     <ClInclude Include="src\Application\Widget\TextLabel.h" />
     <ClInclude Include="src\Application\Widget\Panel.h" />
@@ -310,10 +339,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>dsa_pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)\vendors\json\single_include\nlohmann\;$(SolutionDir)\DataStructuresAndAlgorithms\headers\;$(ProjectDir)\vendors\imgui\;$(ProjectDir)\vendors\glfw\include\;$(ProjectDir)\vendors\glad\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)\vendors\glfw\build\src\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -332,6 +366,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)\vendors\glfw\build\src\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

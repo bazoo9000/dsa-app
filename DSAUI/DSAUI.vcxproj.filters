@@ -183,6 +183,15 @@
     <ClCompile Include="src\Application\Widget\BasicText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\Screen\Screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Screen\MainScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Screen\OptionsScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dsa_pch.h">
@@ -324,6 +333,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\Widget\BasicText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\Screen\Screen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\IAppReceiver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\Screen\MainScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\Screen\OptionsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

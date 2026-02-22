@@ -1,10 +1,12 @@
+#include "../../../dsa_pch.h"
+
 #include "Screen.h"
 #include "Logger/Logger.h"
 
 IAppReceiver* Screen::m_App = nullptr;
 
-Screen::Screen(std::string id, Panel* panel)
-	: m_Id(id), m_MainPanel(panel)
+Screen::Screen(std::string id)
+	: m_Id(id)
 {
 }
 
@@ -23,12 +25,12 @@ void Screen::SetApp(IAppReceiver* app)
 	m_App = app;
 }
 
-void Screen::SignalChangeScreen(std::string id)
+void Screen::signalChangeScreen(std::string id)
 {
 	m_App->ChangeScreen(id);
 }
 
-void Screen::SignalCloseApp()
+void Screen::signalCloseApp()
 {
 	m_App->Close();
 }
