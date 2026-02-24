@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Screen\MainScreen.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
@@ -51,6 +52,7 @@
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Widget.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\dsa_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -64,6 +66,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Application\Window\Window.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="vendors\glad\src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

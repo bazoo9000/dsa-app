@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../dsa_pch.h"
-
 #include "IAppReceiver.h"
 
 #include "Window/Window.h"

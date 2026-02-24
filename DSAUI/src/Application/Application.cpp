@@ -3,13 +3,6 @@
 #include "Application.h"
 #include "DSACore.h"
 
-#include "Widget/Button.h"
-#include "Widget/Panel.h"
-#include "Widget/BasicText.h"
-#include "Widget/TextLabel.h"
-#include "Widget/TextBox.h"
-#include "Widget/ComboBox.h"
-
 #include "Widget/Screen/MainScreen.h"
 #include "Widget/Screen/OptionsScreen.h"
 
@@ -110,9 +103,7 @@ void Application::initScreens()
 
 	for (auto it = m_Screens.begin(); it != m_Screens.end(); it++)
 	{
-		LOG_GUI_TRACE("%s", it->second->GetId().c_str());
 		it->second->InitScreen(m_TextCache, m_WidgetCache);
-		LOG_GUI_TRACE("%s -> %p", it->second->GetId().c_str(), it->second);
 	}
 }
 

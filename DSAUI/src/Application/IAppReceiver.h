@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../dsa_pch.h"
-
 // Observer pattern btw
 class IAppReceiver
 {

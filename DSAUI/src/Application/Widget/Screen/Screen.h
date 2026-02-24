@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../../../dsa_pch.h"
-
 #include "../Widget.h"
 #include "../Panel.h"
 #include "../Button.h"
@@ -34,9 +32,11 @@ public:
 protected:
 	static void signalChangeScreen(std::string id);
 	static void signalCloseApp();
+	// TODO: maybe add a request method for tokens
 
 protected:
 	std::string m_Id = "";
 	Panel* m_MainPanel = nullptr;
 	static IAppReceiver* m_App;
+	// TODO: maybe add the cachemanagers here instead in app
 };
