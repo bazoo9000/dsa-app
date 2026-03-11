@@ -43,7 +43,6 @@ void OptionsMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Wi
 void OptionsMenu::RunMenu()
 {
 	// im gonna get executed for writing it like this
-	// TODO: change the way id is stored
 	RadioButton* radio = (RadioButton*)m_MainPanel->GetWidget("radio_test");
 	std::string str = ("Ai selectat " + radio->GetSelected());
 	

@@ -14,14 +14,24 @@ Panel::Panel(std::string id, std::vector<Widget*>& widgets)
 {
 	m_Id = id;
 	m_DrawId = "##" + id;
-	m_Children = std::move(widgets);
+	for (auto it = widgets.begin(); it != widgets.end(); it++)
+	{
+		if (*it == nullptr)
+		{
+			LOG_GUI_ERROR("Can't add child widget, widget is null");
+			continue;
+		}
+
+		addChild((*it)->GetId(), *it);
+	}
 }
 
 Panel::~Panel()
 {
+	// TODO: think if this may be a good idea
 	for (auto w : m_Children)
 	{
-		delete w;
+		delete w.second;
 	}
 
 	m_Children.clear();
@@ -34,7 +44,7 @@ inline void Panel::Draw()
 
 	for (auto w : m_Children)
 	{
-		w->Draw();
+		w.second->Draw();
 	}
 
 	ImGui::EndChild();
@@ -44,50 +54,48 @@ void Panel::AddWidget(Widget* widget)
 {
 	if (widget == nullptr)
 	{
-		LOG_GUI_WARN("Can't insert, widget is null");
+		LOG_GUI_ERROR("Can't add child widget, widget is null");
 		return;
 	}
-
-	if (widget->GetId() == "" || widget->GetId() == "##")
-	{
-		LOG_GUI_WARN("Inserted widget has empty id");
-	}
-
-	m_Children.push_back(widget);
+	
+	addChild(widget->GetId(), widget);
 }
 
 Widget* Panel::GetWidget(std::string id)
 {
-	for (auto it = m_Children.begin(); it != m_Children.end(); it++)
+	if (m_Children.find(id) == m_Children.end())
 	{
-		if (id == (*it)->GetId())
-		{
-			return *it;
-		}
+		LOG_GUI_ERROR("Can't find '%s', doesn't exist in Panel '%s'", id.c_str(), m_Id.c_str());
+		return nullptr;
 	}
 
-	LOG_GUI_ERROR("Can't find '%s', doesn't exist in Panel '%s'", id.c_str(), m_Id.c_str());
-	return nullptr;
+	return m_Children[id];
 }
 
 void Panel::RemoveWidget(std::string id)
 {
-	// BAD! ill fix it later
-	auto it = m_Children.begin();
-	for (; it != m_Children.end(); it++)
+	auto del = m_Children.find(id);
+	
+	if (del != m_Children.end())
 	{
-		if (id == (*it)->GetId())
-		{
-			break;
-		}
-	}
-
-	if (it != m_Children.end())
-	{
-		m_Children.erase(it);
+		m_Children.erase(del);
 	}
 	else
 	{
 		LOG_GUI_ERROR("Can't delete '%s', doesn't exist in Panel '%s'", id, m_Id);
 	}
+}
+
+void Panel::addChild(std::string id, Widget* widget)
+{
+	if (id == "")
+	{
+		LOG_GUI_WARN("Widget id is empty");
+	}
+	if (m_Children.find(id) != m_Children.end())
+	{
+		LOG_GUI_WARN("Found duplicate widget id '%s' in Panel '%s'", id.c_str(), m_Id.c_str());
+	}
+
+	m_Children[id] = widget;
 }

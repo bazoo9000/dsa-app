@@ -19,7 +19,10 @@ public:
 	void RemoveWidget(std::string id);
 
 private:
+	void addChild(std::string id, Widget* widget);
+
+private:
 	// TODO: instead of vector, use hashmap ffs
-	std::vector<Widget*> m_Children; // Panel only
+	std::unordered_map<std::string, Widget*> m_Children; // Panel only
 	std::string m_DrawId = "##"; // for imgui id
 };
