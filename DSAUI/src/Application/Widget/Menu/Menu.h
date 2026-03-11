@@ -11,26 +11,26 @@
 #include "../../IAppReceiver.h"
 #include "../../CacheManager/CacheManager.h"
 
-class Screen
+class Menu
 {
 public:
-	Screen() = default;
-	Screen(std::string id);
-	virtual ~Screen();
+	Menu() = default;
+	Menu(std::string id);
+	virtual ~Menu();
 
 public:
 	void Draw();
 
 public:
 	// TODO: decide if to have a default init as a reminder
-	virtual void InitScreen(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache) = 0;
+	virtual void InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache) = 0;
 	static void SetApp(IAppReceiver* app);
 
 public:
 	std::string GetId();
 
 protected:
-	static void signalChangeScreen(std::string id);
+	static void signalChangeMenu(std::string id);
 	static void signalCloseApp();
 	// TODO: maybe add a request method for tokens
 

@@ -7,7 +7,7 @@
 #include "I18N/I18NFactory.h"
 
 #include "Widget/Widget.h"
-#include "Widget/Screen/Screen.h"
+#include "Widget/Menu/Menu.h"
 
 #include "CacheManager/CacheManager.h"
 
@@ -19,11 +19,11 @@ public:
 
 public:
 	void Run();
-	virtual void ChangeScreen(std::string id) override;
+	virtual void ChangeMenu(std::string id) override;
 	virtual void Close() override;
 
 private:
-	void initScreens();
+	void initMenus();
 	void initImGUI(const char* glslVersion);
 	void initGLAD();
 	void destroyImGUI();
@@ -37,8 +37,8 @@ private:
 	Window* m_Window = nullptr;
 	I18N* m_I18N = nullptr;
 
-	Screen* m_CrtScreen;
-	std::unordered_map<std::string, Screen*> m_Screens; // id -> screen
+	Menu* m_CrtMenu;
+	std::unordered_map<std::string, Menu*> m_Menus; // id -> menu
 
 	CacheManager<std::string> m_TextCache;
 	CacheManager<Widget*> m_WidgetCache;

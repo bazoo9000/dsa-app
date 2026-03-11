@@ -1,24 +1,24 @@
 #include "../../../dsa_pch.h"
 
-#include "OptionsScreen.h"
+#include "OptionsMenu.h"
 
-OptionsScreen::OptionsScreen(std::string id)
-	: Screen(id)
+OptionsMenu::OptionsMenu(std::string id)
+	: Menu(id)
 {
 }
 
-OptionsScreen::~OptionsScreen()
+OptionsMenu::~OptionsMenu()
 {
 }
 
-void OptionsScreen::InitScreen(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache)
+void OptionsMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache)
 {
 	Button* but = new Button("but_back", *textCache.Get("GUI.BACK"));
 	but->SetCallback(
 		[]()
 		{
 			LOG_GUI_DEBUG("Closing");
-			Screen::signalCloseApp();
+			Menu::signalCloseApp();
 		}
 	);
 	but->MoveTo({ 100.0f, 100.0f });

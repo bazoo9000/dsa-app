@@ -1,24 +1,24 @@
 #include "../../../dsa_pch.h"
 
-#include "MainScreen.h"
+#include "MainMenu.h"
 
-MainScreen::MainScreen(std::string id)
-	: Screen(id)
+MainMenu::MainMenu(std::string id)
+	: Menu(id)
 {
 }
 
-MainScreen::~MainScreen()
+MainMenu::~MainMenu()
 {
 }
 
-void MainScreen::InitScreen(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache)
+void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache)
 {
 	Button* but = new Button("but_back", *textCache.Get("GUI.BACK"));
 	but->SetCallback(
 		[]()
 		{
 			LOG_GUI_DEBUG("Closing");
-			Screen::signalCloseApp();
+			Menu::signalCloseApp();
 		}
 	);
 	but->MoveTo({ 100.0f, 100.0f });
@@ -28,7 +28,7 @@ void MainScreen::InitScreen(CacheManager<std::string>& textCache, CacheManager<W
 	opt->SetCallback(
 		[]()
 		{
-			Screen::signalChangeScreen("screen_options");
+			Menu::signalChangeMenu("menu_options");
 		}
 	);
 	opt->MoveTo({ 100.0f, 130.0f });

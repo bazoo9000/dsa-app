@@ -4,6 +4,6 @@
 class IAppReceiver
 {
 public:
-	virtual void ChangeScreen(std::string id) = 0;
+	virtual void ChangeMenu(std::string id) = 0;
 	virtual void Close() = 0;
 };

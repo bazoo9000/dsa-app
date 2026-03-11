@@ -3,8 +3,8 @@
 #include "Application.h"
 #include "DSACore.h"
 
-#include "Widget/Screen/MainScreen.h"
-#include "Widget/Screen/OptionsScreen.h"
+#include "Widget/Menu/MainMenu.h"
+#include "Widget/Menu/OptionsMenu.h"
 
 Application::Application()
 {
@@ -31,9 +31,9 @@ Application::Application()
 		}
 	}
 
-	Screen::SetApp(this); // set listener
-	initScreens();
-	m_CrtScreen = m_Screens["screen_main"];
+	Menu::SetApp(this); // set listener
+	initMenus();
+	m_CrtMenu = m_Menus["menu_main"];
 	
 	m_TextCache = CacheManager<std::string>(250);
 	m_WidgetCache = CacheManager<Widget*>(10);
@@ -73,7 +73,7 @@ void Application::Run()
 			ImGuiWindowFlags_NoTitleBar
 		);
 
-		m_CrtScreen->Draw();
+		m_CrtMenu->Draw();
 
 		ImGui::End();
 
@@ -85,9 +85,9 @@ void Application::Run()
 	LOG_GUI_TRACE("Application run end");
 }
 
-void Application::ChangeScreen(std::string id)
+void Application::ChangeMenu(std::string id)
 {
-	m_CrtScreen = m_Screens[id]; // or nullptr if id not found
+	m_CrtMenu = m_Menus[id]; // or nullptr if id not found
 }
 
 void Application::Close()
@@ -95,15 +95,15 @@ void Application::Close()
 	m_ShouldClose = true;
 }
 
-void Application::initScreens()
+void Application::initMenus()
 {
-	// screen inits go here
-	m_Screens["screen_main"] = new MainScreen("screen_main");
-	m_Screens["screen_options"] = new OptionsScreen("screen_options");
+	// menu inits go here
+	m_Menus["menu_main"] = new MainMenu("menu_main");
+	m_Menus["menu_options"] = new OptionsMenu("menu_options");
 
-	for (auto it = m_Screens.begin(); it != m_Screens.end(); it++)
+	for (auto it = m_Menus.begin(); it != m_Menus.end(); it++)
 	{
-		it->second->InitScreen(m_TextCache, m_WidgetCache);
+		it->second->InitMenu(m_TextCache, m_WidgetCache);
 	}
 }
 
