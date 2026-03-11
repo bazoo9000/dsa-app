@@ -40,7 +40,32 @@ inline void Panel::Draw()
 
 void Panel::AddWidget(Widget* widget)
 {
+	if (widget == nullptr)
+	{
+		LOG_GUI_WARN("Can't insert, widget is null");
+		return;
+	}
+
+	if (widget->GetId() == "" || widget->GetId() == "##")
+	{
+		LOG_GUI_WARN("Inserted widget has empty id");
+	}
+
 	m_Children.push_back(widget);
+}
+
+Widget* Panel::GetWidget(std::string id)
+{
+	for (auto it = m_Children.begin(); it != m_Children.end(); it++)
+	{
+		if (id == (*it)->GetId())
+		{
+			return *it;
+		}
+	}
+
+	LOG_GUI_ERROR("Can't find '%s', doesn't exist in Panel '%s'", id.c_str(), m_Id.c_str());
+	return nullptr;
 }
 
 void Panel::RemoveWidget(std::string id)

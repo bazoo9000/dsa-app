@@ -18,6 +18,7 @@ Menu::~Menu()
 void Menu::Draw()
 {
 	m_MainPanel->Draw();
+	RunMenu();
 }
 
 void Menu::SetApp(IAppReceiver* app)

@@ -20,7 +20,7 @@ ComboBox::ComboBox(std::string id, std::vector<std::string>& items)
 ComboBox::~ComboBox()
 {
     m_Items.clear();
-    m_Selected = 0;
+    m_Selected = -1;
 }
 
 inline void ComboBox::Draw()

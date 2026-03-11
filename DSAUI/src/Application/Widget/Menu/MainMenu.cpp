@@ -46,3 +46,8 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 	m_MainPanel->ScaleTo({ 400.0f, 400.0f });
 	m_MainPanel->MoveTo({ 10.0f, 20.0f });
 }
+
+void MainMenu::RunMenu()
+{
+	// nimic
+}

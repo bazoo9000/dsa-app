@@ -7,6 +7,7 @@
 #include "../TextLabel.h"
 #include "../TextBox.h"
 #include "../ComboBox.h"
+#include "../RadioButton.h"
 
 #include "../../IAppReceiver.h"
 #include "../../CacheManager/CacheManager.h"
@@ -24,6 +25,7 @@ public:
 public:
 	// TODO: decide if to have a default init as a reminder
 	virtual void InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache) = 0;
+	virtual void RunMenu() = 0;
 	static void SetApp(IAppReceiver* app);
 
 public:

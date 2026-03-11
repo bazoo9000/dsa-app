@@ -28,6 +28,25 @@ void OptionsMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Wi
 	title->MoveTo({ 520.0f, 10.0f });
 	title->ScaleTo({ 300.0f, 300.0f });
 
-	std::vector<Widget*> widgets1 = { but, title };
+	std::vector<std::string> items = { "ceva", "altceva", "complet altceva" };
+	RadioButton* radio = new RadioButton("radio_test", items);
+	radio->MoveTo({ 100.0f, 300.0f });
+
+	std::string str = ("Ai selectat " + radio->GetSelected());
+	TextLabel* select = new TextLabel("text_select", str, FONT_H4);
+	select->MoveTo({ 100.0f, 250.0f });
+
+	std::vector<Widget*> widgets1 = { but, title, radio, select };
 	m_MainPanel = new Panel("panel_options", widgets1);
+}
+
+void OptionsMenu::RunMenu()
+{
+	// im gonna get executed for writing it like this
+	// TODO: change the way id is stored
+	RadioButton* radio = (RadioButton*)m_MainPanel->GetWidget("##radio_test");
+	std::string str = ("Ai selectat " + radio->GetSelected());
+	
+	TextLabel* text = (TextLabel*)m_MainPanel->GetWidget("##text_select");
+	text->ModifyText(str);
 }
