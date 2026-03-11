@@ -4,7 +4,7 @@
 
 Button::Button(std::string id, std::string label)
 {
-	m_Id = "##" + id;
+	m_Id = id;
 	m_Label = label;
 }
 

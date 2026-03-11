@@ -6,14 +6,16 @@
 ComboBox::ComboBox(std::string id)
     : m_Selected(0)
 {
-    m_Id = "##" + id;
+    m_Id = id;
+    m_DrawId = "##" + id;
     m_Items.reserve(32);
 }
 
 ComboBox::ComboBox(std::string id, std::vector<std::string>& items)
     : m_Selected(0)
 {
-    m_Id = "##" + id;
+    m_Id = id;
+    m_DrawId = "##" + id;
     m_Items = std::move(items);
 }
 
@@ -27,7 +29,7 @@ inline void ComboBox::Draw()
 {
     ImGui::SetCursorPos(m_Transform.position);
     ImGui::SetNextItemWidth(m_Transform.scale.x);
-    if (ImGui::BeginCombo(m_Id.c_str(), m_Items[m_Selected].c_str()))
+    if (ImGui::BeginCombo(m_DrawId.c_str(), m_Items[m_Selected].c_str()))
     {
         for (int n = 0; n < m_Items.size(); n++)
         {

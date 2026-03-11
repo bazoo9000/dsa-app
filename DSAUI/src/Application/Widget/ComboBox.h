@@ -18,6 +18,7 @@ public:
 	std::string GetSelected() { return m_Items[m_Selected]; }
 
 private:
+	std::string m_DrawId = "##"; // for imgui id
 	std::vector<std::string> m_Items;
 	int m_Selected;
 };

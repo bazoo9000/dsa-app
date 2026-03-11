@@ -4,7 +4,7 @@
 
 TextBox::TextBox(std::string id, std::string text, ImFont* font)
 {
-	m_Id = "##" + id;
+	m_Id = id;
 	m_Text = text;
 	m_Font = font;
 }

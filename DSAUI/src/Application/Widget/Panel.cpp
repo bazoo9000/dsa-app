@@ -5,13 +5,15 @@
 
 Panel::Panel(std::string id)
 {
-	m_Id = "##" + id;
+	m_Id = id;
+	m_DrawId = "##" + id;
 	m_Children.reserve(16); // 16 widgets should be enough for 1 panel
 }
 
 Panel::Panel(std::string id, std::vector<Widget*>& widgets)
 {
-	m_Id = "##" + id;
+	m_Id = id;
+	m_DrawId = "##" + id;
 	m_Children = std::move(widgets);
 }
 
@@ -28,7 +30,7 @@ Panel::~Panel()
 inline void Panel::Draw()
 {
 	ImGui::SetNextWindowPos(m_Transform.position);
-	ImGui::BeginChild(m_Id.c_str(), { 0, 0 }, ImGuiChildFlags_Borders);
+	ImGui::BeginChild(m_DrawId.c_str(), { 0, 0 }, ImGuiChildFlags_Borders);
 
 	for (auto w : m_Children)
 	{

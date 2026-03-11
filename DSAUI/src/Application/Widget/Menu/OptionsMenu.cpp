@@ -44,9 +44,9 @@ void OptionsMenu::RunMenu()
 {
 	// im gonna get executed for writing it like this
 	// TODO: change the way id is stored
-	RadioButton* radio = (RadioButton*)m_MainPanel->GetWidget("##radio_test");
+	RadioButton* radio = (RadioButton*)m_MainPanel->GetWidget("radio_test");
 	std::string str = ("Ai selectat " + radio->GetSelected());
 	
-	TextLabel* text = (TextLabel*)m_MainPanel->GetWidget("##text_select");
+	TextLabel* text = (TextLabel*)m_MainPanel->GetWidget("text_select");
 	text->ModifyText(str);
 }

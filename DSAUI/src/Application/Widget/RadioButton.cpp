@@ -6,14 +6,14 @@
 RadioButton::RadioButton(std::string id)
 	: m_Selected(0)
 {
-	m_Id = "##" + id;
+    m_Id = id;
 	m_Items.reserve(32);
 }
 
 RadioButton::RadioButton(std::string id, std::vector<std::string>& items)
 	: m_Selected(0)
 {
-	m_Id = "##" + id;
+    m_Id = id;
 	m_Items = std::move(items);
 }
 

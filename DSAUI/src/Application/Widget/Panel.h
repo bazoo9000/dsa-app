@@ -21,4 +21,5 @@ public:
 private:
 	// TODO: instead of vector, use hashmap ffs
 	std::vector<Widget*> m_Children; // Panel only
+	std::string m_DrawId = "##"; // for imgui id
 };
