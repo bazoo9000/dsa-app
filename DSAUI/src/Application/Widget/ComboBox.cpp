@@ -25,7 +25,7 @@ ComboBox::~ComboBox()
     m_Selected = -1;
 }
 
-inline void ComboBox::Draw()
+inline void ComboBox::drawWidget()
 {
     ImGui::SetCursorPos(m_Transform.position);
     ImGui::SetNextItemWidth(m_Transform.scale.x);

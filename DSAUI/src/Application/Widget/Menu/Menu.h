@@ -40,5 +40,4 @@ protected:
 	std::string m_Id = "";
 	Panel* m_MainPanel = nullptr;
 	static IAppReceiver* m_App;
-	// TODO: maybe add the cachemanagers here instead in app
 };

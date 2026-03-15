@@ -9,8 +9,8 @@ public:
 	RadioButton(std::string id, std::vector<std::string>& items);
 	~RadioButton();
 
-public:
-	virtual inline void Draw() override;
+protected:
+	virtual inline void drawWidget() override;
 
 public:
 	void AddItem(std::string item);

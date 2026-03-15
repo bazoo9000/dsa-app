@@ -23,7 +23,7 @@ RadioButton::~RadioButton()
 	m_Selected = -1;
 }
 
-inline void RadioButton::Draw()
+inline void RadioButton::drawWidget()
 {
     ImVec2 pos = m_Transform.position;
     for (int i = 0; i < m_Items.size(); i++)

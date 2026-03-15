@@ -9,6 +9,6 @@ public:
 	TextBox(std::string id, std::string text = "", ImFont* font = FONT_DEFAULT);
 	~TextBox();
 
-public:
-	virtual inline void Draw() override;
+protected:
+	virtual inline void drawWidget() override;
 };

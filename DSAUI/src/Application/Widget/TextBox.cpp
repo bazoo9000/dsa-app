@@ -14,7 +14,7 @@ TextBox::~TextBox()
 	// nimic
 }
 
-inline void TextBox::Draw()
+inline void TextBox::drawWidget()
 {
 	ImGui::SetCursorPos(m_Transform.position);
     ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + m_Transform.scale.x);

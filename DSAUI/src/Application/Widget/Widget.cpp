@@ -3,6 +3,18 @@
 #include "Widget.h"
 #include "Logger/Logger.h"
 
+void Widget::Draw()
+{
+	if (m_IsHidden)
+	{
+		return;
+	}
+
+	ImGui::BeginDisabled(m_IsDisabled);
+	drawWidget();
+	ImGui::EndDisabled();
+}
+
 void Widget::MoveTo(ImVec2 newPos)
 {
 	m_Transform.position = newPos;

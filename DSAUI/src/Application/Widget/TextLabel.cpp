@@ -14,7 +14,7 @@ TextLabel::~TextLabel()
 	// nimic
 }
 
-inline void TextLabel::Draw()
+inline void TextLabel::drawWidget()
 {
 	ImGui::SetCursorPos(m_Transform.position);
 	ImGui::PushFont(m_Font);

@@ -9,8 +9,8 @@ public:
 	Panel(std::string id, std::vector<Widget*>& widgets);
 	~Panel();
 
-public:
-	virtual inline void Draw() override;
+protected:
+	virtual inline void drawWidget() override;
 
 public:
 	// TODO: add an interface for having the power to do hierarhical rendering

@@ -9,7 +9,14 @@ public:
 	virtual ~Widget() = default;
 
 public:
-	virtual inline void Draw() = 0;
+	void Draw();
+	void Enable() { m_IsDisabled = false; }
+	void Disable() { m_IsDisabled = true; }
+	void Show() { m_IsHidden = false; }
+	void Hide() { m_IsHidden = true; }
+
+protected:
+	virtual inline void drawWidget() = 0;
 
 public:
 	void MoveTo(ImVec2 newPos);
@@ -24,4 +31,6 @@ public:
 protected:
 	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f }; // relative pos/scale/rot
 	std::string m_Id; // for labeling/caching
+	bool m_IsDisabled = false;
+	bool m_IsHidden = false;
 };

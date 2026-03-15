@@ -9,6 +9,6 @@ public:
 	TextLabel(std::string id, std::string text = "", ImFont* font = FONT_DEFAULT);
 	virtual ~TextLabel();
 
-public:
-	virtual inline void Draw() override;
+protected:
+	virtual inline void drawWidget() override;
 };

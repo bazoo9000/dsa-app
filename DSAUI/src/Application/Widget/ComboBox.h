@@ -9,8 +9,8 @@ public:
 	ComboBox(std::string id, std::vector<std::string>& items);
 	~ComboBox();
 
-public:
-	virtual inline void Draw() override;
+protected:
+	virtual inline void drawWidget() override;
 
 public:
 	void AddItem(std::string item);

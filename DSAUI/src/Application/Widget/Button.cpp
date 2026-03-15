@@ -12,7 +12,7 @@ Button::~Button()
 {
 }
 
-inline void Button::Draw()
+inline void Button::drawWidget()
 {
 	ImGui::SetCursorPos(m_Transform.position);
 	if (ImGui::Button(m_Label.c_str(), m_Transform.scale))

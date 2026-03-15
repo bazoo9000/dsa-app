@@ -37,7 +37,7 @@ Panel::~Panel()
 	m_Children.clear();
 }
 
-inline void Panel::Draw()
+inline void Panel::drawWidget()
 {
 	ImGui::SetNextWindowPos(m_Transform.position);
 	ImGui::BeginChild(m_DrawId.c_str(), { 0, 0 }, ImGuiChildFlags_Borders);

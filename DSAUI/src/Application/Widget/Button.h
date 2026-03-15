@@ -8,8 +8,8 @@ public:
 	Button(std::string id, std::string label);
 	~Button();
 
-public:
-	virtual inline void Draw() override;
+protected:
+	virtual inline void drawWidget() override;
 
 public:
 	template<typename Func, typename... Params>
