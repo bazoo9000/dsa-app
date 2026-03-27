@@ -70,7 +70,8 @@ void Application::Run()
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoTitleBar
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoScrollbar
 		);
 
 		m_CrtMenu->Draw();
