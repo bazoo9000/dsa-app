@@ -28,6 +28,7 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#define IMGUI_DEFINE_MATH_OPERATORS // WARNING! IF ADDING GLM IN THE FUTURE REMOVE THIS!!!!
 #include "imgui.h"
 
 #include "backends/imgui_impl_opengl3.h"

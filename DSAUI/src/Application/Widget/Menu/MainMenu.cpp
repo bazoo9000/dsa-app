@@ -38,10 +38,20 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 	title->MoveTo({ 520.0f, 10.0f });
 	title->ScaleTo({ 300.0f, 300.0f });
 
-	TextLabel* test = new TextLabel("test", *textCache.Get("GUI.NU_EXISTA"));
-	test->MoveTo({ 100.0f, 200.0f });
+	Canvas* canvas = new Canvas("canvas");
+	canvas->MoveTo({ 100.0f, 200.0f });
+	canvas->ScaleTo({ 450.0f, 450.0f });
+	//canvas->SetBgColor(IM_COL32(125, 255, 125, 255));
 
-	std::vector<Widget*> widgets = { but, title, opt, test };
+	Circle* circle = new Circle({ 100, 100 }, 50.0f);
+	Circle* circle1 = new Circle({ 200, 111 }, 31.0f);
+
+	canvas->AddDrawableShape(circle);
+	canvas->AddDrawableShape(circle1);
+
+	circle1->SetColor(IM_COL32(125, 50, 25, 255));
+
+	std::vector<Widget*> widgets = { but, title, opt, canvas };
 	m_MainPanel = new Panel("panel_main", widgets);
 	m_MainPanel->ScaleTo({ 400.0f, 400.0f });
 	m_MainPanel->MoveTo({ 10.0f, 20.0f });

@@ -8,6 +8,9 @@
 #include "../TextBox.h"
 #include "../ComboBox.h"
 #include "../RadioButton.h"
+#include "../Canvas.h"
+
+#include "../Shape/Circle.h"
 
 #include "../../IAppReceiver.h"
 #include "../../CacheManager/CacheManager.h"
