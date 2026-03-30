@@ -41,13 +41,16 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 	Canvas* canvas = new Canvas("canvas");
 	canvas->MoveTo({ 100.0f, 200.0f });
 	canvas->ScaleTo({ 450.0f, 450.0f });
-	//canvas->SetBgColor(IM_COL32(125, 255, 125, 255));
+	canvas->SetBgColor(IM_COL32(125, 255, 125, 255));
 
-	Circle* circle = new Circle({ 100, 100 }, 50.0f);
+	Circle* circle = new Circle({ 100, 100 }, 50.0f, 5.0f);
 	Circle* circle1 = new Circle({ 200, 111 }, 31.0f);
+
+	Line* line = new Line(circle->GetOrigin(), circle1->GetOrigin(), 2.0f);
 
 	canvas->AddDrawableShape(circle);
 	canvas->AddDrawableShape(circle1);
+	canvas->AddDrawableShape(line);
 
 	circle1->SetColor(IM_COL32(125, 50, 25, 255));
 

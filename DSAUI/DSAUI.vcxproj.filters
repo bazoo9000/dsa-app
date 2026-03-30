@@ -362,7 +362,7 @@
     <ClInclude Include="src\Application\Widget\Canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application\Widget\Shape\IDrawableShape.h">
+    <ClInclude Include="src\Application\Widget\Shape\DrawableShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\Widget\Shape\Circle.h">

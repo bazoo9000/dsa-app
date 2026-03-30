@@ -50,6 +50,7 @@ Application::~Application()
 	LOG_GUI_DEBUG("Application DESTROYED succesfully");
 }
 
+// BIG TODO: make datastructures have to return a static c array and create a translator to shapes in DSAUI
 void Application::Run()
 {
 	LOG_GUI_TRACE("Application run begin");

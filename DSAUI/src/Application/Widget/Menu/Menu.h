@@ -10,6 +10,7 @@
 #include "../RadioButton.h"
 #include "../Canvas.h"
 
+#include "../Shape/Line.h"
 #include "../Shape/Circle.h"
 
 #include "../../IAppReceiver.h"

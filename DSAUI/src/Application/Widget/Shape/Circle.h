@@ -5,7 +5,7 @@
 class Circle : public DrawableShape
 {
 public:
-	Circle(ImVec2 center, float radius);
+	Circle(ImVec2 center, float radius, float thickness = 1.0f);
 	virtual ~Circle();
 
 public:

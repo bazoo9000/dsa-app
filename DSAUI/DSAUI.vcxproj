@@ -215,7 +215,7 @@
     <ClInclude Include="src\Application\Widget\Menu\Menu.h" />
     <ClInclude Include="src\Application\Widget\RadioButton.h" />
     <ClInclude Include="src\Application\Widget\Shape\Circle.h" />
-    <ClInclude Include="src\Application\Widget\Shape\IDrawableShape.h" />
+    <ClInclude Include="src\Application\Widget\Shape\DrawableShape.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />
     <ClInclude Include="src\Application\Widget\TextLabel.h" />
     <ClInclude Include="src\Application\Widget\Panel.h" />
