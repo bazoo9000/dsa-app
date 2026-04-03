@@ -44,6 +44,7 @@
     </ClCompile>
     <ClCompile Include="src\Application\Widget\RadioButton.cpp" />
     <ClCompile Include="src\Application\Widget\Shape\Circle.cpp" />
+    <ClCompile Include="src\Application\Widget\Shape\Line.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -216,6 +217,7 @@
     <ClInclude Include="src\Application\Widget\RadioButton.h" />
     <ClInclude Include="src\Application\Widget\Shape\Circle.h" />
     <ClInclude Include="src\Application\Widget\Shape\DrawableShape.h" />
+    <ClInclude Include="src\Application\Widget\Shape\Line.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />
     <ClInclude Include="src\Application\Widget\TextLabel.h" />
     <ClInclude Include="src\Application\Widget\Panel.h" />

@@ -201,6 +201,9 @@
     <ClCompile Include="src\Application\Widget\Shape\Circle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\Line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dsa_pch.h">
@@ -366,6 +369,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\Widget\Shape\Circle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\Shape\Line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
