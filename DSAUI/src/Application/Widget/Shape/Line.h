@@ -1,20 +1,19 @@
 #pragma once
 
-#include "DrawableShape.h"
+#include "Shape.h"
 
-class Line : public DrawableShape
+class Line : public Shape
 {
 public:
-	Line(ImVec2 start, ImVec2 end, float thickness = 1.0f);
-	virtual ~Line();
-
-public:
-	virtual void DrawShape(ImDrawList* drawList, ImVec2 offset = { 0, 0 }) override;
+	Line(ImVec2 start, ImVec2 end);
+	virtual ~Line() = default;
 
 public:
 	ImVec2 GetEnd() { return m_End; }
-	void GetEnd(ImVec2 end) { m_End = end; }
+	void SetEnd(ImVec2 end) { m_End = end; }
+	ImVec2 GetFinalEndPositon() { return m_GlobalOrigin + m_End; }
 
-private:
-	ImVec2 m_End;
+protected:
+	// End position of the line
+	ImVec2 m_End = { 0, 0 };
 };

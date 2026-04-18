@@ -2,6 +2,7 @@
 
 #include "Widget.h"
 #include "Shape/DrawableShape.h"
+#include "Shape/InteractableShape.h"
 
 class Canvas : public Widget
 {
@@ -10,6 +11,7 @@ public:
 	~Canvas();
 
 public:
+	void DoInteractions();
 	ImU32 GetBgColor() { return m_BgColor; }
 	void SetBgColor(ImU32 bgColor) { m_BgColor = bgColor; }
 	void AddDrawableShape(DrawableShape* shape);
@@ -18,10 +20,11 @@ protected:
 	virtual inline void drawWidget() override;
 
 private:
-	void drawBackground(ImDrawList* list, ImVec2 offset = { 0, 0 });
+	void drawBackground(ImDrawList* list);
 
 private:
 	std::string m_DrawId = "##"; // for imgui id
 	ImU32 m_BgColor;
 	std::vector<DrawableShape*> m_Shapes;
+	std::vector<InteractableShape*> m_InteractableShapes;
 };

@@ -10,8 +10,8 @@
 #include "../RadioButton.h"
 #include "../Canvas.h"
 
-#include "../Shape/Line.h"
-#include "../Shape/Circle.h"
+#include "../Shape/DrawableCircle.h"
+#include "../Shape/DrawableLine.h"
 
 #include "../../IAppReceiver.h"
 #include "../../CacheManager/CacheManager.h"

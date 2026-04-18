@@ -1,6 +1,7 @@
 #include "../../../dsa_pch.h"
 
 #include "MainMenu.h"
+#include "../Shape/InteractableCircle.h"
 
 MainMenu::MainMenu(std::string id)
 	: Menu(id)
@@ -43,10 +44,86 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 	canvas->ScaleTo({ 450.0f, 450.0f });
 	canvas->SetBgColor(IM_COL32(125, 255, 125, 255));
 
-	Circle* circle = new Circle({ 100, 100 }, 50.0f, 5.0f);
-	Circle* circle1 = new Circle({ 200, 111 }, 31.0f);
+	// TODO: rethink how to set both global and local origin, this looks horrible
+	InteractableCircle* circle = new InteractableCircle({ 100.0f, 100.0f }, 50.0f);
+	InteractableCircle* circle1 = new InteractableCircle({ 200.0f, 111.0f }, 31.0f);
 
-	Line* line = new Line(circle->GetOrigin(), circle1->GetOrigin(), 2.0f);
+	DrawableLine* line = new DrawableLine(
+		circle->GetOrigin(),
+		circle1->GetOrigin(),
+		2.0f
+	);
+
+
+	// The black circle
+	{
+		circle->SetOnNothingCallback([circle]()
+			{
+				circle->SetFilled(false);
+			}
+		);
+
+		circle->SetOnHoverCallback([circle]()
+			{
+				circle->SetFilled(true);
+			}
+		);
+
+		circle->SetOnClickCallback([circle, line]()
+			{
+				ImGuiIO& io = ImGui::GetIO();
+				ImVec2 pos = io.MousePos - circle->GetGlobalOrigin();
+				circle->SetOrigin(pos);
+
+				line->SetOrigin(pos);
+			}
+		);
+
+		circle->SetOnHoldCallback([circle, line]()
+			{
+				ImGuiIO& io = ImGui::GetIO();
+				ImVec2 pos = io.MousePos - circle->GetGlobalOrigin();
+				circle->SetOrigin(pos);
+
+				line->SetOrigin(pos);
+			}
+		);
+	}
+
+	// The brown circle
+	{
+		circle1->SetOnNothingCallback([circle1]()
+			{
+				circle1->SetFilled(false);
+			}
+		);
+
+		circle1->SetOnHoverCallback([circle1]()
+			{
+				circle1->SetFilled(true);
+			}
+		);
+
+		circle1->SetOnClickCallback([circle1, line]()
+			{
+				ImGuiIO& io = ImGui::GetIO();
+				ImVec2 pos = io.MousePos - circle1->GetGlobalOrigin();
+				circle1->SetOrigin(pos);
+
+				line->SetEnd(pos);
+			}
+		);
+
+		circle1->SetOnHoldCallback([circle1, line]()
+			{
+				ImGuiIO& io = ImGui::GetIO();
+				ImVec2 pos = io.MousePos - circle1->GetGlobalOrigin();
+				circle1->SetOrigin(pos);
+				
+				line->SetEnd(pos);
+			}
+		);
+	}
 
 	canvas->AddDrawableShape(circle);
 	canvas->AddDrawableShape(circle1);
@@ -62,5 +139,6 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 
 void MainMenu::RunMenu()
 {
-	// nimic
+	Canvas* canvas = (Canvas*)m_MainPanel->GetWidget("canvas");
+	canvas->DoInteractions();
 }

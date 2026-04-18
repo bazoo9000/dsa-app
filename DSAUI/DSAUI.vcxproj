@@ -44,6 +44,10 @@
     </ClCompile>
     <ClCompile Include="src\Application\Widget\RadioButton.cpp" />
     <ClCompile Include="src\Application\Widget\Shape\Circle.cpp" />
+    <ClCompile Include="src\Application\Widget\Shape\DrawableCircle.cpp" />
+    <ClCompile Include="src\Application\Widget\Shape\DrawableLine.cpp" />
+    <ClCompile Include="src\Application\Widget\Shape\InteractableCircle.cpp" />
+    <ClCompile Include="src\Application\Widget\Shape\InteractableShape.cpp" />
     <ClCompile Include="src\Application\Widget\Shape\Line.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
@@ -216,8 +220,13 @@
     <ClInclude Include="src\Application\Widget\Menu\Menu.h" />
     <ClInclude Include="src\Application\Widget\RadioButton.h" />
     <ClInclude Include="src\Application\Widget\Shape\Circle.h" />
+    <ClInclude Include="src\Application\Widget\Shape\DrawableCircle.h" />
+    <ClInclude Include="src\Application\Widget\Shape\DrawableLine.h" />
     <ClInclude Include="src\Application\Widget\Shape\DrawableShape.h" />
+    <ClInclude Include="src\Application\Widget\Shape\InteractableCircle.h" />
+    <ClInclude Include="src\Application\Widget\Shape\InteractableShape.h" />
     <ClInclude Include="src\Application\Widget\Shape\Line.h" />
+    <ClInclude Include="src\Application\Widget\Shape\Shape.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />
     <ClInclude Include="src\Application\Widget\TextLabel.h" />
     <ClInclude Include="src\Application\Widget\Panel.h" />

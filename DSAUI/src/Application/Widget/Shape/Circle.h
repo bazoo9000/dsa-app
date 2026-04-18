@@ -1,20 +1,17 @@
 #pragma once
 
-#include "DrawableShape.h"
+#include "Shape.h"
 
-class Circle : public DrawableShape
+class Circle : public Shape
 {
 public:
-	Circle(ImVec2 center, float radius, float thickness = 1.0f);
+	Circle(ImVec2 center, float radius);
 	virtual ~Circle();
-
-public:
-	virtual void DrawShape(ImDrawList* drawList, ImVec2 offset = { 0, 0 }) override;
 
 public:
 	float GetRadius() { return m_Radius; }
 	void SetRadius(float radius) { m_Radius = radius; }
 
-private:
+protected:
 	float m_Radius;
 };

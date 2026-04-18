@@ -27,6 +27,7 @@ public:
 
 public:
 	std::string GetId() { return m_Id; }
+	Transform GetTransform() { return m_Transform; }
 
 protected:
 	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f }; // relative pos/scale/rot
