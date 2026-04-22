@@ -41,4 +41,8 @@ protected:
 	std::function<void()> m_OnClickCallback;
 	std::function<void()> m_OnHoldCallback;
 	std::function<void()> m_OnReleaseCallback;
+
+private:
+	bool m_IsHeld = false;
+
 };

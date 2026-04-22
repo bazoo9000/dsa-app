@@ -125,8 +125,8 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 		);
 	}
 
-	canvas->AddDrawableShape(circle);
 	canvas->AddDrawableShape(circle1);
+	canvas->AddDrawableShape(circle);
 	canvas->AddDrawableShape(line);
 
 	circle1->SetColor(IM_COL32(125, 50, 25, 255));

@@ -18,11 +18,29 @@ Canvas::~Canvas()
 
 void Canvas::DoInteractions()
 {
+	// To make events only occur to only ONE shape
+	// TODO: check if there are better ways to do it, for now this works fine
+	static InteractableShape* crtShape = nullptr;
+
 	for (auto ishape : m_InteractableShapes)
 	{
-		if (ishape != nullptr)
+		if (ishape != nullptr && (crtShape == nullptr || crtShape == ishape))
 		{
 			MouseAction action = ishape->CheckMouseAction();
+
+			switch (action)
+			{
+			case MouseAction::Release:
+			case MouseAction::None:
+				crtShape = nullptr;
+				break;
+			case MouseAction::Hover:
+			case MouseAction::Click:
+			case MouseAction::Hold:
+				crtShape = ishape;
+				break;
+			}
+
 			switch (action)
 			{
 			case MouseAction::None:    ishape->OnNothing(); break;

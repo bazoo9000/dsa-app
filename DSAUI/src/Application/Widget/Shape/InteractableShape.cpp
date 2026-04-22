@@ -12,11 +12,30 @@ MouseAction InteractableShape::CheckMouseAction()
 	bool isHeld = io.MouseDown[ImGuiMouseButton_Left];
 	bool isReleased = io.MouseReleased[ImGuiMouseButton_Left];
 
+	// This is in case if holding and dragging accross
+	// the screen even if not inside shape
+	if (m_IsHeld && !isReleased)
+	{
+		return MouseAction::Hold;
+	}
+
 	if (isInside)
 	{
-		if (isClicked)  return MouseAction::Click;
-		if (isHeld)	    return MouseAction::Hold;
-		if (isReleased) return MouseAction::Release;
+		if (isClicked)
+		{
+			return MouseAction::Click;
+		}
+		if (isHeld)
+		{
+			m_IsHeld = true;
+			return MouseAction::Hold;
+		}
+		if (isReleased)
+		{
+			m_IsHeld = false;
+			return MouseAction::Release;
+		}
+
 		return MouseAction::Hover;
 	}
 
