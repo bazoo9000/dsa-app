@@ -28,7 +28,7 @@ public:
 
 public:
 	// TODO: decide if to have a default init as a reminder
-	virtual void InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache) = 0;
+	virtual void InitMenu() = 0;
 	virtual void RunMenu() = 0;
 	static void SetApp(IAppReceiver* app);
 
@@ -38,7 +38,7 @@ public:
 protected:
 	static void signalChangeMenu(std::string id);
 	static void signalCloseApp();
-	// TODO: maybe add a request method for tokens
+	static std::unordered_map<std::string, std::string> signalRequestTokens(std::vector<std::string> tokens);
 
 protected:
 	std::string m_Id = "";

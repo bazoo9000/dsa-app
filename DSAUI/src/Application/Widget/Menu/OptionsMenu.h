@@ -9,6 +9,6 @@ public:
 	virtual ~OptionsMenu();
 
 public:
-	virtual void InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache) override;
+	virtual void InitMenu() override;
 	virtual void RunMenu() override;
 };

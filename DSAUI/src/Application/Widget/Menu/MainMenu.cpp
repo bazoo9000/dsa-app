@@ -12,9 +12,13 @@ MainMenu::~MainMenu()
 {
 }
 
-void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache)
+void MainMenu::InitMenu()
 {
-	Button* but = new Button("but_back", *textCache.Get("GUI.BACK"));
+	auto tokens = signalRequestTokens({
+		"GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME"
+		});
+
+	Button* but = new Button("but_back", tokens["GUI.BACK"]);
 	but->SetCallback(
 		[]()
 		{
@@ -25,7 +29,7 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 	but->MoveTo({ 100.0f, 100.0f });
 	but->ScaleTo({ 50.0f, 20.0f });
 
-	Button* opt = new Button("but_options", *textCache.Get("GUI.OPTIONS"));
+	Button* opt = new Button("but_options", tokens["GUI.OPTIONS"]);
 	opt->SetCallback(
 		[]()
 		{
@@ -35,7 +39,7 @@ void MainMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widge
 	opt->MoveTo({ 100.0f, 130.0f });
 	opt->ScaleTo({ 50.0f, 20.0f });
 
-	TextLabel* title = new TextLabel("title", *textCache.Get("GUI.WELCOME"), FONT_H1);
+	TextLabel* title = new TextLabel("title", tokens["GUI.WELCOME"], FONT_H1);
 	title->MoveTo({ 520.0f, 10.0f });
 	title->ScaleTo({ 300.0f, 300.0f });
 

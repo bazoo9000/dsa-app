@@ -11,9 +11,13 @@ OptionsMenu::~OptionsMenu()
 {
 }
 
-void OptionsMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Widget*>& widgetCache)
+void OptionsMenu::InitMenu()
 {
-	Button* but = new Button("but_back", *textCache.Get("GUI.BACK"));
+	auto tokens = signalRequestTokens({
+		"GUI.BACK", "GUI.OPTIONS", "GUI.NOT_EXIST"
+		});
+
+	Button* but = new Button("but_back", tokens["GUI.BACK"]);
 	but->SetCallback(
 		[]()
 		{
@@ -66,7 +70,7 @@ void OptionsMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Wi
 	but3->MoveTo({ 100.0f, 50.0f });
 	but3->ScaleTo({ 50.0f, 20.0f });
 
-	TextLabel* title = new TextLabel("title", *textCache.Get("GUI.OPTIONS"), FONT_H1);
+	TextLabel* title = new TextLabel("title", tokens["GUI.OPTIONS"], FONT_H1);
 	title->MoveTo({ 520.0f, 10.0f });
 	title->ScaleTo({ 300.0f, 300.0f });
 
@@ -78,7 +82,10 @@ void OptionsMenu::InitMenu(CacheManager<std::string>& textCache, CacheManager<Wi
 	TextLabel* select = new TextLabel("text_select", str, FONT_H4);
 	select->MoveTo({ 100.0f, 250.0f });
 
-	std::vector<Widget*> widgets1 = { but, title, radio, select, but2, but3 };
+	TextLabel* notExist = new TextLabel("text_notExist", tokens["GUI.NOT_EXIST"], FONT_H4);
+	notExist->MoveTo({ 100.0f, 500.0f });
+
+	std::vector<Widget*> widgets1 = { but, title, radio, select, but2, but3, notExist };
 	m_MainPanel = new Panel("panel_options", widgets1);
 }
 

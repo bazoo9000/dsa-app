@@ -36,6 +36,11 @@ void Menu::signalCloseApp()
 	m_App->Close();
 }
 
+std::unordered_map<std::string, std::string> Menu::signalRequestTokens(std::vector<std::string> tokens)
+{
+	return m_App->RequestTokens(tokens);
+}
+
 std::string Menu::GetId()
 {
 	return m_Id;

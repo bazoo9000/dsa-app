@@ -19,8 +19,11 @@ public:
 
 public:
 	void Run();
+
+public: // "Requests"
 	virtual void ChangeMenu(std::string id) override;
 	virtual void Close() override;
+	virtual std::unordered_map<std::string, std::string> RequestTokens(std::vector<std::string> tokens);
 
 private:
 	void initMenus();

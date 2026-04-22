@@ -18,6 +18,7 @@ Application::Application()
 	LoadFonts(io);								// Load all basic fonts
 	
 	// TODO: dereferencing these looks utterly terrible, probably move it somewhere else, maybe in I18N class
+	// maybe make a request to cache them when needed
 	auto misses = m_TextCache.GetMissingKeys(
 		{ "GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME", "GUI.NU_EXISTA" }
 	);
@@ -97,6 +98,20 @@ void Application::Close()
 	m_ShouldClose = true;
 }
 
+std::unordered_map<std::string, std::string> Application::RequestTokens(std::vector<std::string> tokens)
+{
+	std::unordered_map<std::string, std::string> ret;
+	ret.reserve(tokens.size());
+
+	for (auto tok : tokens)
+	{
+		std::string* text = m_TextCache.Get(tok);
+		ret[tok] = (text != nullptr) ? *text : tok;
+	}
+
+	return ret;
+}
+
 void Application::initMenus()
 {
 	// menu inits go here
@@ -105,7 +120,7 @@ void Application::initMenus()
 
 	for (auto it = m_Menus.begin(); it != m_Menus.end(); it++)
 	{
-		it->second->InitMenu(m_TextCache, m_WidgetCache);
+		it->second->InitMenu();
 	}
 }
 
