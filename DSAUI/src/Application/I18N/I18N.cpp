@@ -67,7 +67,7 @@ void I18N::validateLocale(std::string locale)
 		LOG_GUI_WARN("Missing tokens found:\n%s", oss.str().c_str());
 	}
 
-	LOG_GUI_INFO("Reading locale %s was succesful", locale);
+	LOG_GUI_INFO("Reading locale %s was succesful", locale.c_str());
 }
 
 json I18N::readLocaleFile(std::string localeFileName)
@@ -81,7 +81,7 @@ json I18N::readLocaleFile(std::string localeFileName)
 
 	if (fin.fail())
 	{
-		LOG_GUI_FATAL("Failed to open locale file %s doesn't exist", localeFileName.c_str());
+		LOG_GUI_FATAL("Failed to open locale file %s", localeFileName.c_str());
 		exit(1);
 	}
 

@@ -23,53 +23,88 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Application\Widget\Canvas.cpp" />
+    <ClCompile Include="src\Application\Widget\Canvas.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="src\Application\Widget\Menu\MainMenu.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Menu\OptionsMenu.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Menu\Menu.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\BasicText.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Button.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\ComboBox.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Application\Widget\RadioButton.cpp" />
-    <ClCompile Include="src\Application\Widget\Shape\Circle.cpp" />
-    <ClCompile Include="src\Application\Widget\Shape\DrawableCircle.cpp" />
-    <ClCompile Include="src\Application\Widget\Shape\DrawableLine.cpp" />
-    <ClCompile Include="src\Application\Widget\Shape\InteractableCircle.cpp" />
-    <ClCompile Include="src\Application\Widget\Shape\InteractableShape.cpp" />
-    <ClCompile Include="src\Application\Widget\Shape\Line.cpp" />
+    <ClCompile Include="src\Application\Widget\RadioButton.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\Circle.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\DrawableCircle.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\DrawableLine.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\InteractableCircle.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\InteractableShape.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\Line.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="src\Application\Widget\TextBox.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\TextLabel.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Panel.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\Widget.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\dsa_pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Application\I18N\I18N.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Application\I18N\I18NFactory.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Application\Window\Window.cpp">

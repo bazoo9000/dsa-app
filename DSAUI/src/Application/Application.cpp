@@ -80,7 +80,7 @@ void Application::Run()
 
 		ImGui::End();
 
-		ImGui::ShowDemoWindow();
+		ImGui::ShowDemoWindow(); // REMOVE THIS WHEN NOT NEEDED!!
 		// WIDGETS END HERE
 
 		render(window, windowSize);
