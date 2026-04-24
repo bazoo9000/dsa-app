@@ -2,6 +2,8 @@
 
 #include "OptionsMenu.h"
 
+#include "../CheckBox.h"
+
 OptionsMenu::OptionsMenu(std::string id)
 	: Menu(id)
 {
@@ -82,10 +84,13 @@ void OptionsMenu::InitMenu()
 	TextLabel* select = new TextLabel("text_select", str, FONT_H4);
 	select->MoveTo({ 100.0f, 250.0f });
 
-	TextLabel* notExist = new TextLabel("text_notExist", tokens["GUI.NOT_EXIST"], FONT_H4);
-	notExist->MoveTo({ 100.0f, 500.0f });
+	CheckBox* cbox = new CheckBox("checkbox_test", "Is True?", true);
+	cbox->MoveTo({ 100.0f, 500.0f });
 
-	std::vector<Widget*> widgets1 = { but, title, radio, select, but2, but3, notExist };
+	TextLabel* cboxText = new TextLabel("text_cbox", "", FONT_H3);
+	cboxText->MoveTo({ 100.0f, 550.0f });
+
+	std::vector<Widget*> widgets1 = { but, title, radio, select, but2, but3, cbox, cboxText };
 	m_MainPanel = new Panel("panel_options", widgets1);
 }
 
@@ -97,4 +102,8 @@ void OptionsMenu::RunMenu()
 	
 	TextLabel* text = (TextLabel*)m_MainPanel->GetWidget("text_select");
 	text->ModifyText(str);
+
+	CheckBox* cbox = (CheckBox*)m_MainPanel->GetWidget("checkbox_test");
+	text = (TextLabel*)m_MainPanel->GetWidget("text_cbox");
+	text->ModifyText((cbox->GetValue() ? "YES" : "YESN'T"));
 }

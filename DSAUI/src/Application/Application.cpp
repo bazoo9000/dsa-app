@@ -17,6 +17,9 @@ Application::Application()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	LoadFonts(io);								// Load all basic fonts
 	
+	m_TextCache = CacheManager<std::string>(250);
+	m_WidgetCache = CacheManager<Widget*>(10);
+	
 	// TODO: dereferencing these looks utterly terrible, probably move it somewhere else, maybe in I18N class
 	// maybe make a request to cache them when needed
 	auto misses = m_TextCache.GetMissingKeys(
@@ -35,9 +38,6 @@ Application::Application()
 	Menu::SetApp(this); // set listener
 	initMenus();
 	m_CrtMenu = m_Menus["menu_main"];
-	
-	m_TextCache = CacheManager<std::string>(250);
-	m_WidgetCache = CacheManager<Widget*>(10);
 
 	LOG_GUI_DEBUG("Application CREATED succesfully");
 }
