@@ -1,20 +1,7 @@
 #pragma once
 
-#include "../Widget.h"
-#include "../Panel.h"
-#include "../Button.h"
-#include "../BasicText.h"
-#include "../TextLabel.h"
-#include "../TextBox.h"
-#include "../ComboBox.h"
-#include "../RadioButton.h"
-#include "../Canvas.h"
-
-#include "../Shape/DrawableCircle.h"
-#include "../Shape/DrawableLine.h"
-
 #include "../../IAppReceiver.h"
-#include "../../CacheManager/CacheManager.h"
+#include "../Panel.h"
 
 class Menu
 {

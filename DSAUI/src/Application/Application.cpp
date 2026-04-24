@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "DSACore.h"
 
+#include "Widget/BasicText.h"
 #include "Widget/Menu/MainMenu.h"
 #include "Widget/Menu/OptionsMenu.h"
 

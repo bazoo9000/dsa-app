@@ -1,7 +1,15 @@
 #include "../../../dsa_pch.h"
 
 #include "MainMenu.h"
+
+#include "../Button.h"
+#include "../TextLabel.h"
+#include "../Canvas.h"
+
+#include "../Shape/DrawableLine.h"
 #include "../Shape/InteractableCircle.h"
+
+#include "Logger/Logger.h"
 
 MainMenu::MainMenu(std::string id)
 	: Menu(id)

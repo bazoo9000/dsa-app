@@ -2,7 +2,12 @@
 
 #include "OptionsMenu.h"
 
+#include "../Button.h"
+#include "../TextLabel.h"
+#include "../RadioButton.h"
 #include "../CheckBox.h"
+
+#include "Logger/Logger.h"
 
 OptionsMenu::OptionsMenu(std::string id)
 	: Menu(id)
