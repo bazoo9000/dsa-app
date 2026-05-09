@@ -11,7 +11,13 @@ void Widget::Draw()
 	}
 
 	ImGui::BeginDisabled(m_IsDisabled);
+	
+	if (!m_AutoPos)
+	{
+		ImGui::SetCursorPos(m_Transform.position);
+	}
 	drawWidget();
+
 	ImGui::EndDisabled();
 }
 

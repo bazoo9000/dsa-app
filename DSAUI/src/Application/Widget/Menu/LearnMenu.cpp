@@ -1,0 +1,201 @@
+#include "../../../dsa_pch.h"
+
+#include "LearnMenu.h"
+
+#include "../Button.h"
+#include "../CustomWidget.h"
+#include "../TreeNode.h"
+#include "../TextLabel.h"
+#include "../TextBox.h"
+#include "../Tab.h"
+#include "../Canvas.h"
+
+#include "../Shape/DrawableCircle.h";
+
+#include "Logger/Logger.h"
+
+LearnMenu::LearnMenu(std::string id)
+	: Menu(id)
+{
+}
+
+LearnMenu::~LearnMenu()
+{
+}
+
+void LearnMenu::InitMenu()
+{
+	auto tokens = signalRequestTokens({
+		"GUI.BACK", "GUI.OPTIONS"
+		});
+
+    TextBox* tbox2 = new TextBox("textbox_2", "GUI.LINKEDLIST_PARAGRAPH_TEST");
+    tbox2->ScaleTo({ 0.0f, 500.0f });
+    tbox2->SetAutoPositioning(true);
+    TextBox* tbox3 = new TextBox("textbox_3", "GUI.BINARYTREE_PARAGRAPH_TEST");
+    tbox3->ScaleTo({ 0.0f, 500.0f });
+    tbox3->SetAutoPositioning(true);
+    TextBox* tbox4 = new TextBox("textbox_4", "GUI.HASHMAP_PARAGRAPH_TEST");
+    tbox4->ScaleTo({ 0.0f, 500.0f });
+    tbox4->SetAutoPositioning(true);
+    Tab* tab = new Tab("tab_test");
+
+    tab->AddTabItem(parseLearnJSON("learn_array"), "GUI.ARRAY_TITLE");
+    tab->AddTabItem(tbox2, "GUI.LINKEDLIST_TITLE");
+    tab->AddTabItem(tbox3, "GUI.BINARYTREE_TITLE");
+    tab->AddTabItem(tbox4, "GUI.HASHMAP_TITLE");
+
+    CustomWidget* custom1 = new CustomWidget("custom_header_select");
+    custom1->AddCustomScript([tab]()
+        {
+            if (ImGui::TreeNode("GUI.DATA_STRUCTURES"))
+            {
+                auto tabKeys = tab->GetAllKeys();
+                for (auto& key : tabKeys)
+                {
+                    // this may look ugly but it works :)
+                    bool selected = tab->GetTabItemSelected(key);
+                    ImGui::Selectable(tab->GetTabItemName(key).c_str(), &selected);
+                    tab->SetTabItemSelected(key, selected);
+                }
+
+                ImGui::TreePop();
+            }
+        }
+    );
+
+    ImVec2 screenSize = signalGetWindowSize();
+    float fifthScreenX = (int)screenSize.x / 5; // at a fith of screen
+
+    Button* but = new Button("but_back", tokens["GUI.BACK"]);
+    but->SetCallback(
+        []()
+        {
+            Menu::signalChangeMenu("menu_main");
+        }
+    );
+    but->MoveTo({ 10.0f, screenSize.y - 35.0f });
+    but->ScaleTo({ 50.0f, 20.0f });
+
+    Panel* leftPanel = new Panel("panel_left");
+    leftPanel->ScaleTo({ fifthScreenX, screenSize.y });
+    leftPanel->MoveTo({ 0.0f, 0.0f });
+    leftPanel->AddWidget(custom1);
+    leftPanel->AddWidget(but);
+    
+    Panel* rightPanel = new Panel("panel_right");
+    rightPanel->ScaleTo({ screenSize.x - fifthScreenX, screenSize.y });
+    rightPanel->MoveTo({ fifthScreenX, 0.0f });
+    rightPanel->AddWidget(tab);
+
+    TextLabel* label1 = new TextLabel("text_test_1", "Label1");
+    label1->SetAutoPositioning(true);
+    TextLabel* label2 = new TextLabel("text_test_2", "Label2");
+    label2->SetAutoPositioning(true);
+    TreeNode* node = new TreeNode("treenode_test", "Tree Title");
+    node->AddWidget(label1);
+    node->AddWidget(label2);
+    node->SetAutoPositioning(true);
+
+    leftPanel->AddWidget(node);
+
+    setAllWidgets({ leftPanel, rightPanel });
+
+    // TODO: add tooltip decorator
+}
+
+void LearnMenu::RunMenu()
+{
+    // TODO: Make positions relative to screen, and update as the screen updates
+    // instead of this
+    ImVec2 screenSize = signalGetWindowSize();
+    float fifthScreenX = (int)screenSize.x / 5; // at a fith of screen
+
+    Panel* p1 = (Panel*)m_MainPanel->GetWidget("panel_left");
+    p1->ScaleTo({ fifthScreenX, screenSize.y });
+    p1->MoveTo({ 0.0f, 0.0f });
+
+    Panel* p2 = (Panel*)m_MainPanel->GetWidget("panel_right");
+    p2->ScaleTo({ screenSize.x - fifthScreenX, screenSize.y });
+    p2->MoveTo({ fifthScreenX, 0.0f });
+
+    m_MainPanel->ScaleTo(screenSize);
+}
+
+// TODO: move this away from this class
+Panel* LearnMenu::parseLearnJSON(std::string learnTabName)
+{
+    // Read Begin
+    std::string path = "learntabs/" + learnTabName + ".json";
+    std::ifstream dataFile(path.c_str());
+
+    if (!dataFile)
+    {
+        LOG_GUI_FATAL("Can't open file %s", path);
+        exit(1);
+    }
+
+    using json = nlohmann::json;
+    json learnTabData = json::parse(dataFile);
+
+    dataFile.close();
+    // Read End
+
+    // Parse Begin
+    Panel* ret = new Panel("panel_" + learnTabName);
+    ret->SetAutoPositioning(true);
+    ret->ScaleBy(0.0f);
+    ret->HideBorder();
+
+    json show = learnTabData["show"];
+    for (int i = 0; i < show.size(); i++)
+    {
+        // TODO: Validate json data!!!!
+        if (show[i]["type"] == "paragraph")
+        {
+            std::string token = show[i]["data"]["token"];
+            int yClamp = show[i]["data"]["yClamp"];
+
+            std::string id = std::to_string(i) + "_textbox_" + ret->GetId();
+            TextBox* text = new TextBox(id, token);
+            text->ScaleTo({ 0.0f, (float)yClamp });
+            text->SetAutoPositioning(true);
+
+            ret->AddWidget(text);
+
+            continue;
+        }
+
+        if (show[i]["type"] == "canvas")
+        {
+            json canvasData = show[i]["data"];
+
+            float width = canvasData["size"]["width"];
+            float height = canvasData["size"]["height"];
+
+            float posX = canvasData["position"]["x"];
+            float posY = canvasData["position"]["y"];
+
+            std::string id = std::to_string(i) + "_canvas_" + ret->GetId();
+            Canvas* canvas = new Canvas(id);
+            canvas->MoveTo({ posX, posY });
+            canvas->ScaleTo({ width, height });
+
+            json vals = canvasData["values"];
+            for (int j = 0; j < vals.size(); j++)
+            {
+                DrawableCircle* circle = new DrawableCircle({ 50.0f * (j + 1), 100.0f }, 20.0f);
+                circle->SetColor(IM_COL32(0 + (40 * j), 0, 0, 255));
+
+                canvas->AddDrawableShape(circle);
+            }
+
+            ret->AddWidget(canvas);
+
+            continue;
+        }
+    }
+    // Parse End
+
+    return ret;
+}

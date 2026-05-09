@@ -1,0 +1,35 @@
+{
+    "title": "GUI.LEARN_ARRAY_TITLE",
+    "show": [
+        {
+            "type" : "paragraph",
+            "data" : {
+                "token" : "GUI.LEARN_ARRAY_P_1",
+                "yClamp" : false
+            }
+        },
+        {
+            "type" : "paragraph",
+            "data" : {
+                "token" : "GUI.LEARN_ARRAY_P_2",
+                "yClamp" : 300
+            }
+        },
+        {
+            "type" : "canvas",
+            "data" : {
+                "type" : "ds:array",
+                "values" : [1, 2, 3, 4, 5],
+                "label": "GUI.LEARN_ARRAY_CANVAS_LABEL",
+                "position" : {
+                    "x" : 300,
+                    "y" : 200
+                },
+                "size" : {
+                    "width" : 400,
+                    "height" : 300
+                }
+            }
+        }
+    ]
+}

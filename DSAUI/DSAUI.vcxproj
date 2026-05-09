@@ -31,6 +31,8 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\CustomWidget.cpp" />
+    <ClCompile Include="src\Application\Widget\Menu\LearnMenu.cpp" />
     <ClCompile Include="src\Application\Widget\Menu\MainMenu.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
@@ -83,6 +85,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\Tab.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
@@ -95,6 +98,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\TreeNode.cpp" />
     <ClCompile Include="src\Application\Widget\Widget.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
@@ -259,6 +263,8 @@
     <ClInclude Include="src\Application\Widget\Canvas.h" />
     <ClInclude Include="src\Application\Widget\CheckBox.h" />
     <ClInclude Include="src\Application\Widget\ComboBox.h" />
+    <ClInclude Include="src\Application\Widget\CustomWidget.h" />
+    <ClInclude Include="src\Application\Widget\Menu\LearnMenu.h" />
     <ClInclude Include="src\Application\Widget\Menu\MainMenu.h" />
     <ClInclude Include="src\Application\Widget\Menu\OptionsMenu.h" />
     <ClInclude Include="src\Application\Widget\Menu\Menu.h" />
@@ -271,9 +277,11 @@
     <ClInclude Include="src\Application\Widget\Shape\InteractableShape.h" />
     <ClInclude Include="src\Application\Widget\Shape\Line.h" />
     <ClInclude Include="src\Application\Widget\Shape\Shape.h" />
+    <ClInclude Include="src\Application\Widget\Tab.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />
     <ClInclude Include="src\Application\Widget\TextLabel.h" />
     <ClInclude Include="src\Application\Widget\Panel.h" />
+    <ClInclude Include="src\Application\Widget\TreeNode.h" />
     <ClInclude Include="src\Application\Widget\Widget.h" />
     <ClInclude Include="src\dsa_pch.h" />
     <ClInclude Include="src\Application\I18N\I18N.h" />
@@ -314,6 +322,7 @@
     <ClInclude Include="vendors\json\single_include\nlohmann\json_fwd.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="learntabs\learn_array.json" />
     <None Include="locales\en-US.json" />
     <None Include="locales\ro-RO.json" />
   </ItemGroup>

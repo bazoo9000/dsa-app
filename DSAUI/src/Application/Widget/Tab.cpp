@@ -7,7 +7,6 @@ Tab::Tab(std::string id)
 {
 	m_Id = id;
 	m_DrawId = "##" + id;
-	m_TabItems.reserve(16);
 
 }
 

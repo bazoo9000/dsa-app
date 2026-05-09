@@ -95,8 +95,7 @@ void OptionsMenu::InitMenu()
 	TextLabel* cboxText = new TextLabel("text_cbox", "", FONT_H3);
 	cboxText->MoveTo({ 100.0f, 550.0f });
 
-	std::vector<Widget*> widgets1 = { but, title, radio, select, but2, but3, cbox, cboxText };
-	m_MainPanel = new Panel("panel_options", widgets1);
+	setAllWidgets({ but, title, radio, select, but2, but3, cbox, cboxText });
 }
 
 void OptionsMenu::RunMenu()

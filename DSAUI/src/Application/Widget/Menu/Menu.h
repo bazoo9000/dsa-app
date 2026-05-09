@@ -23,9 +23,13 @@ public:
 	std::string GetId();
 
 protected:
+	void setAllWidgets(std::vector<Widget*> widgets);
+
+protected:
 	static void signalChangeMenu(std::string id);
 	static void signalCloseApp();
 	static std::unordered_map<std::string, std::string> signalRequestTokens(std::vector<std::string> tokens);
+	static ImVec2 signalGetWindowSize();
 
 protected:
 	std::string m_Id = "";

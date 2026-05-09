@@ -2,6 +2,8 @@
 
 #include "Button.h"
 
+#include "Logger/Logger.h"
+
 Button::Button(std::string id, std::string label)
 {
 	m_Id = id;
@@ -14,9 +16,15 @@ Button::~Button()
 
 inline void Button::drawWidget()
 {
-	ImGui::SetCursorPos(m_Transform.position);
 	if (ImGui::Button(m_Label.c_str(), m_Transform.scale))
 	{
-		m_Callback();
+		if (m_Callback)
+		{
+			m_Callback();
+		}
+		else
+		{
+			LOG_GUI_WARN("Button %s has no function", m_Id.c_str());
+		}
 	}
 }

@@ -61,12 +61,6 @@ void Canvas::AddDrawableShape(DrawableShape* shape)
 		return;
 	}
 
-	Shape* s = dynamic_cast<Shape*>(shape);
-	if (s != nullptr)
-	{
-		s->SetGlobalOrigin(m_Transform.position);
-	}
-
 	m_Shapes.push_back(shape);
 	
 	InteractableShape* ishape = dynamic_cast<InteractableShape*>(shape);
@@ -75,8 +69,7 @@ void Canvas::AddDrawableShape(DrawableShape* shape)
 
 void Canvas::drawWidget()
 {
-	ImGui::SetNextWindowPos(m_Transform.position);
-	ImGui::BeginChild(m_DrawId.c_str(), m_Transform.scale, ImGuiChildFlags_Borders);
+	ImGui::BeginChild(m_DrawId.c_str(), m_Transform.scale, ImGuiChildFlags_Borders | ImGuiWindowFlags_NoScrollbar);
 
 	ImDrawList* drawList = ImGui::GetWindowDrawList();
 
@@ -86,23 +79,29 @@ void Canvas::drawWidget()
 		exit(1);
 	}
 
-	drawBackground(drawList);
+	ImVec2 canvasScreenPos = ImGui::GetCursorScreenPos() - ImGui::GetStyle().WindowPadding;
 
-	// TODO: add more shapes, and make them interactable
+	drawBackground(drawList, canvasScreenPos);
+
 	for (DrawableShape* shape : m_Shapes)
 	{
+		Shape* s = dynamic_cast<Shape*>(shape);
+		if (s != nullptr)
+		{
+			s->SetGlobalOrigin(canvasScreenPos);
+		}
 		shape->DrawShape(drawList);
 	}
 
 	ImGui::EndChild();
 }
 
-void Canvas::drawBackground(ImDrawList* drawList)
+void Canvas::drawBackground(ImDrawList* drawList, ImVec2 screenPos)
 {
-	// top-left corner position
-	ImVec2 start = m_Transform.position;
-	// bottom-right corner position
-	ImVec2 end = start + m_Transform.scale;
+	// top-left corner (absolute screen position of canvas)
+	ImVec2 start = screenPos;
+	// bottom-right corner (add the canvas size)
+	ImVec2 end = screenPos + m_Transform.scale;
 
 	drawList->AddRectFilled(
 		start,

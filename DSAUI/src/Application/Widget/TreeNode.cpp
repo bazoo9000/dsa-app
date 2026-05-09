@@ -33,16 +33,22 @@ TreeNode::~TreeNode()
 
 inline void TreeNode::drawWidget()
 {
-	ImGui::SetCursorPos(m_Transform.position);
+	if (!m_AutoPos)
+	{
+		ImGui::SetCursorPos(m_Transform.position);
+	}
 	if (ImGui::TreeNode(m_Label.c_str()))
 	{
 		ImVec2 pos = m_Transform.position;
 		pos = { pos.x + 20, pos.y + 15 };
 		for (auto w : m_Children)
 		{
-			// TODO: Have a better way to position this, this is good enough
-			w.second->MoveTo(pos);
-			pos = { pos.x, pos.y + 15 };
+			if (!m_AutoPos)
+			{
+				// TODO: Have a better way to position this, this is good enough
+				w.second->MoveTo(pos);
+				pos = { pos.x, pos.y + 15 };
+			}
 			w.second->Draw();
 		}
 		ImGui::TreePop();

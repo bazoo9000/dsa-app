@@ -14,6 +14,5 @@ CheckBox::~CheckBox()
 
 inline void CheckBox::drawWidget()
 {
-	ImGui::SetCursorPos(m_Transform.position);
 	ImGui::Checkbox(m_Label.c_str(), &m_Value);
 }

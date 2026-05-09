@@ -20,7 +20,7 @@ protected:
 	virtual inline void drawWidget() override;
 
 private:
-	void drawBackground(ImDrawList* list);
+	void drawBackground(ImDrawList* list, ImVec2 screenPos);
 
 private:
 	std::string m_DrawId = "##"; // for imgui id

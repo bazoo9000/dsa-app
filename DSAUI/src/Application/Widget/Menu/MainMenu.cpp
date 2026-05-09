@@ -143,10 +143,17 @@ void MainMenu::InitMenu()
 
 	circle1->SetColor(IM_COL32(125, 50, 25, 255));
 
-	std::vector<Widget*> widgets = { but, title, opt, canvas };
-	m_MainPanel = new Panel("panel_main", widgets);
-	m_MainPanel->ScaleTo({ 400.0f, 400.0f });
-	m_MainPanel->MoveTo({ 10.0f, 20.0f });
+	Button* learnBut = new Button("but_learn", "Learn");
+	learnBut->SetCallback(
+		[]()
+		{
+			Menu::signalChangeMenu("menu_learn");
+		}
+	);
+	learnBut->MoveTo({ 200.0f, 100.0f });
+	learnBut->ScaleTo({ 50.0f, 20.0f });
+
+	setAllWidgets({ but, title, opt, canvas, learnBut });
 }
 
 void MainMenu::RunMenu()

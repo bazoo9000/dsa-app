@@ -16,6 +16,7 @@ public:
 	void AddItem(std::string item);
 	void RemoveItem(std::string item);
 	std::string GetSelected() { return m_Items[m_Selected]; }
+	int GetSelectedIndex() { return m_Selected; }
 
 private:
 	std::string m_DrawId = "##"; // for imgui id

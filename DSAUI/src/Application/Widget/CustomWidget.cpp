@@ -7,6 +7,7 @@
 CustomWidget::CustomWidget(std::string id)
 {
 	m_Id = id;
+	m_AutoPos = true;
 }
 
 CustomWidget::~CustomWidget()

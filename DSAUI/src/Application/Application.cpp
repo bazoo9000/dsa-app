@@ -6,6 +6,7 @@
 #include "Widget/BasicText.h"
 #include "Widget/Menu/MainMenu.h"
 #include "Widget/Menu/OptionsMenu.h"
+#include "Widget/Menu/LearnMenu.h"
 
 Application::Application()
 {
@@ -20,21 +21,6 @@ Application::Application()
 	
 	m_TextCache = CacheManager<std::string>(250);
 	m_WidgetCache = CacheManager<Widget*>(10);
-	
-	// TODO: dereferencing these looks utterly terrible, probably move it somewhere else, maybe in I18N class
-	// maybe make a request to cache them when needed
-	auto misses = m_TextCache.GetMissingKeys(
-		{ "GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME", "GUI.NU_EXISTA" }
-	);
-
-	if (misses.size() != 0)
-	{
-		std::vector<TV> tvs = m_I18N->GetTexts(misses);
-		for (auto tv : tvs)
-		{
-			m_TextCache.Cache(tv.first, tv.second);
-		}
-	}
 
 	Menu::SetApp(this); // set listener
 	initMenus();
@@ -89,6 +75,7 @@ void Application::Run()
 	LOG_GUI_TRACE("Application run end");
 }
 
+// TODO: handle invalid id
 void Application::ChangeMenu(std::string id)
 {
 	m_CrtMenu = m_Menus[id]; // or nullptr if id not found
@@ -104,6 +91,17 @@ std::unordered_map<std::string, std::string> Application::RequestTokens(std::vec
 	std::unordered_map<std::string, std::string> ret;
 	ret.reserve(tokens.size());
 
+	// Get missed keys and translate them and then cache translated text
+	auto misses = m_TextCache.GetMissingKeys(tokens);
+	if (misses.size() != 0)
+	{
+		std::vector<TV> tvs = m_I18N->GetTexts(misses);
+		for (auto tv : tvs)
+		{
+			m_TextCache.Cache(tv.first, tv.second);
+		}
+	}
+
 	for (auto tok : tokens)
 	{
 		std::string* text = m_TextCache.Get(tok);
@@ -113,11 +111,17 @@ std::unordered_map<std::string, std::string> Application::RequestTokens(std::vec
 	return ret;
 }
 
+ImVec2 Application::GetWindowSize()
+{
+	return m_Window->GetWindowSize();
+}
+
 void Application::initMenus()
 {
 	// menu inits go here
 	m_Menus["menu_main"] = new MainMenu("menu_main");
 	m_Menus["menu_options"] = new OptionsMenu("menu_options");
+	m_Menus["menu_learn"] = new LearnMenu("menu_learn");
 
 	for (auto it = m_Menus.begin(); it != m_Menus.end(); it++)
 	{

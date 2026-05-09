@@ -28,10 +28,15 @@ public:
 public:
 	std::string GetId() { return m_Id; }
 	Transform GetTransform() { return m_Transform; }
+	Widget* GetParent() { return m_Parent; };
+	void SetParent(Widget* parent) { m_Parent = parent; }
+	void SetAutoPositioning(bool shouldAutoPos) { m_AutoPos = shouldAutoPos; }
 
 protected:
 	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f }; // relative pos/scale/rot
 	std::string m_Id; // for labeling/caching
 	bool m_IsDisabled = false;
 	bool m_IsHidden = false;
+	Widget* m_Parent = nullptr; // for hierarchy
+	bool m_AutoPos = false; // it positions the widget automatically using imgui default positioning
 };

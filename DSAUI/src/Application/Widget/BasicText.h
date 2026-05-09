@@ -18,5 +18,5 @@ public:
 
 protected:
 	std::string m_Text;
-	ImFont* m_Font;
+	ImFont* m_Font = nullptr;
 };

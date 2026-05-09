@@ -17,6 +17,11 @@ Menu::~Menu()
 
 void Menu::Draw()
 {
+	if (m_MainPanel == nullptr)
+	{
+		LOG_GUI_FATAL("Can't draw menu, main panel is null");
+		exit(1);
+	}
 	m_MainPanel->Draw();
 	RunMenu();
 }
@@ -41,7 +46,19 @@ std::unordered_map<std::string, std::string> Menu::signalRequestTokens(std::vect
 	return m_App->RequestTokens(tokens);
 }
 
+ImVec2 Menu::signalGetWindowSize()
+{
+	return m_App->GetWindowSize();
+}
+
 std::string Menu::GetId()
 {
 	return m_Id;
+}
+
+void Menu::setAllWidgets(std::vector<Widget*> widgets)
+{
+	//m_MainPanel = new Panel(menuName, widgets);
+	m_MainPanel = new Panel("panel_main", widgets);
+	m_MainPanel->ScaleTo(signalGetWindowSize());
 }

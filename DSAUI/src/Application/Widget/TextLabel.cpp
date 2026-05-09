@@ -16,7 +16,6 @@ TextLabel::~TextLabel()
 
 inline void TextLabel::drawWidget()
 {
-	ImGui::SetCursorPos(m_Transform.position);
 	ImGui::PushFont(m_Font);
 	ImGui::Text(m_Text.c_str());
 	ImGui::PopFont();
