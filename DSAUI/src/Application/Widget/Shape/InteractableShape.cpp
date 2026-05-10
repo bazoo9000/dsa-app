@@ -7,7 +7,7 @@ MouseAction InteractableShape::CheckMouseAction()
 {
 	ImGuiIO& io = ImGui::GetIO();
 
-	bool isInside = IsInsideShape(io.MousePos);
+	bool isInside = isInsideShape(io.MousePos);
 	bool isClicked = io.MouseClicked[ImGuiMouseButton_Left];
 	bool isHeld = io.MouseDown[ImGuiMouseButton_Left];
 	bool isReleased = io.MouseReleased[ImGuiMouseButton_Left];

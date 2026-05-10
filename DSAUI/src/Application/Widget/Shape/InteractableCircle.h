@@ -11,5 +11,7 @@ public:
 
 public:
 	virtual void DrawShape(ImDrawList* drawList) override;
-	virtual bool IsInsideShape(ImVec2 point) override;
+
+protected:
+	virtual bool isInsideShape(ImVec2 point) override;
 };

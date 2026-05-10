@@ -17,7 +17,6 @@ public:
 	virtual ~InteractableShape() = default;
 
 public:
-	virtual bool IsInsideShape(ImVec2 point) = 0; // TODO: make it protected
 	MouseAction CheckMouseAction();
 
 	void OnNothing();
@@ -33,6 +32,7 @@ public:
 	void SetOnReleaseCallback(std::function<void()> callback) { m_OnReleaseCallback = callback; }
 
 protected:
+	virtual bool isInsideShape(ImVec2 point) = 0; // TODO: make it protected
 	void notImplemented(std::string funcName);
 
 protected:

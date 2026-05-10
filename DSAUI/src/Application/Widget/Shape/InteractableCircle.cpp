@@ -14,7 +14,7 @@ void InteractableCircle::DrawShape(ImDrawList* drawList)
 	DrawableCircle::DrawShape(drawList);
 }
 
-bool InteractableCircle::IsInsideShape(ImVec2 point)
+bool InteractableCircle::isInsideShape(ImVec2 point)
 {
 	ImVec2 finalPos = m_GlobalOrigin + m_Origin;
 	float dx = (point.x - finalPos.x) * (point.x - finalPos.x);
