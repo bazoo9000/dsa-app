@@ -10,7 +10,7 @@
 
 Application::Application()
 {
-	// TODO: Make window builder, too many params :(
+	// TODO: Make window builder, too many params :( (here from the future, this is not necessary because its a simple and only using glfw)
 	const char* title = "Data Structures and Algorithms the app";
 	m_Window = new Window(title, 1280, 720);	// GLFW init
 	initGLAD();									// GLAD init
@@ -20,11 +20,11 @@ Application::Application()
 	LoadFonts(io);								// Load all basic fonts
 	
 	m_TextCache = CacheManager<std::string>(250);
-	m_WidgetCache = CacheManager<Widget*>(10);
+	m_WidgetCache = CacheManager<Widget*>(10); // TODO: remove this, its no longer needed, it will make this project a shit load harder
 
 	Menu::SetApp(this); // set listener
 	initMenus();
-	m_CrtMenu = m_Menus["menu_main"];
+	ChangeMenu("menu_main");
 
 	LOG_GUI_DEBUG("Application CREATED succesfully");
 }
@@ -52,7 +52,6 @@ void Application::Run()
 		// WIDGETS GO HERE
 		ImVec2 windowSize = m_Window->GetWindowSize();
 
-		// TODO: cache all ui elements to avoid reinits
 		ImGui::SetNextWindowPos({ 0, 0 });
 		ImGui::SetNextWindowSize(windowSize);
 		ImGui::Begin("##main", nullptr,
@@ -75,10 +74,26 @@ void Application::Run()
 	LOG_GUI_TRACE("Application run end");
 }
 
-// TODO: handle invalid id
 void Application::ChangeMenu(std::string id)
 {
-	m_CrtMenu = m_Menus[id]; // or nullptr if id not found
+	if (m_Menus.find(id) == m_Menus.end())
+	{
+		LOG_GUI_ERROR("Can't change menu, %s doesn't exist", id.c_str());
+		return;
+	}
+
+	// this may look dirty but it allows dynamic loading instead of loading all at startup
+	if (m_Menus[id] == nullptr)
+	{
+		if (id == "menu_main")         { m_Menus[id] = new MainMenu("menu_main"); }
+		else if (id == "menu_options") { m_Menus[id] = new OptionsMenu("menu_options"); }
+		else if (id == "menu_learn")   { m_Menus[id] = new LearnMenu("menu_learn"); }
+
+		// this will be executed only when a valid id is given and hasnt been initialized yet
+		m_Menus[id]->InitMenu();
+	}
+
+	m_CrtMenu = m_Menus[id];
 }
 
 void Application::Close()
@@ -118,15 +133,12 @@ ImVec2 Application::GetWindowSize()
 
 void Application::initMenus()
 {
-	// menu inits go here
-	m_Menus["menu_main"] = new MainMenu("menu_main");
-	m_Menus["menu_options"] = new OptionsMenu("menu_options");
-	m_Menus["menu_learn"] = new LearnMenu("menu_learn");
-
-	for (auto it = m_Menus.begin(); it != m_Menus.end(); it++)
-	{
-		it->second->InitMenu();
-	}
+	// These are the default menus for this app
+	// for this UI app is enough, but if i extend this wrapper this should be loaded from somewhere else
+	// and should be loaded
+	m_Menus["menu_main"] = nullptr;
+	m_Menus["menu_options"] = nullptr;
+	m_Menus["menu_learn"] = nullptr;
 }
 
 void Application::initImGUI(const char* glslVersion)
