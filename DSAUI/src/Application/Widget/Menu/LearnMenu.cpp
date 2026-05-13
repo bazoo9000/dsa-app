@@ -12,6 +12,8 @@
 
 #include "../Shape/DrawableCircle.h";
 
+#include "../../LearnParser/LearnParser.h"
+
 #include "Logger/Logger.h"
 
 LearnMenu::LearnMenu(std::string id)
@@ -40,7 +42,7 @@ void LearnMenu::InitMenu()
     tbox4->SetAutoPositioning(true);
     Tab* tab = new Tab("tab_test");
 
-    tab->AddTabItem(parseLearnJSON("learn_array"), "GUI.ARRAY_TITLE");
+    tab->AddTabItem(LearnParser::CreateLearnPanel("learn_array"), "GUI.ARRAY_TITLE");
     tab->AddTabItem(tbox2, "GUI.LINKEDLIST_TITLE");
     tab->AddTabItem(tbox3, "GUI.BINARYTREE_TITLE");
     tab->AddTabItem(tbox4, "GUI.HASHMAP_TITLE");
