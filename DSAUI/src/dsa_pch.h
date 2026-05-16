@@ -20,6 +20,7 @@
 #include <memory>
 #include <algorithm>
 #include <functional>
+#include <filesystem>
 
 #include <type_traits>
 

@@ -8,6 +8,8 @@
 
 #include "Logger/Logger.h"
 
+std::string LearnParser::s_LearnPath = "learntabs/";
+
 Panel* LearnParser::CreateLearnPanel(std::string learnTabName)
 {
     json learnTabData = readJSON(learnTabName);
@@ -22,9 +24,25 @@ Panel* LearnParser::CreateLearnPanel(std::string learnTabName)
     return ret;
 }
 
+std::map<std::string, std::string> LearnParser::GetAllTitles()
+{
+    std::map<std::string, std::string> ret;
+
+    namespace fs = std::filesystem;
+    for (const auto& entry : fs::directory_iterator(s_LearnPath))
+    {
+        std::string fileName = entry.path().stem().string();
+
+        json data = json::parse(std::ifstream(entry.path()));
+        ret[fileName] = data["title"];
+    }
+
+    return ret;
+}
+
 json LearnParser::readJSON(std::string jsonFileName)
 {
-    std::string path = "learntabs/" + jsonFileName + ".json";
+    std::string path = s_LearnPath + jsonFileName + ".json";
     std::ifstream dataFile(path.c_str());
 
     if (!dataFile)

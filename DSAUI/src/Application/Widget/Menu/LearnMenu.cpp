@@ -42,23 +42,30 @@ void LearnMenu::InitMenu()
     tbox4->SetAutoPositioning(true);
     Tab* tab = new Tab("tab_test");
 
-    tab->AddTabItem(LearnParser::CreateLearnPanel("learn_array"), "GUI.ARRAY_TITLE");
-    tab->AddTabItem(tbox2, "GUI.LINKEDLIST_TITLE");
-    tab->AddTabItem(tbox3, "GUI.BINARYTREE_TITLE");
-    tab->AddTabItem(tbox4, "GUI.HASHMAP_TITLE");
-
     CustomWidget* custom1 = new CustomWidget("custom_header_select");
     custom1->AddCustomScript([tab]()
         {
             if (ImGui::TreeNode("GUI.DATA_STRUCTURES"))
             {
-                auto tabKeys = tab->GetAllKeys();
-                for (auto& key : tabKeys)
+                static auto titles = LearnParser::GetAllTitles();
+                static std::unordered_map<std::string, std::string> keys;
+                for (auto& title : titles)
                 {
-                    // this may look ugly but it works :)
-                    bool selected = tab->GetTabItemSelected(key);
-                    ImGui::Selectable(tab->GetTabItemName(key).c_str(), &selected);
-                    tab->SetTabItemSelected(key, selected);
+                    bool exists = (keys.find(title.first) != keys.end());
+                    bool selected = exists && tab->GetTabItemSelected(keys[title.first]);
+                    ImGui::Selectable(title.second.c_str(), &selected);
+
+                    if (!exists && selected)
+                    {
+                        Panel* panel = LearnParser::CreateLearnPanel(title.first);
+                        tab->AddTabItem(panel, title.second.c_str(), true);
+                        keys[title.first] = panel->GetId();
+                    }
+
+                    if (exists)
+                    {
+                        tab->SetTabItemSelected(keys[title.first], selected);
+                    }
                 }
 
                 ImGui::TreePop();

@@ -4,14 +4,19 @@
 
 using json = nlohmann::json;
 
+// TODO: maybe rename this to LearnMenuManager since it begins to have more functionality
 class LearnParser
 {
 public:
 	static Panel* CreateLearnPanel(std::string learnTabName);
+	static std::map<std::string, std::string> GetAllTitles();
 
 private:
 	static json readJSON(std::string jsonFileName);
 	static Panel* parseJSON(json jsonData, Panel* panel);
 	static void setText(Panel* panel, const json& data, int index);
 	static void setCanvas(Panel* panel, const json& data, int index);
+
+private:
+	static std::string s_LearnPath;
 };

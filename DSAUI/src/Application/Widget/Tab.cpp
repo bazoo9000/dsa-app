@@ -56,7 +56,7 @@ void Tab::AddTabItem(Widget* widget, std::string name, bool selected)
 
 Widget* Tab::GetTabItemWidget(std::string id)
 {
-	if (m_TabItems.find(id) == m_TabItems.end())
+	if (!CheckExists(id))
 	{
 		LOG_GUI_ERROR("Can't find '%s', doesn't exist in Tab '%s'", id.c_str(), m_Id.c_str());
 		return nullptr;
@@ -67,7 +67,7 @@ Widget* Tab::GetTabItemWidget(std::string id)
 
 bool Tab::GetTabItemSelected(std::string id)
 {
-	if (m_TabItems.find(id) == m_TabItems.end())
+	if (!CheckExists(id))
 	{
 		LOG_GUI_ERROR("Can't find '%s', doesn't exist in Tab '%s'", id.c_str(), m_Id.c_str());
 		return false;
@@ -78,7 +78,7 @@ bool Tab::GetTabItemSelected(std::string id)
 
 void Tab::SetTabItemSelected(std::string id, bool selected)
 {
-	if (m_TabItems.find(id) == m_TabItems.end())
+	if (!CheckExists(id))
 	{
 		LOG_GUI_ERROR("Can't find '%s', doesn't exist in Tab '%s'", id.c_str(), m_Id.c_str());
 	}
@@ -88,7 +88,7 @@ void Tab::SetTabItemSelected(std::string id, bool selected)
 
 std::string Tab::GetTabItemName(std::string id)
 {
-	if (m_TabItems.find(id) == m_TabItems.end())
+	if (!CheckExists(id))
 	{
 		LOG_GUI_ERROR("Can't find '%s', doesn't exist in Tab '%s'", id.c_str(), m_Id.c_str());
 		return "";
@@ -111,6 +111,7 @@ void Tab::RemoveTabItem(std::string id)
 	}
 }
 
+// TODO: try to remove this
 std::vector<std::string> Tab::GetAllKeys()
 {
 	if (m_TabItems.empty())
@@ -129,13 +130,18 @@ std::vector<std::string> Tab::GetAllKeys()
 	return out;
 }
 
+bool Tab::CheckExists(std::string id)
+{
+	return (m_TabItems.find(id) != m_TabItems.end());
+}
+
 void Tab::addItem(std::string id, TabData data)
 {
 	if (id == "")
 	{
 		LOG_GUI_WARN("Widget id is empty");
 	}
-	if (m_TabItems.find(id) != m_TabItems.end())
+	if (CheckExists(id))
 	{
 		LOG_GUI_WARN("Found duplicate tabitem id '%s' in Tab '%s'", id.c_str(), m_Id.c_str());
 	}
