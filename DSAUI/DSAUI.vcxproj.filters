@@ -231,6 +231,15 @@
     <ClCompile Include="src\Application\Widget\Tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\LearnParser\LearnParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\WidgetDecorator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Tooltip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dsa_pch.h">
@@ -431,11 +440,23 @@
     <ClInclude Include="src\Application\Widget\Tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Application\LearnParser\LearnParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\WidgetDecorator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\Tooltip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="locales\en-US.json" />
     <None Include="locales\ro-RO.json" />
     <None Include="learntabs\learn_array.json" />
+    <None Include="learntabs\learn_linkedlist.json" />
+    <None Include="learntabs\learn_hashmap.json" />
+    <None Include="learntabs\learn_binarytree.json" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\Roboto-Medium.ttf" />

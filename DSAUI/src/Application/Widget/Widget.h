@@ -2,6 +2,7 @@
 
 #include "../Transform.h"
 
+// BIG TODO: Change all raw pointers to shared_ptr or create my own shared pointer so it can do internal logging
 class Widget
 {
 public:

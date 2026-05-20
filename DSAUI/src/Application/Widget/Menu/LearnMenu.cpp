@@ -9,6 +9,7 @@
 #include "../TextBox.h"
 #include "../Tab.h"
 #include "../Canvas.h"
+#include "../Tooltip.h"
 
 #include "../Shape/DrawableCircle.h";
 
@@ -86,11 +87,14 @@ void LearnMenu::InitMenu()
     but->MoveTo({ 10.0f, screenSize.y - 35.0f });
     but->ScaleTo({ 50.0f, 20.0f });
 
+    Tooltip* tooltip = new Tooltip(but, "This is a tooltip");
+    tooltip->SetDelay(TooltipDelay::None);
+
     Panel* leftPanel = new Panel("panel_left");
     leftPanel->ScaleTo({ fifthScreenX, screenSize.y });
     leftPanel->MoveTo({ 0.0f, 0.0f });
     leftPanel->AddWidget(custom1);
-    leftPanel->AddWidget(but);
+    leftPanel->AddWidget(tooltip);
     
     Panel* rightPanel = new Panel("panel_right");
     rightPanel->ScaleTo({ screenSize.x - fifthScreenX, screenSize.y });
