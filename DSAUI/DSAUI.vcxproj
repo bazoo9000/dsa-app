@@ -74,6 +74,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\DrawableRectangle.cpp" />
     <ClCompile Include="src\Application\Widget\Shape\InteractableCircle.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
@@ -86,6 +87,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\Shape\Rectangle.cpp" />
     <ClCompile Include="src\Application\Widget\Tab.cpp" />
     <ClCompile Include="src\Application\Widget\TextBox.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
@@ -276,10 +278,12 @@
     <ClInclude Include="src\Application\Widget\Shape\Circle.h" />
     <ClInclude Include="src\Application\Widget\Shape\DrawableCircle.h" />
     <ClInclude Include="src\Application\Widget\Shape\DrawableLine.h" />
+    <ClInclude Include="src\Application\Widget\Shape\DrawableRectangle.h" />
     <ClInclude Include="src\Application\Widget\Shape\DrawableShape.h" />
     <ClInclude Include="src\Application\Widget\Shape\InteractableCircle.h" />
     <ClInclude Include="src\Application\Widget\Shape\InteractableShape.h" />
     <ClInclude Include="src\Application\Widget\Shape\Line.h" />
+    <ClInclude Include="src\Application\Widget\Shape\Rectangle.h" />
     <ClInclude Include="src\Application\Widget\Shape\Shape.h" />
     <ClInclude Include="src\Application\Widget\Tab.h" />
     <ClInclude Include="src\Application\Widget\TextBox.h" />

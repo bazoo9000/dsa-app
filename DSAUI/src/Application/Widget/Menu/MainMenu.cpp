@@ -56,7 +56,6 @@ void MainMenu::InitMenu()
 	canvas->ScaleTo({ 450.0f, 450.0f });
 	canvas->SetBgColor(IM_COL32(125, 255, 125, 255));
 
-	// TODO: rethink how to set both global and local origin, this looks horrible
 	InteractableCircle* circle = new InteractableCircle({ 100.0f, 100.0f }, 50.0f);
 	InteractableCircle* circle1 = new InteractableCircle({ 200.0f, 111.0f }, 31.0f);
 
@@ -65,7 +64,6 @@ void MainMenu::InitMenu()
 		circle1->GetOrigin(),
 		2.0f
 	);
-
 
 	// The black circle
 	{
