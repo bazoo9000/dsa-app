@@ -16,6 +16,7 @@ private:
 	static Panel* parseJSON(json jsonData, Panel* panel);
 	static void setText(Panel* panel, const json& data, int index);
 	static void setCanvas(Panel* panel, const json& data, int index);
+	static std::vector<uint32_t> createVector(uint32_t max, bool shuffle = false);
 
 private:
 	static std::string s_LearnPath;

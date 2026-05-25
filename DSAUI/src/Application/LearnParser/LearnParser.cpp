@@ -1,10 +1,13 @@
 #include "../../dsa_pch.h"
 
+#include <random>
+
 #include "LearnParser.h"
 
 #include "../Widget/TextBox.h"
 #include "../Widget/Canvas.h"
 #include "../Widget/Shape/DrawableCircle.h"
+#include "../Widget/Shape/DrawableRectangle.h"
 
 #include "Logger/Logger.h"
 
@@ -108,15 +111,43 @@ void LearnParser::setCanvas(Panel* panel, const json& data, int index)
     canvas->MoveTo({ posX, posY });
     canvas->ScaleTo({ width, height });
 
-    json vals = data["values"];
-    for (int j = 0; j < vals.size(); j++)
+    float offset = 2.0f;
+    int max = data["maxValue"];
+    float deltaWidth = (float)(width - 2 * offset) / max;
+    float deltaHeight = (float)(height - 2 * offset) / max;
+    std::vector<uint32_t> vals = LearnParser::createVector(max);
+    for (int i = 0; i < max; i++)
     {
         // TODO: parse based on type of canvas
-        DrawableCircle* circle = new DrawableCircle({ 50.0f * (j + 1), 100.0f }, 20.0f);
-        circle->SetColor(IM_COL32(0 + (40 * j), 0, 0, 255));
+        DrawableRectangle* rect = new DrawableRectangle(
+            { offset + deltaWidth * i, height - offset },
+            { offset + deltaWidth * (i + 1), height - (deltaHeight * vals[i]) - offset}
+        );
+        rect->SetColor(IM_COL32(0 + (40 * i), 0, 0, 255));
+        rect->SetFilled(true);
 
-        canvas->AddDrawableShape(circle);
+        canvas->AddDrawableShape(rect);
     }
 
     panel->AddWidget(canvas);
+}
+
+std::vector<uint32_t> LearnParser::createVector(uint32_t max, bool shuffle)
+{
+    if (max == 0)
+    {
+        LOG_GUI_FATAL("Can't create vector, max value is 0");
+        exit(1);
+    }
+
+    std::vector<uint32_t> ret;
+    ret.resize(max);
+
+    std::iota(ret.begin(), ret.end(), 1);
+    if (shuffle)
+    {
+        std::shuffle(ret.begin(), ret.end(), std::mt19937());
+    }
+
+    return ret;
 }
