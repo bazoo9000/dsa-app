@@ -4,8 +4,7 @@
 
 using json = nlohmann::json;
 
-// TODO: maybe rename this to LearnMenuManager since it begins to have more functionality
-class LearnParser
+class LearnMenuManager
 {
 public:
 	static Panel* CreateLearnPanel(std::string learnTabName);

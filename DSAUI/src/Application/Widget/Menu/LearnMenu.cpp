@@ -12,8 +12,9 @@
 #include "../Tooltip.h"
 
 #include "../Shape/DrawableCircle.h";
+#include "../Shape/DrawableRectangle.h";
 
-#include "../../LearnParser/LearnParser.h"
+#include "../../LearnMenuManager/LearnMenuManager.h"
 
 #include "Logger/Logger.h"
 
@@ -32,23 +33,15 @@ void LearnMenu::InitMenu()
 		"GUI.BACK", "GUI.OPTIONS"
 		});
 
-    TextBox* tbox2 = new TextBox("textbox_2", "GUI.LINKEDLIST_PARAGRAPH_TEST");
-    tbox2->ScaleTo({ 0.0f, 500.0f });
-    tbox2->SetAutoPositioning(true);
-    TextBox* tbox3 = new TextBox("textbox_3", "GUI.BINARYTREE_PARAGRAPH_TEST");
-    tbox3->ScaleTo({ 0.0f, 500.0f });
-    tbox3->SetAutoPositioning(true);
-    TextBox* tbox4 = new TextBox("textbox_4", "GUI.HASHMAP_PARAGRAPH_TEST");
-    tbox4->ScaleTo({ 0.0f, 500.0f });
-    tbox4->SetAutoPositioning(true);
     Tab* tab = new Tab("tab_test");
 
+    // TODO: add selectable widget decorator, after i fix one giant problem about the decorators
     CustomWidget* custom1 = new CustomWidget("custom_header_select");
     custom1->AddCustomScript([tab]()
         {
             if (ImGui::TreeNode("GUI.DATA_STRUCTURES"))
             {
-                static auto titles = LearnParser::GetAllTitles();
+                static auto titles = LearnMenuManager::GetAllTitles();
                 static std::unordered_map<std::string, std::string> keys;
                 for (auto& title : titles)
                 {
@@ -58,7 +51,7 @@ void LearnMenu::InitMenu()
 
                     if (!exists && selected)
                     {
-                        Panel* panel = LearnParser::CreateLearnPanel(title.first);
+                        Panel* panel = LearnMenuManager::CreateLearnPanel(title.first);
                         tab->AddTabItem(panel, title.second.c_str(), true);
                         keys[title.first] = panel->GetId();
                     }
@@ -113,8 +106,6 @@ void LearnMenu::InitMenu()
     leftPanel->AddWidget(node);
 
     setAllWidgets({ leftPanel, rightPanel });
-
-    // TODO: add tooltip decorator
 }
 
 void LearnMenu::RunMenu()

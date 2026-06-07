@@ -15,6 +15,7 @@ public:
 	ImU32 GetBgColor() { return m_BgColor; }
 	void SetBgColor(ImU32 bgColor) { m_BgColor = bgColor; }
 	void AddDrawableShape(DrawableShape* shape);
+	const std::vector<DrawableShape*>& GetAllDrawableShapes() { return m_Shapes; }
 
 protected:
 	virtual inline void drawWidget() override;

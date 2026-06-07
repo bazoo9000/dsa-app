@@ -23,7 +23,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Application\LearnParser\LearnParser.cpp" />
+    <ClCompile Include="src\Application\LearnMenuManager\LearnMenuManager.cpp" />
     <ClCompile Include="src\Application\Widget\Canvas.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
@@ -262,7 +262,7 @@
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\CacheManager\CacheManager.h" />
     <ClInclude Include="src\Application\IAppReceiver.h" />
-    <ClInclude Include="src\Application\LearnParser\LearnParser.h" />
+    <ClInclude Include="src\Application\LearnMenuManager\LearnMenuManager.h" />
     <ClInclude Include="src\Application\Transform.h" />
     <ClInclude Include="src\Application\Widget\BasicText.h" />
     <ClInclude Include="src\Application\Widget\Button.h" />

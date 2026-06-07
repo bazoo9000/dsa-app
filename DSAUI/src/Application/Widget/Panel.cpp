@@ -38,7 +38,7 @@ Panel::~Panel()
 
 inline void Panel::drawWidget()
 {
-	ImGui::BeginChild(m_DrawId.c_str(), m_Transform.scale, m_Flags);
+	ImGui::BeginChild(m_DrawId.c_str(), m_Transform.scale, m_ChildFlags, m_WindowFlags);
 
 	for (auto w : m_Children)
 	{
@@ -59,6 +59,7 @@ void Panel::AddWidget(Widget* widget)
 	addChild(widget->GetId(), widget);
 }
 
+// TODO: make the search to go recursevily through child panels, needs a deeper search
 Widget* Panel::GetWidget(std::string id)
 {
 	if (m_Children.find(id) == m_Children.end())

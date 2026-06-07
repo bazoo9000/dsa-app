@@ -231,7 +231,7 @@
     <ClCompile Include="src\Application\Widget\Tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application\LearnParser\LearnParser.cpp">
+    <ClCompile Include="src\Application\LearnMenuManager\LearnMenuManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\WidgetDecorator.cpp">
@@ -446,7 +446,7 @@
     <ClInclude Include="src\Application\Widget\Tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application\LearnParser\LearnParser.h">
+    <ClInclude Include="src\Application\LearnMenuManager\LearnMenuManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\Widget\WidgetDecorator.h">

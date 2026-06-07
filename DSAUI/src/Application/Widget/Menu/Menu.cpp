@@ -61,4 +61,5 @@ void Menu::setAllWidgets(std::vector<Widget*> widgets)
 	//m_MainPanel = new Panel(menuName, widgets);
 	m_MainPanel = new Panel("panel_main", widgets);
 	m_MainPanel->ScaleTo(signalGetWindowSize());
+	m_MainPanel->HideScrollBar();
 }

@@ -59,7 +59,8 @@ void Application::Run()
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoScrollbar
+			ImGuiWindowFlags_NoScrollbar |
+			ImGuiWindowFlags_NoSavedSettings
 		);
 
 		m_CrtMenu->Draw();
