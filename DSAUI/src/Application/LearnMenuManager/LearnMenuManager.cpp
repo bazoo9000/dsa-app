@@ -155,7 +155,7 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
             ImU32 colorSelected = IM_COL32(255, 0, 0, 255);
             ImU32 colorNeutral = IM_COL32_WHITE;
 
-            const std::vector<DrawableShape*>& shapes = canvas->GetAllDrawableShapes();
+            std::vector<DrawableShape*>& shapes = canvas->GetAllDrawableShapes();
 
             int i1 = in[0] - 1;
             int i2 = in[1] - 1;
@@ -188,6 +188,10 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
 
             rect1->SetColor(colorNeutral);
             rect2->SetColor(colorNeutral);
+
+            auto temp = shapes[i1];
+            shapes[i1] = shapes[i2];
+            shapes[i2] = temp;
         }
     );
 
