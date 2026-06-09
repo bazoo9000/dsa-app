@@ -11,6 +11,8 @@
 #include "../Widget/Shape/DrawableCircle.h"
 #include "../Widget/Shape/DrawableRectangle.h"
 
+#include "LearnMenuUtils.h"
+
 #include "Logger/Logger.h"
 
 std::string LearnMenuManager::s_LearnPath = "learntabs/";
@@ -150,48 +152,7 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
     but->ScaleTo({ 50.0f, 20.0f});
     but->SetCallback([canvas, in]()
         {
-            // TODO: move all of this into a function so that it can be called when sorter begins sorting
-            ImU32 colorDone = IM_COL32(0, 255, 0, 255);
-            ImU32 colorSelected = IM_COL32(255, 0, 0, 255);
-            ImU32 colorNeutral = IM_COL32_WHITE;
-
-            std::vector<DrawableShape*>& shapes = canvas->GetAllDrawableShapes();
-
-            int i1 = in[0] - 1;
-            int i2 = in[1] - 1;
-
-            if (i1 == i2)
-            {
-                return;
-            }
-
-            if (i1 < 0 || i2 < 0 || i1 > 99 || i2 > 99)
-            {
-                return;
-            }
-
-            DrawableRectangle* rect1 = (DrawableRectangle*)shapes[i1];
-            DrawableRectangle* rect2 = (DrawableRectangle*)shapes[i2];
-
-            ImVec2 r1Origin = rect1->GetOrigin();
-            ImVec2 r2Origin = rect2->GetOrigin();
-            ImVec2 r1End = rect1->GetEnd();
-            ImVec2 r2End = rect2->GetEnd();
-
-            rect1->SetColor(colorSelected);
-            rect2->SetColor(colorSelected);
-
-            rect1->SetOrigin(r2Origin);
-            rect2->SetOrigin(r1Origin);
-            rect1->SetEnd({ r2End.x, r1End.y });
-            rect2->SetEnd({ r1End.x, r2End.y });
-
-            rect1->SetColor(colorNeutral);
-            rect2->SetColor(colorNeutral);
-
-            auto temp = shapes[i1];
-            shapes[i1] = shapes[i2];
-            shapes[i2] = temp;
+            LearnMenuUtils::SortSwap(canvas, in[0] - 1, in[1] - 1);
         }
     );
 
