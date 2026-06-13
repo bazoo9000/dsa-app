@@ -27,22 +27,19 @@ Panel::Panel(std::string id, std::vector<Widget*>& widgets)
 
 Panel::~Panel()
 {
-	// TODO: think if this may be a good idea
-	for (auto w : m_Children)
-	{
-		delete w.second;
-	}
+	// BIG TODO: convert all raw pointers to shared pointers or implement my own shared pointer
 
-	m_Children.clear();
+	m_ChildrenList.clear();
+	m_ChildrenMap.clear();
 }
 
 inline void Panel::drawWidget()
 {
 	ImGui::BeginChild(m_DrawId.c_str(), m_Transform.scale, m_ChildFlags, m_WindowFlags);
 
-	for (auto w : m_Children)
+	for (auto w : m_ChildrenList)
 	{
-		w.second->Draw();
+		w->Draw();
 	}
 
 	ImGui::EndChild();
@@ -62,22 +59,23 @@ void Panel::AddWidget(Widget* widget)
 // TODO: make the search to go recursevily through child panels, needs a deeper search
 Widget* Panel::GetWidget(std::string id)
 {
-	if (m_Children.find(id) == m_Children.end())
+	if (m_ChildrenMap.find(id) == m_ChildrenMap.end())
 	{
 		LOG_GUI_ERROR("Can't find '%s', doesn't exist in Panel '%s'", id.c_str(), m_Id.c_str());
 		return nullptr;
 	}
 
-	return m_Children[id];
+	return *m_ChildrenMap[id];
 }
 
 void Panel::RemoveWidget(std::string id)
 {
-	auto del = m_Children.find(id);
+	auto del = m_ChildrenMap.find(id);
 	
-	if (del != m_Children.end())
+	if (del != m_ChildrenMap.end())
 	{
-		m_Children.erase(del);
+		m_ChildrenList.erase((*del).second);
+		m_ChildrenMap.erase(del);
 	}
 	else
 	{
@@ -91,11 +89,11 @@ void Panel::addChild(std::string id, Widget* widget)
 	{
 		LOG_GUI_WARN("Widget id is empty");
 	}
-	if (m_Children.find(id) != m_Children.end())
+	if (m_ChildrenMap.find(id) != m_ChildrenMap.end())
 	{
 		LOG_GUI_WARN("Found duplicate widget id '%s' in Panel '%s'", id.c_str(), m_Id.c_str());
 	}
 
-	m_Children[id] = widget;
+	m_ChildrenMap[id] = m_ChildrenList.insert(m_ChildrenList.end(), widget);
 	widget->SetParent(this);
 }

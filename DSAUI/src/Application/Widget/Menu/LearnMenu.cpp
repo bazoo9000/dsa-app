@@ -71,8 +71,7 @@ void LearnMenu::InitMenu()
     float fifthScreenX = (int)screenSize.x / 5; // at a fith of screen
 
     Button* but = new Button("but_back", tokens["GUI.BACK"]);
-    but->SetCallback(
-        []()
+    but->SetCallback([]()
         {
             Menu::signalChangeMenu("menu_main");
         }
@@ -83,17 +82,6 @@ void LearnMenu::InitMenu()
     Tooltip* tooltip = new Tooltip(but, "This is a tooltip");
     tooltip->SetDelay(TooltipDelay::None);
 
-    Panel* leftPanel = new Panel("panel_left");
-    leftPanel->ScaleTo({ fifthScreenX, screenSize.y });
-    leftPanel->MoveTo({ 0.0f, 0.0f });
-    leftPanel->AddWidget(custom1);
-    leftPanel->AddWidget(tooltip);
-    
-    Panel* rightPanel = new Panel("panel_right");
-    rightPanel->ScaleTo({ screenSize.x - fifthScreenX, screenSize.y });
-    rightPanel->MoveTo({ fifthScreenX, 0.0f });
-    rightPanel->AddWidget(tab);
-
     TextLabel* label1 = new TextLabel("text_test_1", "Label1");
     label1->SetAutoPositioning(true);
     TextLabel* label2 = new TextLabel("text_test_2", "Label2");
@@ -103,7 +91,17 @@ void LearnMenu::InitMenu()
     node->AddWidget(label2);
     node->SetAutoPositioning(true);
 
+    Panel* leftPanel = new Panel("panel_left");
+    leftPanel->ScaleTo({ fifthScreenX, screenSize.y });
+    leftPanel->MoveTo({ 0.0f, 0.0f });
+    leftPanel->AddWidget(custom1);
     leftPanel->AddWidget(node);
+    leftPanel->AddWidget(tooltip);
+    
+    Panel* rightPanel = new Panel("panel_right");
+    rightPanel->ScaleTo({ screenSize.x - fifthScreenX, screenSize.y });
+    rightPanel->MoveTo({ fifthScreenX, 0.0f });
+    rightPanel->AddWidget(tab);
 
     setAllWidgets({ leftPanel, rightPanel });
 }

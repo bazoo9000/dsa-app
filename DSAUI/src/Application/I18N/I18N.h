@@ -4,6 +4,7 @@ using json = nlohmann::json;
 // TODO: remove this and convert to hashmap, im stupid
 using TV = std::pair<std::string, std::string>; // token/value pair
 
+// TODO: move this to cpp, add more tokens
 static const std::vector<std::string> VALID_TOKENS = {
 	"GUI.BACK",
 	"GUI.CLOSE",

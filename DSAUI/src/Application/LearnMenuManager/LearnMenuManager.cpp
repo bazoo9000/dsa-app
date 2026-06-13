@@ -95,7 +95,7 @@ void LearnMenuManager::setText(Panel* panel, const json& data, int index)
     std::string token = data["token"];
     int yClamp = data["yClamp"];
 
-    std::string id = std::to_string(index) + "_textbox_" + panel->GetId();
+    std::string id = "textbox_" + panel->GetId() + "_" + std::to_string(index);
     TextBox* text = new TextBox(id, token);
     text->ScaleTo({ 0.0f, (float)yClamp });
     text->SetAutoPositioning(true);
@@ -111,9 +111,8 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
     float posX = data["position"]["x"];
     float posY = data["position"]["y"];
 
-    std::string id = std::to_string(index) + "_canvas_" + panel->GetId();
+    std::string id = "canvas_" + panel->GetId() + "_" + std::to_string(index);
     Canvas* canvas = new Canvas(id);
-    //canvas->MoveTo({ posX, posY });
     canvas->ScaleTo({ width, height });
     canvas->SetBgColor(IM_COL32_BLACK);
 

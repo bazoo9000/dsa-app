@@ -14,6 +14,7 @@ protected:
 
 public:
 	// TODO: add an interface for having the power to do hierarhical rendering
+	// maybe name it WidgetCollector or WidgetLister
 	void AddWidget(Widget* widget);
 	Widget* GetWidget(std::string id);
 	void RemoveWidget(std::string id);
@@ -27,7 +28,8 @@ private:
 	void addChild(std::string id, Widget* widget);
 
 private:
-	std::unordered_map<std::string, Widget*> m_Children; // Panel only
+	std::unordered_map<std::string, std::list<Widget*>::iterator> m_ChildrenMap; // for fast search
+	std::list<Widget*> m_ChildrenList; // for ordering
 	std::string m_DrawId = "##"; // for imgui id
 	ImGuiChildFlags m_ChildFlags = ImGuiChildFlags_Borders;
 	ImGuiChildFlags m_WindowFlags = ImGuiWindowFlags_NoResize;
