@@ -10,12 +10,12 @@ public:
 	~WidgetDecorator() = default;
 
 public:
-	Widget* GetWidget() { return m_Widget; }
-	void SetWidget(Widget* widget) { putWidget(widget); }
+	Widget* GetWidgetComponent() { return m_WidgetComponent; }
+	void SetWidgetComponent(Widget* widget) { putWidget(widget); }
 
 protected:
 	void putWidget(Widget* widget);
 
 protected:
-	Widget* m_Widget; // decorated widget
+	Widget* m_WidgetComponent; // decorated widget
 };

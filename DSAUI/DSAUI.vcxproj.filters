@@ -249,6 +249,9 @@
     <ClCompile Include="src\Application\LearnMenuManager\LearnMenuUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\WidgetCollector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dsa_pch.h">
@@ -465,6 +468,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\LearnMenuManager\LearnMenuUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\WidgetCollector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

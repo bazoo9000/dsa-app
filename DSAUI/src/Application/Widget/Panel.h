@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Widget.h"
+#include "WidgetCollector.h"
 
-class Panel : public Widget
+class Panel : public WidgetCollector
 {
 public:
 	Panel(std::string id);
@@ -13,11 +13,6 @@ protected:
 	virtual inline void drawWidget() override;
 
 public:
-	// TODO: add an interface for having the power to do hierarhical rendering
-	// maybe name it WidgetCollector or WidgetLister
-	void AddWidget(Widget* widget);
-	Widget* GetWidget(std::string id);
-	void RemoveWidget(std::string id);
 	// TODO: maybe add a flag builder, but i dont think its necessary now to do it
 	void ShowBorder() { m_ChildFlags |= ImGuiChildFlags_Borders; }
 	void HideBorder() { m_ChildFlags &= (~ImGuiChildFlags_Borders); }
@@ -25,11 +20,6 @@ public:
 	void HideScrollBar() { m_WindowFlags |= ImGuiWindowFlags_NoScrollbar; m_WindowFlags |= ImGuiWindowFlags_NoScrollWithMouse; }
 
 private:
-	void addChild(std::string id, Widget* widget);
-
-private:
-	std::unordered_map<std::string, std::list<Widget*>::iterator> m_ChildrenMap; // for fast search
-	std::list<Widget*> m_ChildrenList; // for ordering
 	std::string m_DrawId = "##"; // for imgui id
 	ImGuiChildFlags m_ChildFlags = ImGuiChildFlags_Borders;
 	ImGuiChildFlags m_WindowFlags = ImGuiWindowFlags_NoResize;

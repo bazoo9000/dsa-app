@@ -22,5 +22,5 @@ void WidgetDecorator::putWidget(Widget* widget)
 		m_Id = widget->GetId();
 	}
 
-	m_Widget = widget;
+	m_WidgetComponent = widget;
 }

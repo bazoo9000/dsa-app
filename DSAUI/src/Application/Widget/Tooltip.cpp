@@ -21,9 +21,9 @@ void Tooltip::SetDelay(TooltipDelay delay)
 
 inline void Tooltip::drawWidget()
 {
-	if (m_Widget != nullptr)
+	if (m_WidgetComponent != nullptr)
 	{
-		m_Widget->Draw();
+		m_WidgetComponent->Draw();
 		if (ImGui::IsItemHovered(m_DelayFlag | ImGuiHoveredFlags_NoSharedDelay))
 		{
 			ImGui::SetTooltip(m_Text.c_str());

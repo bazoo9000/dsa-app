@@ -20,6 +20,7 @@ protected:
 	virtual inline void drawWidget() = 0;
 
 public:
+	// TODO: abstract this into WidgetMovable
 	void MoveTo(ImVec2 newPos);
 	void MoveBy(ImVec2 move);
 	void ScaleBy(float scale);
