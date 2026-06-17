@@ -25,7 +25,6 @@ public:
 	void MoveBy(ImVec2 move);
 	void ScaleBy(float scale);
 	void ScaleTo(ImVec2 newScale);
-	void RotateBy(float degrees);
 
 public:
 	std::string GetId() { return m_Id; }
@@ -35,7 +34,7 @@ public:
 	void SetAutoPositioning(bool shouldAutoPos) { m_AutoPos = shouldAutoPos; }
 
 protected:
-	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f }; // relative pos/scale/rot
+	Transform m_Transform = { { 0.0f, 0.0f }, { 1.0f, 1.0f } }; // relative pos/scale/rot
 	std::string m_Id; // for labeling/caching
 	bool m_IsDisabled = false;
 	bool m_IsHidden = false;

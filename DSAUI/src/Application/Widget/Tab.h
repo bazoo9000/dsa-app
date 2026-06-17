@@ -32,8 +32,8 @@ public:
 	void SetTabItemSelected(std::string id, bool selected);
 	std::string GetTabItemName(std::string id);
 	void RemoveTabItem(std::string id);
-	std::vector<std::string> GetAllKeys(); // TODO: now i really need to interface this
-	bool CheckExists(std::string id); // TODO: this is not the only class that needs this
+	std::vector<std::string> GetAllKeys();
+	bool CheckExists(std::string id);
 
 private:
 	void addItem(std::string id, TabData data);

@@ -46,8 +46,3 @@ void Widget::ScaleTo(ImVec2 newScale)
 {
 	m_Transform.scale = newScale;
 }
-
-void Widget::RotateBy(float degrees)
-{
-	m_Transform.rotation = degrees;
-}
