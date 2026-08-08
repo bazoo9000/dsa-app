@@ -9,7 +9,8 @@ public:
 	~CheckBox();
 
 public:
-	bool GetValue() { return m_Value; }
+    bool GetValue() { return m_Value; }
+	void SetValue(bool value) { m_Value = value; }
 	std::string GetLabel() { return m_Label; }
 	void SetLabel(std::string label) { m_Label = label; }
 

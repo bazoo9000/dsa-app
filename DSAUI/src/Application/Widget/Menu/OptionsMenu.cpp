@@ -2,10 +2,10 @@
 
 #include "OptionsMenu.h"
 
+#include "MenuManger/OptionsMenuManager/OptionsMenuManager.h"
+
 #include "../Button.h"
 #include "../TextLabel.h"
-#include "../RadioButton.h"
-#include "../CheckBox.h"
 
 #include "Logger/Logger.h"
 
@@ -28,7 +28,6 @@ void OptionsMenu::InitMenu()
 	but->SetCallback(
 		[]()
 		{
-			LOG_GUI_DEBUG("Closing");
 			Menu::signalChangeMenu("menu_main");
 		}
 	);
@@ -49,7 +48,7 @@ void OptionsMenu::InitMenu()
 			{
 				but->Disable();
 			}
-			
+
 			disabled = !disabled;
 		}
 	);
@@ -81,33 +80,14 @@ void OptionsMenu::InitMenu()
 	title->MoveTo({ 520.0f, 10.0f });
 	title->ScaleTo({ 300.0f, 300.0f });
 
-	std::vector<std::string> items = { "ceva", "altceva", "complet altceva" };
-	RadioButton* radio = new RadioButton("radio_test", items);
-	radio->MoveTo({ 100.0f, 300.0f });
+	Panel* optPanel = OptionsMenuManager::GetOptionsPanel();
+	optPanel->MoveTo({ 100.0f, 200.0f });
+	optPanel->ScaleTo({ 800.0f, 500.0f });
+	optPanel->HideBorder();
 
-	std::string str = ("Ai selectat " + radio->GetSelected());
-	TextLabel* select = new TextLabel("text_select", str, FONT_H4);
-	select->MoveTo({ 100.0f, 250.0f });
-
-	CheckBox* cbox = new CheckBox("checkbox_test", "Is True?", true);
-	cbox->MoveTo({ 100.0f, 500.0f });
-
-	TextLabel* cboxText = new TextLabel("text_cbox", "", FONT_H3);
-	cboxText->MoveTo({ 100.0f, 550.0f });
-
-	setAllWidgets({ but, title, radio, select, but2, but3, cbox, cboxText });
+	setAllWidgets({ title, but, but2, but3, optPanel });
 }
 
 void OptionsMenu::RunMenu()
 {
-	// im gonna get executed for writing it like this
-	RadioButton* radio = (RadioButton*)m_MainPanel->GetWidget("radio_test");
-	std::string str = ("Ai selectat " + radio->GetSelected());
-	
-	TextLabel* text = (TextLabel*)m_MainPanel->GetWidget("text_select");
-	text->ModifyText(str);
-
-	CheckBox* cbox = (CheckBox*)m_MainPanel->GetWidget("checkbox_test");
-	text = (TextLabel*)m_MainPanel->GetWidget("text_cbox");
-	text->ModifyText((cbox->GetValue() ? "YES" : "YESN'T"));
 }

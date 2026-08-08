@@ -6,7 +6,7 @@ class ComboBox : public Widget
 {
 public:
 	ComboBox(std::string id);
-	ComboBox(std::string id, std::vector<std::string>& items);
+	ComboBox(std::string id, const std::vector<std::string>& items);
 	~ComboBox();
 
 protected:
@@ -17,6 +17,7 @@ public:
 	void RemoveItem(std::string item);
 	std::string GetSelected() { return m_Items[m_Selected]; }
 	int GetSelectedIndex() { return m_Selected; }
+	void SetSelectedIndex(int index) { if (index > m_Items.size()) { index = m_Items.size() - 1; } m_Selected = index; }
 
 private:
 	std::string m_DrawId = "##"; // for imgui id

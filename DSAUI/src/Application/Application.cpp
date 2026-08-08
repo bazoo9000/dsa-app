@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "DSACore.h"
 
+#include "Settings.h"
+
 #include "Widget/BasicText.h"
 #include "Widget/Menu/MainMenu.h"
 #include "Widget/Menu/OptionsMenu.h"
@@ -10,17 +12,17 @@
 
 Application::Application()
 {
-	// TODO: Make window builder, too many params :( (here from the future, this is not necessary because its a simple and only using glfw)
+	SettingsData settingsData = Settings::LoadSettings();
+
 	const char* title = "Data Structures and Algorithms the app";
-	m_Window = new Window(title, 1280, 720);	// GLFW init
-	initGLAD();									// GLAD init
-	initImGUI("#version 130");					// ImGUI init
-	m_I18N = I18NFactory::GetI18N("ro-RO");		// I18N init
+	m_Window = new Window(title, settingsData.resolution.x, settingsData.resolution.y, settingsData.isVsync);
+	initGLAD();
+	initImGUI("#version 130");
+	m_I18N = I18NFactory::GetI18N(settingsData.language);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	LoadFonts(io);								// Load all basic fonts
+	LoadFonts(io);
 	
 	m_TextCache = CacheManager<std::string>(250);
-	m_WidgetCache = CacheManager<Widget*>(10); // TODO: remove this, its no longer needed, it will make this project a shit load harder
 
 	Menu::SetApp(this); // set listener
 	initMenus();
@@ -67,7 +69,7 @@ void Application::Run()
 
 		ImGui::End();
 
-		ImGui::ShowDemoWindow(); // REMOVE THIS WHEN NOT NEEDED!!
+		ImGui::ShowDemoWindow(); // REMOVE THIS WHEN NOT NEEDED!! better yet check for _DEBUG macro
 		// WIDGETS END HERE
 
 		render(window, windowSize);

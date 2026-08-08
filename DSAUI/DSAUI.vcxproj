@@ -23,8 +23,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Application\LearnMenuManager\LearnMenuManager.cpp" />
-    <ClCompile Include="src\Application\LearnMenuManager\LearnMenuUtils.cpp" />
+    <ClCompile Include="src\Application\Settings.cpp" />
+    <ClCompile Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuManager.cpp" />
+    <ClCompile Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuUtils.cpp" />
     <ClCompile Include="src\Application\Widget\Canvas.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../dsa_pch.h</PrecompiledHeaderFile>
@@ -39,6 +40,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\Application\Widget\Menu\MenuManger\OptionsMenuManager\OptionsMenuManager.cpp" />
     <ClCompile Include="src\Application\Widget\Menu\OptionsMenu.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../dsa_pch.h</PrecompiledHeaderFile>
@@ -264,8 +266,9 @@
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\CacheManager\CacheManager.h" />
     <ClInclude Include="src\Application\IAppReceiver.h" />
-    <ClInclude Include="src\Application\LearnMenuManager\LearnMenuManager.h" />
-    <ClInclude Include="src\Application\LearnMenuManager\LearnMenuUtils.h" />
+    <ClInclude Include="src\Application\Settings.h" />
+    <ClInclude Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuManager.h" />
+    <ClInclude Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuUtils.h" />
     <ClInclude Include="src\Application\Transform.h" />
     <ClInclude Include="src\Application\Widget\BasicText.h" />
     <ClInclude Include="src\Application\Widget\Button.h" />
@@ -275,6 +278,7 @@
     <ClInclude Include="src\Application\Widget\CustomWidget.h" />
     <ClInclude Include="src\Application\Widget\Menu\LearnMenu.h" />
     <ClInclude Include="src\Application\Widget\Menu\MainMenu.h" />
+    <ClInclude Include="src\Application\Widget\Menu\MenuManger\OptionsMenuManager\OptionsMenuManager.h" />
     <ClInclude Include="src\Application\Widget\Menu\OptionsMenu.h" />
     <ClInclude Include="src\Application\Widget\Menu\Menu.h" />
     <ClInclude Include="src\Application\Widget\RadioButton.h" />
@@ -342,6 +346,7 @@
     <None Include="learntabs\learn_linkedlist.json" />
     <None Include="locales\en-US.json" />
     <None Include="locales\ro-RO.json" />
+    <None Include="settings\settings.json" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\Roboto-Medium.ttf" />

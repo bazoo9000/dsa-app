@@ -231,7 +231,7 @@
     <ClCompile Include="src\Application\Widget\Tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application\LearnMenuManager\LearnMenuManager.cpp">
+    <ClCompile Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\WidgetDecorator.cpp">
@@ -246,10 +246,16 @@
     <ClCompile Include="src\Application\Widget\Shape\DrawableRectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application\LearnMenuManager\LearnMenuUtils.cpp">
+    <ClCompile Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\Widget\WidgetCollector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Widget\Menu\MenuManger\OptionsMenuManager\OptionsMenuManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -452,7 +458,7 @@
     <ClInclude Include="src\Application\Widget\Tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application\LearnMenuManager\LearnMenuManager.h">
+    <ClInclude Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\Widget\WidgetDecorator.h">
@@ -467,10 +473,16 @@
     <ClInclude Include="src\Application\Widget\Shape\DrawableRectangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application\LearnMenuManager\LearnMenuUtils.h">
+    <ClInclude Include="src\Application\Widget\Menu\MenuManger\LearnMenuManager\LearnMenuUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application\Widget\WidgetCollector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Widget\Menu\MenuManger\OptionsMenuManager\OptionsMenuManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -481,6 +493,7 @@
     <None Include="learntabs\learn_linkedlist.json" />
     <None Include="learntabs\learn_hashmap.json" />
     <None Include="learntabs\learn_binarytree.json" />
+    <None Include="settings\settings.json" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\Roboto-Medium.ttf" />

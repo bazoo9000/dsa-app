@@ -1,15 +1,15 @@
-#include "../../dsa_pch.h"
+#include "../../../../../dsa_pch.h"
 
 #include <random>
 
 #include "LearnMenuManager.h"
 
-#include "../Widget/TextBox.h"
-#include "../Widget/Canvas.h"
-#include "../Widget/Button.h"
-#include "../Widget/CustomWidget.h"
-#include "../Widget/Shape/DrawableCircle.h"
-#include "../Widget/Shape/DrawableRectangle.h"
+#include "../../../../Widget/TextBox.h"
+#include "../../../../Widget/Canvas.h"
+#include "../../../../Widget/Button.h"
+#include "../../../../Widget/CustomWidget.h"
+#include "../../../../Widget/Shape/DrawableCircle.h"
+#include "../../../../Widget/Shape/DrawableRectangle.h"
 
 #include "LearnMenuUtils.h"
 

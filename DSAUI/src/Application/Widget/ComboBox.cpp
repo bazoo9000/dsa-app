@@ -11,12 +11,12 @@ ComboBox::ComboBox(std::string id)
     m_Items.reserve(32);
 }
 
-ComboBox::ComboBox(std::string id, std::vector<std::string>& items)
+ComboBox::ComboBox(std::string id, const std::vector<std::string>& items)
     : m_Selected(0)
 {
     m_Id = id;
     m_DrawId = "##" + id;
-    m_Items = std::move(items);
+    m_Items = items;
 }
 
 ComboBox::~ComboBox()
