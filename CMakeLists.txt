@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(DataStructuresAndAlgorithms LANGUAGES CXX)
+project(DSACore LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -29,36 +29,36 @@ endif()
 
 # Put assets near the exe file for Visual Studio
 if(MSVC)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/locales/ 
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/locales/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/locales/ 
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/locales/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/learntabs/ 
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/learntabs/ 
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/learntabs/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/learntabs/ 
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/learntabs/ 
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/learntabs/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/fonts/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/fonts/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/fonts/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/fonts/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/fonts/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/fonts/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/settings/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/settings/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/settings/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/settings/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/)
 else()
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/locales/ 
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/locales/ 
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/locales/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/fonts/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/fonts/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/fonts/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/learntabs/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/learntabs/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/learntabs/)
-    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/settings/
+    file(COPY ${CMAKE_SOURCE_DIR}/DSAUI/resources/settings/
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/)
 endif()
 
 set(BUILD_SHARED_LIBS OFF)
 
-add_subdirectory(DataStructuresAndAlgorithms)
+add_subdirectory(DSACore)
 add_subdirectory(DSAUI)
 
 # Set DSAUI as the startup project in Visual Studio

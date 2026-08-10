@@ -1,11 +1,11 @@
 #pragma once
 
-#include <string>
+#include <string> // remove this, and add clangd file already
 #include "imgui.h"
 
 struct SettingsData
 {
-	ImVec2 resolution = { 1280.0f, 720.0f }; // for now it doesnt work, for obvious reasons
+	ImVec2 resolution = { 1280.0f, 720.0f };
 	bool isVsync = true;
 	std::string language = "ro-RO";
 };

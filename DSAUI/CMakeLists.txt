@@ -10,7 +10,7 @@ target_include_directories(DSAUI PRIVATE
 )
 
 # DSA CORE
-target_link_libraries(DSAUI PRIVATE DataStructuresAndAlgorithms)
+target_link_libraries(DSAUI PRIVATE DSACore)
 
 # NLOHMANN JSON
 target_include_directories(DSAUI PRIVATE
