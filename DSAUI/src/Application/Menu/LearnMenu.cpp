@@ -35,7 +35,7 @@ void LearnMenu::InitMenu()
     CustomWidget* custom1 = new CustomWidget("custom_header_select");
     custom1->AddCustomScript([tab]()
         {
-            if (ImGui::TreeNode(MenuAppSignaler::SignalRequestTokens({ "GUI.DATA_STRUCTURES" })["GUI.DATA_STRUCTURES"].c_str()))
+            if (ImGui::TreeNode(MenuAppSignaler::SignalRequestToken("GUI.DATA_STRUCTURES").c_str()))
             {
                 static auto titles = LearnMenuManager::GetAllTitles();
                 static std::unordered_map<std::string, std::string> keys;
@@ -43,12 +43,12 @@ void LearnMenu::InitMenu()
                 {
                     bool exists = (keys.find(title.first) != keys.end());
                     bool selected = exists && tab->GetTabItemSelected(keys[title.first]);
-                    ImGui::Selectable(MenuAppSignaler::SignalRequestTokens({ title.second })[title.second].c_str(), &selected);
+                    ImGui::Selectable(MenuAppSignaler::SignalRequestToken(title.second).c_str(), &selected);
 
                     if (!exists && selected)
                     {
                         Panel* panel = LearnMenuManager::CreateLearnPanel(title.first);
-                        tab->AddTabItem(panel, MenuAppSignaler::SignalRequestTokens({ title.second })[title.second].c_str(), true);
+                        tab->AddTabItem(panel, MenuAppSignaler::SignalRequestToken(title.second).c_str(), true);
                         keys[title.first] = panel->GetId();
                     }
 
