@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../../../Settings.h"
+#include "../../../Settings.h"
 
-#include "../../../../Widget/Panel.h"
+#include "../../../Widget/Panel.h"
 
 using json = nlohmann::json;
 

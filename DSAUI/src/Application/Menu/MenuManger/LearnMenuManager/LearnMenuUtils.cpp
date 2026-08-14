@@ -1,8 +1,8 @@
-#include "../../../../../dsa_pch.h"
+#include "../../../../dsa_pch.h"
 
 #include "LearnMenuUtils.h"
 
-#include "../../../../Widget/Shape/DrawableRectangle.h"
+#include "../../../Widget/Shape/DrawableRectangle.h"
 #include "Logger/Logger.h"
 
 uint32_t LearnMenuUtils::s_LastIndex1 = UINT32_MAX;

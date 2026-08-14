@@ -1,18 +1,13 @@
-#include "../../../dsa_pch.h"
+#include "../../dsa_pch.h"
 
 #include "LearnMenu.h"
 
-#include "../Button.h"
-#include "../CustomWidget.h"
-#include "../TreeNode.h"
-#include "../TextLabel.h"
-#include "../TextBox.h"
-#include "../Tab.h"
-#include "../Canvas.h"
-#include "../Tooltip.h"
-
-#include "../Shape/DrawableCircle.h";
-#include "../Shape/DrawableRectangle.h";
+#include "../Widget/Button.h"
+#include "../Widget/CustomWidget.h"
+#include "../Widget/TreeNode.h"
+#include "../Widget/TextLabel.h"
+#include "../Widget/Tab.h"
+#include "../Widget/Tooltip.h"
 
 #include "MenuManger/LearnMenuManager/LearnMenuManager.h"
 
@@ -97,7 +92,7 @@ void LearnMenu::InitMenu()
     leftPanel->AddWidget(custom1);
     leftPanel->AddWidget(node);
     leftPanel->AddWidget(tooltip);
-    
+
     Panel* rightPanel = new Panel("panel_right");
     rightPanel->ScaleTo({ screenSize.x - fifthScreenX, screenSize.y });
     rightPanel->MoveTo({ fifthScreenX, 0.0f });

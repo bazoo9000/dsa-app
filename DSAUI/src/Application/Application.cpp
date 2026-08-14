@@ -6,9 +6,9 @@
 #include "Settings.h"
 
 #include "Widget/BasicText.h"
-#include "Widget/Menu/MainMenu.h"
-#include "Widget/Menu/OptionsMenu.h"
-#include "Widget/Menu/LearnMenu.h"
+#include "Menu/MainMenu.h"
+#include "Menu/OptionsMenu.h"
+#include "Menu/LearnMenu.h"
 
 Application::Application()
 {
@@ -21,7 +21,7 @@ Application::Application()
 	m_I18N = I18NFactory::GetI18N(settingsData.language);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	LoadFonts(io);
-	
+
 	m_TextCache = CacheManager<std::string>(250);
 
 	Menu::SetApp(this); // set listener

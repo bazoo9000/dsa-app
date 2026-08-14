@@ -1,7 +1,7 @@
 #pragma once
 #include "Menu.h"
 
-#include "../../Settings.h"
+#include "../Settings.h"
 
 class OptionsMenu : public Menu
 {

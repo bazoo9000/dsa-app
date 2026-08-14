@@ -1,11 +1,11 @@
-#include "../../../dsa_pch.h"
+#include "../../dsa_pch.h"
 
 #include "OptionsMenu.h"
 
 #include "MenuManger/OptionsMenuManager/OptionsMenuManager.h"
 
-#include "../Button.h"
-#include "../TextLabel.h"
+#include "../Widget/Button.h"
+#include "../Widget/TextLabel.h"
 
 #include "Logger/Logger.h"
 

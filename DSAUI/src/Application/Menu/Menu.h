@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../IAppReceiver.h"
-#include "../Panel.h"
+#include "../IAppReceiver.h"
+#include "../Widget/Panel.h"
 
 class Menu
 {

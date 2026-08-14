@@ -1,13 +1,13 @@
-#include "../../../dsa_pch.h"
+#include "../../dsa_pch.h"
 
 #include "MainMenu.h"
 
-#include "../Button.h"
-#include "../TextLabel.h"
-#include "../Canvas.h"
+#include "../Widget/Button.h"
+#include "../Widget/TextLabel.h"
+#include "../Widget/Canvas.h"
 
-#include "../Shape/DrawableLine.h"
-#include "../Shape/InteractableCircle.h"
+#include "../Widget/Shape/DrawableLine.h"
+#include "../Widget/Shape/InteractableCircle.h"
 
 #include "Logger/Logger.h"
 

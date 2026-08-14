@@ -1,11 +1,11 @@
-#include "../../../../../dsa_pch.h"
+#include "../../../../dsa_pch.h"
 
 #include "OptionsMenuManager.h"
 
-#include "../../../../Widget/TextLabel.h"
-#include "../../../../Widget/ComboBox.h"
-#include "../../../../Widget/Checkbox.h"
-#include "../../../../Widget/Button.h"
+#include "../../../Widget/TextLabel.h"
+#include "../../../Widget/ComboBox.h"
+#include "../../../Widget/Checkbox.h"
+#include "../../../Widget/Button.h"
 
 SettingsData OptionsMenuManager::s_Data = SettingsData();
 std::vector<std::string> OptionsMenuManager::s_Resolutions = { "800x600", "1280x720", "1600x900" };

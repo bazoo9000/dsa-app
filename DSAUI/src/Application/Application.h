@@ -7,7 +7,7 @@
 #include "I18N/I18NFactory.h"
 
 #include "Widget/Widget.h"
-#include "Widget/Menu/Menu.h"
+#include "Menu/Menu.h"
 
 #include "CacheManager/CacheManager.h"
 
