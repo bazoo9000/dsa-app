@@ -20,7 +20,7 @@ OptionsMenu::~OptionsMenu()
 
 void OptionsMenu::InitMenu()
 {
-	auto tokens = signalRequestTokens({
+	auto tokens = MenuAppSignaler::SignalRequestTokens({
 		"GUI.BACK", "GUI.OPTIONS", "GUI.NOT_EXIST"
 		});
 
@@ -28,12 +28,13 @@ void OptionsMenu::InitMenu()
 	but->SetCallback(
 		[]()
 		{
-			Menu::signalChangeMenu("menu_main");
+			MenuAppSignaler::SignalChangeMenu("menu_main");
 		}
 	);
 	but->MoveTo({ 100.0f, 100.0f });
 	but->ScaleTo({ 50.0f, 20.0f });
 
+	// TODO: remove those hide and test buttons later
 	Button* but2 = new Button("but_disable", "Disable");
 	but2->SetCallback(
 		[but]()

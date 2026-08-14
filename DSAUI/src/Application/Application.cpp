@@ -6,6 +6,7 @@
 #include "Settings.h"
 
 #include "Widget/BasicText.h"
+#include "Menu/MenuAppSignaler.h"
 #include "Menu/MainMenu.h"
 #include "Menu/OptionsMenu.h"
 #include "Menu/LearnMenu.h"
@@ -24,7 +25,7 @@ Application::Application()
 
 	m_TextCache = CacheManager<std::string>(250);
 
-	Menu::SetApp(this); // set listener
+	MenuAppSignaler::SetAppRef(this); // set listener
 	initMenus();
 	ChangeMenu("menu_main");
 
@@ -113,10 +114,11 @@ std::unordered_map<std::string, std::string> Application::RequestTokens(std::vec
 	auto misses = m_TextCache.GetMissingKeys(tokens);
 	if (misses.size() != 0)
 	{
-		std::vector<TV> tvs = m_I18N->GetTexts(misses);
-		for (auto tv : tvs)
+		auto missedTokens = m_I18N->GetTexts(misses);
+		for (auto tok : missedTokens)
 		{
-			m_TextCache.Cache(tv.first, tv.second);
+		    if (tok.first == tok.second) { continue; } // wont cache non-existent tokens
+			m_TextCache.Cache(tok.first, tok.second);
 		}
 	}
 
@@ -127,6 +129,11 @@ std::unordered_map<std::string, std::string> Application::RequestTokens(std::vec
 	}
 
 	return ret;
+}
+
+std::string Application::RequestToken(std::string token)
+{
+    return RequestTokens({ token }).begin()->second;
 }
 
 ImVec2 Application::GetWindowSize()

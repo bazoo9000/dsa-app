@@ -24,17 +24,18 @@ LearnMenu::~LearnMenu()
 
 void LearnMenu::InitMenu()
 {
-	auto tokens = signalRequestTokens({
+	auto tokens = MenuAppSignaler::SignalRequestTokens({
 		"GUI.BACK", "GUI.OPTIONS"
 		});
 
     Tab* tab = new Tab("tab_test");
 
+    // TODO: covert the custom widget to TreeNode
     // TODO: add selectable widget decorator, after i fix one giant problem about the decorators
     CustomWidget* custom1 = new CustomWidget("custom_header_select");
     custom1->AddCustomScript([tab]()
         {
-            if (ImGui::TreeNode("GUI.DATA_STRUCTURES"))
+            if (ImGui::TreeNode(MenuAppSignaler::SignalRequestTokens({ "GUI.DATA_STRUCTURES" })["GUI.DATA_STRUCTURES"].c_str()))
             {
                 static auto titles = LearnMenuManager::GetAllTitles();
                 static std::unordered_map<std::string, std::string> keys;
@@ -42,12 +43,12 @@ void LearnMenu::InitMenu()
                 {
                     bool exists = (keys.find(title.first) != keys.end());
                     bool selected = exists && tab->GetTabItemSelected(keys[title.first]);
-                    ImGui::Selectable(title.second.c_str(), &selected);
+                    ImGui::Selectable(MenuAppSignaler::SignalRequestTokens({ title.second })[title.second].c_str(), &selected);
 
                     if (!exists && selected)
                     {
                         Panel* panel = LearnMenuManager::CreateLearnPanel(title.first);
-                        tab->AddTabItem(panel, title.second.c_str(), true);
+                        tab->AddTabItem(panel, MenuAppSignaler::SignalRequestTokens({ title.second })[title.second].c_str(), true);
                         keys[title.first] = panel->GetId();
                     }
 
@@ -62,13 +63,13 @@ void LearnMenu::InitMenu()
         }
     );
 
-    ImVec2 screenSize = signalGetWindowSize();
+    ImVec2 screenSize = MenuAppSignaler::SignalGetWindowSize();
     float fifthScreenX = (int)screenSize.x / 5; // at a fith of screen
 
     Button* but = new Button("but_back", tokens["GUI.BACK"]);
     but->SetCallback([]()
         {
-            Menu::signalChangeMenu("menu_main");
+            MenuAppSignaler::SignalChangeMenu("menu_main");
         }
     );
     but->MoveTo({ 10.0f, screenSize.y - 35.0f });
@@ -105,7 +106,7 @@ void LearnMenu::RunMenu()
 {
     // TODO: Make positions relative to screen, and update as the screen updates
     // instead of this
-    ImVec2 screenSize = signalGetWindowSize();
+    ImVec2 screenSize = MenuAppSignaler::SignalGetWindowSize();
     float fifthScreenX = (int)screenSize.x / 5; // at a fith of screen
 
     Panel* p1 = (Panel*)m_MainPanel->GetWidget("panel_left");

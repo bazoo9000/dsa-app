@@ -5,6 +5,31 @@
 
 static const std::string LOCALE_PATH = "locales/";
 
+static const std::vector<std::string> VALID_TOKENS = {
+    // Generic text
+	"GUI.BACK",
+	"GUI.CLOSE",
+	"GUI.BUTTON",
+	"GUI.WELCOME",
+	"GUI.OPTIONS",
+	"GUI.SAVE",
+	"GUI.DEFAULT",
+	"GUI.LEARN",
+
+	// Learn Panel specific
+	"GUI.DATA_STRUCTURES",
+	"GUI.LEARN_ARRAY_TITLE",
+	"GUI.LEARN_ARRAY_P_1",
+	"GUI.LEARN_ARRAY_P_2",
+
+	"GUI.LEARN_BINARYTREE_TITLE",
+
+	"GUI.LEARN_HASHMAP_TITLE",
+
+	"GUI.LEARN_LINKEDLIST_TITLE",
+};
+
+
 I18N::I18N(const std::string& locale)
 	: m_Locale(locale)
 {
@@ -16,32 +41,32 @@ I18N::~I18N()
 	m_Locale.clear();
 }
 
-std::vector<TV> I18N::GetTexts(std::vector<std::string> tokens)
+std::unordered_map<std::string, std::string> I18N::GetTexts(std::vector<std::string> tokens)
 {
 	json textMap = readLocaleFile(m_Locale + ".json");
 
-	std::vector<TV> ret;
+	std::unordered_map<std::string, std::string> ret;
 	ret.reserve(tokens.size());
 
 	for (auto tok : tokens)
 	{
 		if (textMap.find(tok) != textMap.end())
 		{
-			ret.push_back({ tok, textMap[tok] });
+			ret[tok] = textMap[tok];
 		}
 		else
 		{
 			LOG_GUI_ERROR("Token %s doesn't exist", tok.c_str());
-			ret.push_back({ tok, tok });
+			ret[tok] = tok;
 		}
 	}
 
 	return ret;
 }
 
-TV I18N::GetText(std::string token)
+std::string I18N::GetText(std::string token)
 {
-	return GetTexts({ token })[0];
+	return GetTexts({ token }).begin()->second;
 }
 
 std::string I18N::GetCurrentLocale()

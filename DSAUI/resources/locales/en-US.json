@@ -3,5 +3,15 @@
   "GUI.CLOSE": "Close",
   "GUI.BUTTON": "Button",
   "GUI.WELCOME": "Welcome",
-  "GUI.OPTIONS": "Options"
+  "GUI.OPTIONS": "Options",
+	"GUI.SAVE": "Save",
+	"GUI.DEFAULT": "Default",
+	"GUI.LEARN": "Learn",
+	"GUI.DATA_STRUCTURES": "Data structures",
+	"GUI.LEARN_ARRAY_TITLE": "Array",
+	"GUI.LEARN_ARRAY_P_1": "This is paragraph number 1 for Array",
+	"GUI.LEARN_ARRAY_P_2": "This is paragraph number 2 for Array",
+	"GUI.LEARN_BINARYTREE_TITLE": "Binary tree",
+	"GUI.LEARN_HASHMAP_TITLE": "Hash map",
+	"GUI.LEARN_LINKEDLIST_TITLE": "Linked list"
 }

@@ -3,5 +3,15 @@
   "GUI.CLOSE": "Inchide",
   "GUI.BUTTON": "Buton",
   "GUI.WELCOME": "Bun venit",
-  "GUI.OPTIONS": "Optiuni"
+  "GUI.OPTIONS": "Optiuni",
+	"GUI.SAVE": "Salveaza",
+	"GUI.DEFAULT": "Implicit",
+	"GUI.LEARN": "Invata",
+	"GUI.DATA_STRUCTURES": "Structuri de date",
+	"GUI.LEARN_ARRAY_TITLE": "Vector",
+	"GUI.LEARN_ARRAY_P_1": "Acesta este paragraful 1 pentru Vector",
+	"GUI.LEARN_ARRAY_P_2": "Acesta este paragraful 2 pentru Vector",
+	"GUI.LEARN_BINARYTREE_TITLE": "Arbore binar",
+	"GUI.LEARN_HASHMAP_TITLE": "Tabel de dispersie",
+	"GUI.LEARN_LINKEDLIST_TITLE": "Lista inlantuita"
 }

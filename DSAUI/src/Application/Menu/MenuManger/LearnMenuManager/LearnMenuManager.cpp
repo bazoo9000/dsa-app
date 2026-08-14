@@ -4,6 +4,8 @@
 
 #include "LearnMenuManager.h"
 
+#include "../../MenuAppSignaler.h"
+
 #include "../../../Widget/TextBox.h"
 #include "../../../Widget/Canvas.h"
 #include "../../../Widget/Button.h"
@@ -93,10 +95,11 @@ Panel* LearnMenuManager::parseJSON(json jsonData, Panel* panel)
 void LearnMenuManager::setText(Panel* panel, const json& data, int index)
 {
     std::string token = data["token"];
+    auto tokens = MenuAppSignaler::SignalRequestTokens({ token });
     int yClamp = data["yClamp"];
 
     std::string id = "textbox_" + panel->GetId() + "_" + std::to_string(index);
-    TextBox* text = new TextBox(id, token);
+    TextBox* text = new TextBox(id, tokens[token]);
     text->ScaleTo({ 0.0f, (float)yClamp });
     text->SetAutoPositioning(true);
 

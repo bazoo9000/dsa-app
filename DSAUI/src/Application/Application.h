@@ -25,6 +25,7 @@ public: // "Requests"
 	virtual void Close() override;
 	virtual std::unordered_map<std::string, std::string> RequestTokens(std::vector<std::string> tokens) override;
 	virtual ImVec2 GetWindowSize() override;
+	virtual std::string RequestToken(std::string token) override;
 
 private:
 	void initMenus();

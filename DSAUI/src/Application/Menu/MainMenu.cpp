@@ -22,16 +22,16 @@ MainMenu::~MainMenu()
 
 void MainMenu::InitMenu()
 {
-	auto tokens = signalRequestTokens({
-		"GUI.BACK", "GUI.OPTIONS", "GUI.WELCOME"
+	auto tokens = MenuAppSignaler::SignalRequestTokens({
+		"GUI.CLOSE", "GUI.OPTIONS", "GUI.WELCOME", "GUI.LEARN"
 		});
 
-	Button* but = new Button("but_back", tokens["GUI.BACK"]);
+	Button* but = new Button("but_back", tokens["GUI.CLOSE"]);
 	but->SetCallback(
 		[]()
 		{
 			LOG_GUI_DEBUG("Closing");
-			Menu::signalCloseApp();
+			MenuAppSignaler::SignalCloseApp();
 		}
 	);
 	but->MoveTo({ 100.0f, 100.0f });
@@ -41,7 +41,7 @@ void MainMenu::InitMenu()
 	opt->SetCallback(
 		[]()
 		{
-			Menu::signalChangeMenu("menu_options");
+			MenuAppSignaler::SignalChangeMenu("menu_options");
 		}
 	);
 	opt->MoveTo({ 100.0f, 130.0f });
@@ -129,7 +129,7 @@ void MainMenu::InitMenu()
 				ImGuiIO& io = ImGui::GetIO();
 				ImVec2 pos = io.MousePos - circle1->GetGlobalOrigin();
 				circle1->SetOrigin(pos);
-				
+
 				line->SetEnd(pos);
 			}
 		);
@@ -141,11 +141,11 @@ void MainMenu::InitMenu()
 
 	circle1->SetColor(IM_COL32(125, 50, 25, 255));
 
-	Button* learnBut = new Button("but_learn", "Learn");
+	Button* learnBut = new Button("but_learn", tokens["GUI.LEARN"]);
 	learnBut->SetCallback(
 		[]()
 		{
-			Menu::signalChangeMenu("menu_learn");
+			MenuAppSignaler::SignalChangeMenu("menu_learn");
 		}
 	);
 	learnBut->MoveTo({ 200.0f, 100.0f });
