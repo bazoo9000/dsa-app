@@ -12,9 +12,13 @@ static const std::vector<std::string> VALID_TOKENS = {
 	"GUI.BUTTON",
 	"GUI.WELCOME",
 	"GUI.OPTIONS",
+	"GUI.LEARN",
+
+	// Options Panel specific
+	"GUI.RESOLUTION",
+	"GUI.LANGUAGE",
 	"GUI.SAVE",
 	"GUI.DEFAULT",
-	"GUI.LEARN",
 
 	// Learn Panel specific
 	"GUI.DATA_STRUCTURES",
@@ -112,7 +116,17 @@ json I18N::readLocaleFile(std::string localeFileName)
 
 	LOG_GUI_DEBUG("Locale file %s succesfully opened", localeFileName.c_str());
 
-	textMap = json::parse(fin);
+	// for now, the only exception in this project
+	try
+	{
+        textMap = json::parse(fin);
+    }
+    catch (json::exception& e)
+    {
+        LOG_GUI_FATAL("Failed to parse JSON: %s", e.what());
+        exit(1);
+    }
+
 	fin.close();
 
 	return textMap;

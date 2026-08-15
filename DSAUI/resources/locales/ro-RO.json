@@ -1,17 +1,19 @@
 {
-  "GUI.BACK": "Inapoi",
-  "GUI.CLOSE": "Inchide",
+  "GUI.BACK": "Înapoi",
+  "GUI.CLOSE": "Închide",
   "GUI.BUTTON": "Buton",
   "GUI.WELCOME": "Bun venit",
-  "GUI.OPTIONS": "Optiuni",
-	"GUI.SAVE": "Salveaza",
+  "GUI.OPTIONS": "Opțiuni",
+	"GUI.LEARN": "Învață",
+	"GUI.RESOLUTION": "Rezoluție",
+	"GUI.LANGUAGE": "Limbă",
+	"GUI.SAVE": "Salvează",
 	"GUI.DEFAULT": "Implicit",
-	"GUI.LEARN": "Invata",
 	"GUI.DATA_STRUCTURES": "Structuri de date",
 	"GUI.LEARN_ARRAY_TITLE": "Vector",
 	"GUI.LEARN_ARRAY_P_1": "Acesta este paragraful 1 pentru Vector",
 	"GUI.LEARN_ARRAY_P_2": "Acesta este paragraful 2 pentru Vector",
 	"GUI.LEARN_BINARYTREE_TITLE": "Arbore binar",
 	"GUI.LEARN_HASHMAP_TITLE": "Tabel de dispersie",
-	"GUI.LEARN_LINKEDLIST_TITLE": "Lista inlantuita"
+	"GUI.LEARN_LINKEDLIST_TITLE": "Listă înlanțuită"
 }

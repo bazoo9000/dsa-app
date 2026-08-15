@@ -2,17 +2,28 @@
 
 #include "OptionsMenuManager.h"
 
+#include "../../MenuAppSignaler.h"
+
 #include "../../../Widget/TextLabel.h"
 #include "../../../Widget/ComboBox.h"
 #include "../../../Widget/Checkbox.h"
 #include "../../../Widget/Button.h"
 
+#include "Logger/Logger.h"
+
+#define LOCALE_PATH "locales/"
+
 SettingsData OptionsMenuManager::s_Data = SettingsData();
 std::vector<std::string> OptionsMenuManager::s_Resolutions = { "800x600", "1280x720", "1600x900" };
-std::vector<std::string> OptionsMenuManager::s_Languages = { "ro-RO", "en-US" };
 
 Panel* OptionsMenuManager::GetOptionsPanel()
 {
+    // TODO: add a tool tip to each setting
+
+    auto tokens = MenuAppSignaler::SignalRequestTokens(
+        { "GUI.RESOLUTION", "GUI.SAVE", "GUI.LANGUAGE", "GUI.DEFAULT" }
+    );
+
     // maybe this can be done better, for now its ok
     OptionsMenuManager::s_Data = Settings::LoadSettings();
 
@@ -21,7 +32,7 @@ Panel* OptionsMenuManager::GetOptionsPanel()
 	warnText->Hide();
 
 	// Resolution
-	TextLabel* resText = new TextLabel("text_res", "Resolution", FONT_H4);
+	TextLabel* resText = new TextLabel("text_res", tokens["GUI.RESOLUTION"], FONT_H4);
 	resText->MoveTo({ 0.0f, 0.0f });
 
 	ComboBox* comboRes = new ComboBox("combo_resolution", s_Resolutions);
@@ -34,15 +45,16 @@ Panel* OptionsMenuManager::GetOptionsPanel()
 	checkVsync->MoveTo({ 0.0f, 100.0f });
 
 	// Lang
-	TextLabel* langText = new TextLabel("text_lang", "Language", FONT_H4);
+	TextLabel* langText = new TextLabel("text_lang", tokens["GUI.LANGUAGE"], FONT_H4);
 	langText->MoveTo({ 0.0f, 200.0f });
 
-	ComboBox* comboLang = new ComboBox("combo_language", s_Languages);
+	auto locales = OptionsMenuManager::getAllLocaleFileNames();
+	ComboBox* comboLang = new ComboBox("combo_language", locales);
 	comboLang->MoveTo({ langText->GetTransform().position.x, langText->GetTransform().position.y + 35.0f });
 	comboLang->ScaleTo({ 100.0f, 0.0f });
-	comboLang->SetSelectedIndex(OptionsMenuManager::getComboIndex(s_Languages, OptionsMenuManager::s_Data.language));
+	comboLang->SetSelectedIndex(OptionsMenuManager::getComboIndex(locales, OptionsMenuManager::s_Data.language));
 
-	Button* saveBut = new Button("button_save", "Save");
+	Button* saveBut = new Button("button_save", tokens["GUI.SAVE"]);
 	saveBut->SetCallback(
 		[comboLang, checkVsync, comboRes, warnText]()
 		{
@@ -58,14 +70,14 @@ Panel* OptionsMenuManager::GetOptionsPanel()
 	saveBut->MoveTo({ 0.0f, 300.0f });
 	saveBut->ScaleTo({ 50.0f, 20.0f });
 
-	Button* defaultBut = new Button("button_default", "Default");
+	Button* defaultBut = new Button("button_default", tokens["GUI.DEFAULT"]);
 	defaultBut->SetCallback(
 		[comboLang, checkVsync, comboRes, warnText]()
 		{
 		    Settings::RestoreDefaultSettings();
 			OptionsMenuManager::s_Data = Settings::LoadSettings();
 
-			comboLang->SetSelectedIndex(OptionsMenuManager::getComboIndex(s_Languages, OptionsMenuManager::s_Data.language));
+			comboLang->SetSelectedIndex(OptionsMenuManager::getComboIndex(OptionsMenuManager::getAllLocaleFileNames(), OptionsMenuManager::s_Data.language));
 			checkVsync->SetValue(OptionsMenuManager::s_Data.isVsync);
 			comboRes->SetSelectedIndex(OptionsMenuManager::getComboIndex(s_Resolutions, OptionsMenuManager::vecToStr(OptionsMenuManager::s_Data.resolution)));
 
@@ -106,5 +118,20 @@ int OptionsMenuManager::getComboIndex(const std::vector<std::string>& haystack, 
 	    }
 	}
 
+    LOG_GUI_WARN("Couldn't find needle %s", needle);
 	return 0;
+}
+
+std::vector<std::string> OptionsMenuManager::getAllLocaleFileNames()
+{
+    std::vector<std::string> ret;
+
+    namespace fs = std::filesystem;
+    for (const auto& entry : fs::directory_iterator(LOCALE_PATH))
+    {
+        std::string locale = entry.path().stem().string();
+        ret.push_back(locale);
+    }
+
+    return ret;
 }
