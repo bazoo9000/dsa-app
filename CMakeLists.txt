@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(DSACore LANGUAGES CXX)
+project(DSACore LANGUAGES C CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 

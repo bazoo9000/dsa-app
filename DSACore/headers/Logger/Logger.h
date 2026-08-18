@@ -97,64 +97,64 @@
         #define IS_STREAMABLE(Type) has_ostream_operator<Type>::value
 
         #ifndef DISABLE_TRACE
-            #define LOG_TRACE(x, ...) Logger::LogTrace("CORE", x, __VA_ARGS__)
-            #define LOG_GUI_TRACE(x, ...) Logger::LogTrace("GUI", x, __VA_ARGS__)
+            #define LOG_TRACE(...) Logger::LogTrace("CORE", __VA_ARGS__)
+            #define LOG_GUI_TRACE(...) Logger::LogTrace("GUI", __VA_ARGS__)
         #else
-            #define LOG_TRACE(x, ...)
-            #define LOG_GUI_TRACE(x, ...)
+            #define LOG_TRACE(...)
+            #define LOG_GUI_TRACE(...)
         #endif // DISABLE_TRACE
         #ifndef DISABLE_DEBUG
-            #define LOG_DEBUG(x, ...) Logger::LogDebug("CORE", x, __VA_ARGS__)
-            #define LOG_GUI_DEBUG(x, ...) Logger::LogDebug("GUI", x, __VA_ARGS__)
+            #define LOG_DEBUG(...) Logger::LogDebug("CORE", __VA_ARGS__)
+            #define LOG_GUI_DEBUG(...) Logger::LogDebug("GUI", __VA_ARGS__)
         #else
-            #define LOG_DEBUG(x, ...)
-            #define LOG_GUI_DEBUG(x, ...)
+            #define LOG_DEBUG(...)
+            #define LOG_GUI_DEBUG(...)
         #endif // DISABLE_DEBUG
         #ifndef DISABLE_INFO
-            #define LOG_INFO(x, ...) Logger::LogInfo("CORE", x, __VA_ARGS__)
-            #define LOG_GUI_INFO(x, ...) Logger::LogInfo("GUI", x, __VA_ARGS__)
+            #define LOG_INFO(...) Logger::LogInfo("CORE", __VA_ARGS__)
+            #define LOG_GUI_INFO(...) Logger::LogInfo("GUI", __VA_ARGS__)
         #else
-            #define LOG_INFO(x, ...)
-            #define LOG_GUI_INFO(x, ...)
+            #define LOG_INFO(...)
+            #define LOG_GUI_INFO(...)
         #endif // DISABLE_INFO
     #else
         #define IS_STREAMABLE(Type)
 
-        #define LOG_TRACE(x, ...)
-        #define LOG_DEBUG(x, ...)
-        #define LOG_INFO(x, ...)
+        #define LOG_TRACE(...)
+        #define LOG_DEBUG(...)
+        #define LOG_INFO(...)
 
-        #define LOG_GUI_TRACE(x, ...)
-        #define LOG_GUI_DEBUG(x, ...)
-        #define LOG_GUI_INFO(x, ...)
+        #define LOG_GUI_TRACE(...)
+        #define LOG_GUI_DEBUG(...)
+        #define LOG_GUI_INFO(...)
     #endif // DEBUG_MODE
 
     #ifndef DISABLE_WARN
-        #define LOG_WARN(x, ...) Logger::LogWarn("CORE", x, __VA_ARGS__)
-        #define LOG_GUI_WARN(x, ...) Logger::LogWarn("GUI", x, __VA_ARGS__)
+        #define LOG_WARN(...) Logger::LogWarn("CORE", __VA_ARGS__)
+        #define LOG_GUI_WARN(...) Logger::LogWarn("GUI", __VA_ARGS__)
     #else
-        #define LOG_WARN(x, ...)
-        #define LOG_WARN(x, ...)
+        #define LOG_WARN(...)
+        #define LOG_WARN(...)
     #endif // DISABLE_WARN
-    #define LOG_ERROR(x, ...) Logger::LogError("CORE", x, __VA_ARGS__)
-    #define LOG_GUI_ERROR(x, ...) Logger::LogError("GUI", x, __VA_ARGS__)
-    #define LOG_FATAL(x, ...) Logger::LogFatal("CORE", x, __VA_ARGS__)
-    #define LOG_GUI_FATAL(x, ...) Logger::LogFatal("GUI", x, __VA_ARGS__)
+    #define LOG_ERROR(...) Logger::LogError("CORE", __VA_ARGS__)
+    #define LOG_GUI_ERROR(...) Logger::LogError("GUI", __VA_ARGS__)
+    #define LOG_FATAL(...) Logger::LogFatal("CORE", __VA_ARGS__)
+    #define LOG_GUI_FATAL(...) Logger::LogFatal("GUI", __VA_ARGS__)
 
 #else
 
-    #define LOG_TRACE(x, ...)
-    #define LOG_DEBUG(x, ...)
-    #define LOG_INFO(x, ...)
-    #define LOG_WARN(x, ...)
-    #define LOG_ERROR(x, ...)
-    #define LOG_FATAL(x, ...)
+    #define LOG_TRACE(...)
+    #define LOG_DEBUG(...)
+    #define LOG_INFO(...)
+    #define LOG_WARN(...)
+    #define LOG_ERROR(...)
+    #define LOG_FATAL(...)
 
-    #define LOG_GUI_TRACE(x, ...)
-    #define LOG_GUI_DEBUG(x, ...)
-    #define LOG_GUI_INFO(x, ...)
-    #define LOG_GUI_WARN(x, ...)
-    #define LOG_GUI_ERROR(x, ...)
-    #define LOG_GUI_FATAL(x, ...)
+    #define LOG_GUI_TRACE(...)
+    #define LOG_GUI_DEBUG(...)
+    #define LOG_GUI_INFO(...)
+    #define LOG_GUI_WARN(...)
+    #define LOG_GUI_ERROR(...)
+    #define LOG_GUI_FATAL(...)
 
 #endif // ENABLE_LOGGING

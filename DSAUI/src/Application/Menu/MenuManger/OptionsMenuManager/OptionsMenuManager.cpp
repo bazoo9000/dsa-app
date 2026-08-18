@@ -6,7 +6,7 @@
 
 #include "../../../Widget/TextLabel.h"
 #include "../../../Widget/ComboBox.h"
-#include "../../../Widget/Checkbox.h"
+#include "../../../Widget/CheckBox.h"
 #include "../../../Widget/Button.h"
 
 #include "Logger/Logger.h"
