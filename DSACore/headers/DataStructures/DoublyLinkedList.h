@@ -69,7 +69,7 @@ namespace ds
         if(!list.m_Head)
         {
             this->m_Head = this->m_Tail = nullptr;
-            return *this;
+            return;
         }
 
         this->m_Head = new Node<T>(list.m_Head->data);
@@ -481,7 +481,7 @@ namespace ds
         if(!list.m_Head)
         {
             this->m_Head = this->m_Tail = nullptr;
-            return;
+            return *this;
         }
 
         this->m_Head = new Node<T>(list.m_Head->data);
