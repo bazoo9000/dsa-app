@@ -5,6 +5,8 @@
 
 #include "Settings.h"
 
+#include "Time.h"
+
 #include "Widget/BasicText.h"
 #include "Menu/MenuAppSignaler.h"
 #include "Menu/MainMenu.h"
@@ -51,6 +53,8 @@ void Application::Run()
 	{
 		glfwPollEvents();
 		imguiCreateFrame();
+
+		Time::CalculateTime();
 
 		// WIDGETS GO HERE
 		ImVec2 windowSize = m_Window->GetWindowSize();

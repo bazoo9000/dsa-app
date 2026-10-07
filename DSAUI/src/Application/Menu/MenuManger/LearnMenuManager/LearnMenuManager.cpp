@@ -1,7 +1,5 @@
 #include "../../../../dsa_pch.h"
 
-#include <random>
-
 #include "LearnMenuManager.h"
 
 #include "../../MenuAppSignaler.h"
@@ -10,14 +8,16 @@
 #include "../../../Widget/Canvas.h"
 #include "../../../Widget/Button.h"
 #include "../../../Widget/CustomWidget.h"
-#include "../../../Widget/Shape/DrawableCircle.h"
 #include "../../../Widget/Shape/DrawableRectangle.h"
+
+#include "../../Animator/SortAnimator.h"
 
 #include "LearnMenuUtils.h"
 
 #include "Logger/Logger.h"
 
 std::string LearnMenuManager::s_LearnPath = "learntabs/";
+Animator* LearnMenuManager::s_CanvasAnimator = nullptr;
 
 Panel* LearnMenuManager::CreateLearnPanel(std::string learnTabName)
 {
@@ -57,7 +57,7 @@ json LearnMenuManager::readJSON(std::string jsonFileName)
 
     if (!dataFile)
     {
-        LOG_GUI_FATAL("Can't open file %s", path);
+        LOG_GUI_FATAL("Can't open file %s", path.c_str());
         exit(1);
     }
 
@@ -120,15 +120,14 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
 
     float offset = 0.0f;
     int max = data["maxValue"];
-    float deltaWidth = (float)(width - 2 * offset) / max;
-    float deltaHeight = (float)(height - 2 * offset) / max;
-    std::vector<uint32_t> vals = LearnMenuManager::createVector(max);
+    float deltaWidth = (width - 2 * offset) / max;
+    float deltaHeight = (height - 2 * offset) / max;
+    std::vector<uint32_t> vals = CreateVector(max);
     for (int i = 0; i < max; i++)
     {
-        // TODO: parse based on type of canvas
         DrawableRectangle* rect = new DrawableRectangle(
             { offset + deltaWidth * i, height - offset },
-            { offset + deltaWidth * (i + 1), height - (deltaHeight * vals[i]) - offset }
+            { offset + deltaWidth * (i + 1), height - (deltaHeight * (vals[i] + 1)) - offset }
         );
         rect->SetColor(IM_COL32_WHITE);
         rect->SetFilled(true);
@@ -136,41 +135,51 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
         canvas->AddDrawableShape(rect);
     }
 
-    int* in = new int[2];
-    in[0] = 1;
-    in[1] = 100;
+    Button* stopBut = new Button("button_stop_canvas_" + std::to_string(index), "Stop");
+    Button* beginBut = new Button("button_begin_canvas_" + std::to_string(index), "Begin");
 
-    // TODO: maybe add input widget
-    CustomWidget* input = new CustomWidget("custom_input");
-    input->AddCustomScript([in]()
+    // begin button
+    beginBut->SetCallback( [canvas, beginBut, stopBut]
         {
-            ImGui::InputInt2("Swap x with y", in);
-        }
-    );
+            if (s_CanvasAnimator == nullptr || !s_CanvasAnimator->IsPlaying())
+            {
+                BeginCanvasAnimation(canvas);
+                // beginBut->Disable(); // TODO: make it work after animation is done
+                // stopBut->Enable();
+            }
+        });
+    beginBut->MoveTo({ 5.0f, height + 5.0f});
+    beginBut->ScaleTo({ 50.0f, 20.0f });
 
-    Button* but = new Button("button_swap_" + panel->GetId(), "Swap");
-    but->MoveTo({ 0.0f, canvas->GetTransform().scale.y + 5.0f });
-    but->ScaleTo({ 50.0f, 20.0f});
-    but->SetCallback([canvas, in]()
+    // stop button
+    stopBut->SetCallback( [beginBut, stopBut]
         {
-            LearnMenuUtils::SortSwap(canvas, in[0] - 1, in[1] - 1);
-        }
-    );
+            if (s_CanvasAnimator != nullptr && s_CanvasAnimator->IsPlaying())
+            {
+                s_CanvasAnimator->Stop();
+                // beginBut->Enable();
+                // stopBut->Disable();
+            }
+        });
+    stopBut->MoveTo({125.0f, height + 5.0f});
+    stopBut->ScaleTo({ 50.0f, 20.0f });
+    // stopBut->Disable();
 
+    // Output panel
     Panel* sub = new Panel("subpanel_canvas_" + panel->GetId());
     sub->MoveTo({ posX, posY });
-    sub->ScaleTo({ width, height + 60.0f });
+    sub->ScaleTo({ width, height + 300.0f });
     sub->HideBorder();
     sub->HideScrollBar();
 
     sub->AddWidget(canvas);
-    sub->AddWidget(but);
-    sub->AddWidget(input);
+    sub->AddWidget(beginBut);
+    sub->AddWidget(stopBut);
 
     panel->AddWidget(sub);
 }
 
-std::vector<uint32_t> LearnMenuManager::createVector(uint32_t max, bool shuffle)
+std::vector<uint32_t> LearnMenuManager::CreateVector(uint32_t max, bool shuffle)
 {
     if (max == 0)
     {
@@ -181,11 +190,70 @@ std::vector<uint32_t> LearnMenuManager::createVector(uint32_t max, bool shuffle)
     std::vector<uint32_t> ret;
     ret.resize(max);
 
-    std::iota(ret.begin(), ret.end(), 1);
+    std::iota(ret.begin(), ret.end(), 0);
     if (shuffle)
     {
-        std::shuffle(ret.begin(), ret.end(), std::mt19937());
+        static std::mt19937 rng(std::random_device{}());
+        std::shuffle(ret.begin(), ret.end(), rng);
     }
 
     return ret;
+}
+
+void LearnMenuManager::BeginCanvasAnimation(Canvas *canvas)
+{
+    // shuffle begin
+    std::vector<DrawableShape*>& shapes = canvas->GetAllDrawableShapes();
+    std::vector<uint32_t> indexes = CreateVector(shapes.size(), true);
+    std::vector<uint32_t> currentOrder = CreateVector(indexes.size());
+    for (int i = 0; i < indexes.size(); i++)
+    {
+        for (int j = i; j < indexes.size(); j++)
+        {
+            if (currentOrder[j] == indexes[i])
+            {
+                LearnMenuUtils::SwapRectangles(shapes, i, j);
+                std::swap(currentOrder[i], currentOrder[j]);
+                break;
+            }
+        }
+    }
+
+    std::vector<Step> steps;
+    // shuffle end
+
+    // sort begin
+    // bubble sort as an example
+    // TODO: move this in core
+    for (int i = 0; i < indexes.size(); i++)
+    {
+        bool ok = true;
+        for (int j = i + 1 ; j < indexes.size(); j++)
+        {
+            steps.emplace_back(i, j, SortActionType::COMPARE);
+            if (indexes[i] > indexes[j])
+            {
+                ok = false;
+                std::swap(indexes[i], indexes[j]);
+                steps.emplace_back(i, j, SortActionType::SWAP);
+            }
+        }
+
+        steps.emplace_back(i, 0, SortActionType::DONE);
+    }
+    // sort end
+
+    delete s_CanvasAnimator;
+    s_CanvasAnimator = new SortAnimator(canvas, currentOrder, steps);
+    s_CanvasAnimator->Start();
+}
+
+void LearnMenuManager::UpdateCanvasAnimation()
+{
+    s_CanvasAnimator->Update();
+}
+
+bool LearnMenuManager::IsCanvasAnimationInProgress()
+{
+    return s_CanvasAnimator != nullptr && s_CanvasAnimator->IsPlaying();
 }

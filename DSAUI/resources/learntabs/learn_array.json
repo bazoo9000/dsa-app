@@ -19,7 +19,7 @@
             "type" : "canvas",
             "data" : {
                 "type" : "ds:array",
-                "maxValue" : 100,
+                "maxValue" : 30,
                 "label": "GUI.LEARN_ARRAY_CANVAS_LABEL",
                 "position" : {
                     "x" : 300,
