@@ -16,6 +16,7 @@ SortAnimator::SortAnimator(Canvas* canvas, const std::vector<uint32_t>& indexes,
 
     m_AnimationSteps = steps;
     m_Indexes = indexes;
+    m_StepCount = steps.size();
 }
 
 void SortAnimator::Start()
@@ -23,6 +24,7 @@ void SortAnimator::Start()
     Animator::Start();
     m_LastIndex1 = UINT32_MAX;
     m_LastIndex2 = UINT32_MAX;
+    sortReset();
 }
 
 void SortAnimator::Stop()
@@ -30,6 +32,26 @@ void SortAnimator::Stop()
     Animator::Stop();
     m_LastIndex1 = UINT32_MAX;
     m_LastIndex2 = UINT32_MAX;
+
+    std::vector<DrawableShape*>& shapes = m_AnimatedCanvas->GetAllDrawableShapes();
+
+    std::vector<uint32_t> sortedOrderIndexes;
+    sortedOrderIndexes.resize(m_Indexes.size());
+    std::iota(sortedOrderIndexes.begin(), sortedOrderIndexes.end(), 0);
+
+    for (int i = 0; i < sortedOrderIndexes.size(); i++)
+    {
+        for (int j = i; j < sortedOrderIndexes.size(); j++)
+        {
+            if (sortedOrderIndexes[i] == m_Indexes[j])
+            {
+                LearnMenuUtils::SwapRectangles(shapes, i, j);
+                std::swap(m_Indexes[i], m_Indexes[j]);
+                break;
+            }
+        }
+    }
+
     sortReset();
 }
 
@@ -41,9 +63,9 @@ void SortAnimator::AnimateCurrentStep()
         return;
     }
 
-    if (m_CrtIndex >= m_AnimationSteps.size())
+    if (m_CrtIndex >= m_StepCount)
     {
-        Stop();
+        m_State = AnimatorState::Finished;
         return;
     }
 
@@ -148,26 +170,7 @@ void SortAnimator::sortSwap(uint32_t i1, uint32_t i2)
 
 void SortAnimator::sortReset()
 {
-    std::vector<DrawableShape*>& shapes = m_AnimatedCanvas->GetAllDrawableShapes();
-
-    std::vector<uint32_t> sortedOrderIndexes;
-    sortedOrderIndexes.resize(m_Indexes.size());
-    std::iota(sortedOrderIndexes.begin(), sortedOrderIndexes.end(), 0);
-
-    for (int i = 0; i < sortedOrderIndexes.size(); i++)
-    {
-        for (int j = i; j < sortedOrderIndexes.size(); j++)
-        {
-            if (sortedOrderIndexes[i] == m_Indexes[j])
-            {
-                LearnMenuUtils::SwapRectangles(shapes, i, j);
-                std::swap(m_Indexes[i], m_Indexes[j]);
-                break;
-            }
-        }
-    }
-
-    for (auto shape : shapes)
+    for (auto shape : m_AnimatedCanvas->GetAllDrawableShapes())
     {
         shape->SetColor(COLOR_NEUTRAL);
     }

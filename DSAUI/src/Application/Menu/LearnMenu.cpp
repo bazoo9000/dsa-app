@@ -11,8 +11,6 @@
 
 #include "MenuManger/LearnMenuManager/LearnMenuManager.h"
 
-#include "../Time.h"
-
 #include "Logger/Logger.h"
 
 LearnMenu::LearnMenu(std::string id)
@@ -121,18 +119,8 @@ void LearnMenu::RunMenu()
     m_MainPanel->ScaleTo(screenSize);
 
     // canvas animations
-    static float delay = 0.005f; // TODO: add a delay slider for user
-    static float crt = -1.0f; // TODO: instead use Time.time rather than using Time.deltaTime
     if (LearnMenuManager::IsCanvasAnimationInProgress())
     {
-        if (crt <= 0.0f)
-        {
-            LearnMenuManager::UpdateCanvasAnimation();
-            crt = delay;
-        }
-        else
-        {
-            crt -= Time::GetDeltaTime();
-        }
+        LearnMenuManager::UpdateCanvasAnimation();
     }
 }

@@ -21,71 +21,64 @@ Animator::~Animator()
 
 void Animator::Start()
 {
-    if (m_Playing || m_Paused)
+    if (IsPlaying() || IsPaused())
     {
         LOG_GUI_WARN("Can't start, is already playing or paused");
         return;
     }
 
-    m_Playing = true;
-    m_Paused = false;
+    m_State = AnimatorState::Playing;
     m_CrtIndex = 0;
 }
 
 void Animator::Stop()
 {
-    if (!m_Playing && !m_Paused)
+    if (IsStopped())
     {
         LOG_GUI_WARN("Can't stop, it's already stopped");
         return;
     }
 
-    m_Playing = false;
-    m_Paused = false;
+    m_State = AnimatorState::Stopped;
     m_CrtIndex = 0;
 }
 
 void Animator::Pause()
 {
-    if (!m_Playing || m_Paused)
+    if (IsPaused())
     {
         LOG_GUI_WARN("Can't pause, it's not playing or already paused");
         return;
     }
 
-    m_Playing = false;
-    m_Paused = true;
+    m_State = AnimatorState::Paused;
 }
 
 void Animator::Resume()
 {
-    if (!m_Paused)
+    if (!IsPaused())
     {
         LOG_GUI_WARN("Can't resume, it's not paused");
         return;
     }
 
-    m_Playing = true;
-    m_Paused = false;
-}
-
-void Animator::Update()
-{
-    if (!m_Playing || m_Paused)
-    {
-        return;
-    }
-
-    AnimateCurrentStep();
-    Next();
+    m_State = AnimatorState::Playing;
 }
 
 void Animator::Next()
 {
+    if (m_CrtIndex >= m_StepCount)
+    {
+        return;
+    }
     m_CrtIndex++;
 }
 
 void Animator::Prev()
 {
+    if (m_CrtIndex == 0)
+    {
+        return;
+    }
     m_CrtIndex--;
 }

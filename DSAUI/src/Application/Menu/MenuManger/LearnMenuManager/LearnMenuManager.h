@@ -4,9 +4,20 @@
 
 #include "../../../Widget/Panel.h"
 #include "../../../Widget/Canvas.h"
-#include "Application/Menu/Animator/SortAnimator.h"
+#include "../../../Widget/Button.h"
 
 using json = nlohmann::json;
+
+struct AnimationData
+{
+	Animator* canvasAnimator;
+	Button* beginBut;
+	Button* stopBut;
+	Button* pauseBut;
+	Button* resumeBut;
+	Button* nextBut;
+	Button* prevBut;
+};
 
 class LearnMenuManager
 {
@@ -22,7 +33,7 @@ public:
 
 private:
 	// TODO: maybe a vector of animators will work ok here, since if there are multiple canvases which can be animated will be a problem
-	static Animator* s_CanvasAnimator; // will leave it as pointer, since Animator will be a base class
+	static AnimationData s_AnimationData; // TODO: there will be multiple animators, make it into a hashmap, keys(canvas id), value(AnimationData instance)
 
 private:
 	static json readJSON(std::string jsonFileName);

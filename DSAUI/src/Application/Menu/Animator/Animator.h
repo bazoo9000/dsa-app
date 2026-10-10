@@ -16,6 +16,13 @@ struct Step {
         : i1(i1), i2(i2), type(type) {}
 };
 
+enum class AnimatorState {
+    Stopped,
+    Playing,
+    Paused,
+    Finished
+};
+
 // TODO: add other types of animators, for search, sort, graphs etc
 class Animator
 {
@@ -28,20 +35,21 @@ public:
     virtual void Stop(); // stops animation and resets to beginning, only stops if its playing or paused
     void Pause(); // pauses the animation at the current step, cant be paused if already paused or not played
     void Resume(); // resumes the animation from where it was paused, cant resume if its playing
-    void Update(); // proceeds to next frame, when not paused, used in per frame update functions
     void Next(); // proceeds to next step/frame, only when paused
     void Prev(); // proceeds to previous step/frame, only when paused
     virtual void AnimateCurrentStep() = 0; // animates current step, based on type of algorithm used
 
 public:
-    bool IsPlaying() { return m_Playing; }
-    bool IsPaused() { return m_Paused; }
+    bool IsPlaying() { return m_State == AnimatorState::Playing; }
+    bool IsPaused() { return m_State == AnimatorState::Paused; }
+    bool IsStopped() { return m_State == AnimatorState::Stopped; }
+    bool IsFinished() { return m_State == AnimatorState::Finished; }
 
 protected:
     Canvas* m_AnimatedCanvas;
+    uint32_t m_StepCount = 0;
     uint32_t m_CrtIndex = 0;
-    bool m_Paused = false;
-    bool m_Playing = false;
+    AnimatorState m_State = AnimatorState::Stopped;
 
 protected:
     // TODO: later add a const static class for colors

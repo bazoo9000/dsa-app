@@ -4,6 +4,8 @@
 
 #include "../../MenuAppSignaler.h"
 
+#include "../../../Time.h"
+
 #include "../../../Widget/TextBox.h"
 #include "../../../Widget/Canvas.h"
 #include "../../../Widget/Button.h"
@@ -17,7 +19,7 @@
 #include "Logger/Logger.h"
 
 std::string LearnMenuManager::s_LearnPath = "learntabs/";
-Animator* LearnMenuManager::s_CanvasAnimator = nullptr;
+AnimationData LearnMenuManager::s_AnimationData = AnimationData();
 
 Panel* LearnMenuManager::CreateLearnPanel(std::string learnTabName)
 {
@@ -137,44 +139,139 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
 
     Button* stopBut = new Button("button_stop_canvas_" + std::to_string(index), "Stop");
     Button* beginBut = new Button("button_begin_canvas_" + std::to_string(index), "Begin");
+    Button* pauseBut = new Button("button_pause_canvas_" + std::to_string(index), "Pause");
+    Button* resumeBut = new Button("button_resume_canvas_" + std::to_string(index), "Resume");
+    Button* nextBut = new Button("button_next_canvas_" + std::to_string(index), "Next");
+    Button* prevBut = new Button("button_previous_canvas_" + std::to_string(index), "Previous");
 
     // begin button
-    beginBut->SetCallback( [canvas, beginBut, stopBut]
+    beginBut->SetCallback( [canvas]
         {
-            if (s_CanvasAnimator == nullptr || !s_CanvasAnimator->IsPlaying())
+            if (s_AnimationData.canvasAnimator == nullptr || !(s_AnimationData.canvasAnimator->IsPlaying() || s_AnimationData.canvasAnimator->IsPaused()))
             {
                 BeginCanvasAnimation(canvas);
-                // beginBut->Disable(); // TODO: make it work after animation is done
-                // stopBut->Enable();
+
+                s_AnimationData.beginBut->Disable();
+                s_AnimationData.stopBut->Enable();
+                s_AnimationData.pauseBut->Enable();
+                s_AnimationData.resumeBut->Disable();
+                s_AnimationData.nextBut->Disable();
+                s_AnimationData.prevBut->Disable();
             }
         });
-    beginBut->MoveTo({ 5.0f, height + 5.0f});
+    beginBut->MoveTo({ 0.0f, height + 5.0f});
     beginBut->ScaleTo({ 50.0f, 20.0f });
+    // begin button
 
     // stop button
-    stopBut->SetCallback( [beginBut, stopBut]
+    stopBut->SetCallback( []
         {
-            if (s_CanvasAnimator != nullptr && s_CanvasAnimator->IsPlaying())
+            if (s_AnimationData.canvasAnimator != nullptr && (s_AnimationData.canvasAnimator->IsPlaying() || s_AnimationData.canvasAnimator->IsPaused()))
             {
-                s_CanvasAnimator->Stop();
-                // beginBut->Enable();
-                // stopBut->Disable();
+                s_AnimationData.canvasAnimator->Stop();
+
+                s_AnimationData.beginBut->Enable();
+                s_AnimationData.stopBut->Disable();
+                s_AnimationData.pauseBut->Disable();
+                s_AnimationData.resumeBut->Disable();
+                s_AnimationData.nextBut->Disable();
+                s_AnimationData.prevBut->Disable();
             }
         });
-    stopBut->MoveTo({125.0f, height + 5.0f});
+    stopBut->MoveTo({80.0f, height + 5.0f});
     stopBut->ScaleTo({ 50.0f, 20.0f });
-    // stopBut->Disable();
+    stopBut->Disable();
+    // stop button
+
+    // pause button
+    pauseBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && !s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Pause();
+
+                s_AnimationData.beginBut->Disable();
+                s_AnimationData.stopBut->Enable();
+                s_AnimationData.pauseBut->Disable();
+                s_AnimationData.resumeBut->Enable();
+                s_AnimationData.nextBut->Enable();
+                s_AnimationData.prevBut->Enable();
+            }
+        });
+    pauseBut->MoveTo({160.0f, height + 5.0f});
+    pauseBut->ScaleTo({ 50.0f, 20.0f });
+    pauseBut->Disable();
+    // pause button
+
+    // resume button
+    resumeBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Resume();
+
+                s_AnimationData.beginBut->Disable();
+                s_AnimationData.stopBut->Enable();
+                s_AnimationData.pauseBut->Enable();
+                s_AnimationData.resumeBut->Disable();
+                s_AnimationData.nextBut->Disable();
+                s_AnimationData.prevBut->Disable();
+            }
+        });
+    resumeBut->MoveTo({240.0f, height + 5.0f});
+    resumeBut->ScaleTo({ 50.0f, 20.0f });
+    resumeBut->Disable();
+    // resume button
+
+    // next button
+    nextBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Next();
+                s_AnimationData.canvasAnimator->AnimateCurrentStep();
+            }
+        });
+    nextBut->MoveTo({160.0f, height + 35.0f});
+    nextBut->ScaleTo({ 50.0f, 20.0f });
+    nextBut->Disable();
+    // next button
+
+    // previous button
+    prevBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Prev();
+                s_AnimationData.canvasAnimator->AnimateCurrentStep();
+            }
+        });
+    prevBut->MoveTo({240.0f, height + 35.0f});
+    prevBut->ScaleTo({ 50.0f, 20.0f });
+    prevBut->Disable();
+    // previous button
 
     // Output panel
     Panel* sub = new Panel("subpanel_canvas_" + panel->GetId());
     sub->MoveTo({ posX, posY });
     sub->ScaleTo({ width, height + 300.0f });
-    sub->HideBorder();
+    // sub->HideBorder();
     sub->HideScrollBar();
 
     sub->AddWidget(canvas);
     sub->AddWidget(beginBut);
     sub->AddWidget(stopBut);
+    sub->AddWidget(pauseBut);
+    sub->AddWidget(resumeBut);
+    sub->AddWidget(nextBut);
+    sub->AddWidget(prevBut);
+
+    s_AnimationData.beginBut = beginBut;
+    s_AnimationData.stopBut = stopBut;
+    s_AnimationData.pauseBut = pauseBut;
+    s_AnimationData.resumeBut = resumeBut;
+    s_AnimationData.nextBut = nextBut;
+    s_AnimationData.prevBut = prevBut;
 
     panel->AddWidget(sub);
 }
@@ -224,16 +321,14 @@ void LearnMenuManager::BeginCanvasAnimation(Canvas *canvas)
 
     // sort begin
     // bubble sort as an example
-    // TODO: move this in core
+    // TODO: move step generation to core
     for (int i = 0; i < indexes.size(); i++)
     {
-        bool ok = true;
         for (int j = i + 1 ; j < indexes.size(); j++)
         {
             steps.emplace_back(i, j, SortActionType::COMPARE);
             if (indexes[i] > indexes[j])
             {
-                ok = false;
                 std::swap(indexes[i], indexes[j]);
                 steps.emplace_back(i, j, SortActionType::SWAP);
             }
@@ -243,17 +338,47 @@ void LearnMenuManager::BeginCanvasAnimation(Canvas *canvas)
     }
     // sort end
 
-    delete s_CanvasAnimator;
-    s_CanvasAnimator = new SortAnimator(canvas, currentOrder, steps);
-    s_CanvasAnimator->Start();
+    delete s_AnimationData.canvasAnimator;
+    s_AnimationData.canvasAnimator = new SortAnimator(canvas, currentOrder, steps);
+    s_AnimationData.canvasAnimator->Start();
 }
 
 void LearnMenuManager::UpdateCanvasAnimation()
 {
-    s_CanvasAnimator->Update();
+    if (s_AnimationData.canvasAnimator == nullptr)
+    {
+        return;
+    }
+
+    if (s_AnimationData.canvasAnimator->IsPlaying())
+    {
+        static float delay = 0.005f; // TODO: add a delay slider for user
+        static float crt = -1.0f; // TODO: instead use Time.time rather than using Time.deltaTime
+
+        if (crt <= 0.0f)
+        {
+            s_AnimationData.canvasAnimator->AnimateCurrentStep();
+            s_AnimationData.canvasAnimator->Next();
+            crt = delay;
+        }
+        else
+        {
+            crt -= Time::GetDeltaTime();
+        }
+
+        if (s_AnimationData.canvasAnimator->IsFinished())
+        {
+            s_AnimationData.beginBut->Enable();
+            s_AnimationData.stopBut->Disable();
+            s_AnimationData.pauseBut->Disable();
+            s_AnimationData.resumeBut->Disable();
+            s_AnimationData.nextBut->Disable();
+            s_AnimationData.prevBut->Disable();
+        }
+    }
 }
 
 bool LearnMenuManager::IsCanvasAnimationInProgress()
 {
-    return s_CanvasAnimator != nullptr && s_CanvasAnimator->IsPlaying();
+    return s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPlaying();
 }
