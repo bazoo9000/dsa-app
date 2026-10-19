@@ -3,6 +3,7 @@
 #include "SortAnimator.h"
 
 #include "../MenuManger/LearnMenuManager/LearnMenuUtils.h" // this will be instead CanvasUtils later
+#include "../../Color.h"
 
 #include "Logger/Logger.h"
 
@@ -91,8 +92,8 @@ void SortAnimator::sortDone(uint32_t i)
 {
     std::vector<DrawableShape*>& shapes = m_AnimatedCanvas->GetAllDrawableShapes();
 
-    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_DONE) { shapes[m_LastIndex1]->SetColor(COLOR_NEUTRAL); }
-    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_DONE) { shapes[m_LastIndex2]->SetColor(COLOR_NEUTRAL); m_LastIndex2 = UINT32_MAX; }
+    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex1]->SetColor(COLOR_WHITE); }
+    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex2]->SetColor(COLOR_WHITE); m_LastIndex2 = UINT32_MAX; }
     m_LastIndex1 = i;
 
     if (i >= shapes.size())
@@ -100,15 +101,15 @@ void SortAnimator::sortDone(uint32_t i)
         return;
     }
 
-    shapes[i]->SetColor(COLOR_DONE);
+    shapes[i]->SetColor(COLOR_GREEN);
 }
 
 void SortAnimator::sortSelect(uint32_t i)
 {
     std::vector<DrawableShape*>& shapes = m_AnimatedCanvas->GetAllDrawableShapes();
 
-    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_DONE) { shapes[m_LastIndex1]->SetColor(COLOR_NEUTRAL); }
-    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_DONE) { shapes[m_LastIndex2]->SetColor(COLOR_NEUTRAL); m_LastIndex2 = UINT32_MAX; }
+    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex1]->SetColor(COLOR_WHITE); }
+    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex2]->SetColor(COLOR_WHITE); m_LastIndex2 = UINT32_MAX; }
     m_LastIndex1 = i;
 
     if (i >= shapes.size())
@@ -116,15 +117,15 @@ void SortAnimator::sortSelect(uint32_t i)
         return;
     }
 
-    shapes[i]->SetColor(COLOR_SELECTED);
+    shapes[i]->SetColor(COLOR_YELLOW);
 }
 
 void SortAnimator::sortCompare(uint32_t i1, uint32_t i2)
 {
     std::vector<DrawableShape*>& shapes = m_AnimatedCanvas->GetAllDrawableShapes();
 
-    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_DONE) { shapes[m_LastIndex1]->SetColor(COLOR_NEUTRAL); }
-    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_DONE) { shapes[m_LastIndex2]->SetColor(COLOR_NEUTRAL); }
+    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex1]->SetColor(COLOR_WHITE); }
+    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex2]->SetColor(COLOR_WHITE); }
     m_LastIndex1 = i1;
     m_LastIndex2 = i2;
 
@@ -138,16 +139,16 @@ void SortAnimator::sortCompare(uint32_t i1, uint32_t i2)
         return;
     }
 
-    shapes[i1]->SetColor(COLOR_COMPARE);
-    shapes[i2]->SetColor(COLOR_COMPARE);
+    shapes[i1]->SetColor(COLOR_BLUE);
+    shapes[i2]->SetColor(COLOR_BLUE);
 }
 
 void SortAnimator::sortSwap(uint32_t i1, uint32_t i2)
 {
     std::vector<DrawableShape*>& shapes = m_AnimatedCanvas->GetAllDrawableShapes();
 
-    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_DONE) { shapes[m_LastIndex1]->SetColor(COLOR_NEUTRAL); }
-    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_DONE) { shapes[m_LastIndex2]->SetColor(COLOR_NEUTRAL); }
+    if (m_LastIndex1 != UINT32_MAX && shapes[m_LastIndex1]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex1]->SetColor(COLOR_WHITE); }
+    if (m_LastIndex2 != UINT32_MAX && shapes[m_LastIndex2]->GetColor() != COLOR_GREEN) { shapes[m_LastIndex2]->SetColor(COLOR_WHITE); }
     m_LastIndex1 = i1;
     m_LastIndex2 = i2;
 
@@ -161,8 +162,8 @@ void SortAnimator::sortSwap(uint32_t i1, uint32_t i2)
         return;
     }
 
-    shapes[i1]->SetColor(COLOR_SWAP);
-    shapes[i2]->SetColor(COLOR_SWAP);
+    shapes[i1]->SetColor(COLOR_RED);
+    shapes[i2]->SetColor(COLOR_RED);
     LearnMenuUtils::SwapRectangles(shapes, i1, i2);
 
     std::swap(m_Indexes[i1], m_Indexes[i2]);
@@ -172,6 +173,6 @@ void SortAnimator::sortReset()
 {
     for (auto shape : m_AnimatedCanvas->GetAllDrawableShapes())
     {
-        shape->SetColor(COLOR_NEUTRAL);
+        shape->SetColor(COLOR_WHITE);
     }
 }

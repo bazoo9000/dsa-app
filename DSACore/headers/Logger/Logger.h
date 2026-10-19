@@ -5,7 +5,6 @@
     #define DEBUG_MODE
 
     #include <cstdio>
-    #include <string>
     #include <cstdarg>
     #include <vector>
 
@@ -27,42 +26,42 @@
         {
             va_list args;
             va_start(args, fmt);
-            logFormatted(type, "TRACE", COLOR_WHITE, fmt, args);
+            logFormatted(type, "TRACE", CONSOLE_COLOR_WHITE, fmt, args);
             va_end(args);
         }
         static void LogDebug(const char* type, const char* fmt, ...)
         {
             va_list args;
             va_start(args, fmt);
-            logFormatted(type, "DEBUG", COLOR_CYAN, fmt, args);
+            logFormatted(type, "DEBUG", CONSOLE_COLOR_CYAN, fmt, args);
             va_end(args);
         }
         static void LogInfo(const char* type, const char* fmt, ...)
         {
             va_list args;
             va_start(args, fmt);
-            logFormatted(type, "INFO", COLOR_GREEN, fmt, args);
+            logFormatted(type, "INFO", CONSOLE_COLOR_GREEN, fmt, args);
             va_end(args);
         }
         static void LogWarn(const char* type, const char* fmt, ...)
         {
             va_list args;
             va_start(args, fmt);
-            logFormatted(type, "WARNING", COLOR_YELLOW, fmt, args);
+            logFormatted(type, "WARNING", CONSOLE_COLOR_YELLOW, fmt, args);
             va_end(args);
         }
         static void LogError(const char* type, const char* fmt, ...)
         {
             va_list args;
             va_start(args, fmt);
-            logFormatted(type, "ERROR", COLOR_RED, fmt, args);
+            logFormatted(type, "ERROR", CONSOLE_COLOR_RED, fmt, args);
             va_end(args);
         }
         static void LogFatal(const char* type, const char* fmt, ...)
         {
             va_list args;
             va_start(args, fmt);
-            logFormatted(type, "FATAL", COLOR_RED_BG_WHITE, fmt, args);
+            logFormatted(type, "FATAL", CONSOLE_COLOR_RED_BG_WHITE, fmt, args);
             va_end(args);
         }
 
@@ -80,17 +79,17 @@
             // TODO: Time bug, its only time since start of program
             printf("%s", color);
             printf("(%s) [%s] %s: %s", __TIME__, type, level, msg);
-            printf("%s\n", COLOR_DEFAULT_RESET);
+            printf("%s\n", CONSOLE_COLOR_DEFAULT_RESET);
         }
         
     private:
-        static constexpr const char* COLOR_RED = "\033[31m";
-        static constexpr const char* COLOR_YELLOW = "\033[33m";
-        static constexpr const char* COLOR_GREEN = "\033[32m";
-        static constexpr const char* COLOR_CYAN = "\033[36m";
-        static constexpr const char* COLOR_WHITE = "\033[37m";
-        static constexpr const char* COLOR_RED_BG_WHITE = "\033[1;47;31m";
-        static constexpr const char* COLOR_DEFAULT_RESET = "\033[0m"; // default color
+        static constexpr const char* CONSOLE_COLOR_RED = "\033[31m";
+        static constexpr const char* CONSOLE_COLOR_YELLOW = "\033[33m";
+        static constexpr const char* CONSOLE_COLOR_GREEN = "\033[32m";
+        static constexpr const char* CONSOLE_COLOR_CYAN = "\033[36m";
+        static constexpr const char* CONSOLE_COLOR_WHITE = "\033[37m";
+        static constexpr const char* CONSOLE_COLOR_RED_BG_WHITE = "\033[1;47;31m";
+        static constexpr const char* CONSOLE_COLOR_DEFAULT_RESET = "\033[0m"; // default color
     };
 
     #ifdef DEBUG_MODE

@@ -50,12 +50,4 @@ protected:
     uint32_t m_StepCount = 0;
     uint32_t m_CrtIndex = 0;
     AnimatorState m_State = AnimatorState::Stopped;
-
-protected:
-    // TODO: later add a const static class for colors
-    static constexpr ImU32 COLOR_DONE = IM_COL32(0, 255, 0, 255);       // green
-    static constexpr ImU32 COLOR_SELECTED = IM_COL32(255, 255, 0, 255); // yellow
-    static constexpr ImU32 COLOR_COMPARE = IM_COL32(0, 0, 255, 255);    // blue
-    static constexpr ImU32 COLOR_SWAP = IM_COL32(255, 0, 0, 255);       // red
-    static constexpr ImU32 COLOR_NEUTRAL = IM_COL32_WHITE;              //
 };

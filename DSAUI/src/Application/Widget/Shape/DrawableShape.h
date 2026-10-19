@@ -1,6 +1,7 @@
 #pragma once
 
 #include "imgui.h"
+#include "../../Color.h"
 
 class DrawableShape
 {
@@ -20,7 +21,7 @@ public:
 
 protected:
 	// Shape color, +get/+set
-	ImU32 m_Color = IM_COL32_BLACK;
+	ImU32 m_Color = COLOR_BLACK;
 	// Thickness of shape line(s), +get/+set
 	float m_Thickness = 1.0f;
 	// If shape can be filled or not, TODO: move this since line is a shape that cant be filled

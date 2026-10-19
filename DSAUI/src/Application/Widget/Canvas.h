@@ -3,11 +3,12 @@
 #include "Widget.h"
 #include "Shape/DrawableShape.h"
 #include "Shape/InteractableShape.h"
+#include "../Color.h"
 
 class Canvas : public Widget
 {
 public:
-	Canvas(std::string id, ImU32 bgColor = IM_COL32_WHITE);
+	Canvas(std::string id, ImU32 bgColor = COLOR_WHITE);
 	~Canvas();
 
 public:

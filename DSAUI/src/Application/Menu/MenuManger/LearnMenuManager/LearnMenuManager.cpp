@@ -2,6 +2,8 @@
 
 #include "LearnMenuManager.h"
 
+#include "../../../Color.h"
+
 #include "../../MenuAppSignaler.h"
 
 #include "../../../Time.h"
@@ -118,7 +120,7 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
     std::string id = "canvas_" + panel->GetId() + "_" + std::to_string(index);
     Canvas* canvas = new Canvas(id);
     canvas->ScaleTo({ width, height });
-    canvas->SetBgColor(IM_COL32_BLACK);
+    canvas->SetBgColor(COLOR_BLACK);
 
     float offset = 0.0f;
     int max = data["maxValue"];
@@ -131,7 +133,7 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
             { offset + deltaWidth * i, height - offset },
             { offset + deltaWidth * (i + 1), height - (deltaHeight * (vals[i] + 1)) - offset }
         );
-        rect->SetColor(IM_COL32_WHITE);
+        rect->SetColor(COLOR_WHITE);
         rect->SetFilled(true);
 
         canvas->AddDrawableShape(rect);

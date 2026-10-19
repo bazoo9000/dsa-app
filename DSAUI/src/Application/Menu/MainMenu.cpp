@@ -2,6 +2,8 @@
 
 #include "MainMenu.h"
 
+#include "../Color.h"
+
 #include "../Widget/Button.h"
 #include "../Widget/TextLabel.h"
 #include "../Widget/Canvas.h"
@@ -54,7 +56,7 @@ void MainMenu::InitMenu()
 	Canvas* canvas = new Canvas("canvas");
 	canvas->MoveTo({ 100.0f, 200.0f });
 	canvas->ScaleTo({ 450.0f, 450.0f });
-	canvas->SetBgColor(IM_COL32(125, 255, 125, 255));
+	canvas->SetBgColor(COLOR_LIGHT_GREEN);
 
 	InteractableCircle* circle = new InteractableCircle({ 100.0f, 100.0f }, 50.0f);
 	InteractableCircle* circle1 = new InteractableCircle({ 200.0f, 111.0f }, 31.0f);
