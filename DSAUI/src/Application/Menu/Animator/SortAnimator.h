@@ -5,13 +5,16 @@
 class SortAnimator : public Animator
 {
 public:
-    SortAnimator(Canvas* canvas, const std::vector<uint32_t>& indexes, const std::vector<Step>& steps);
+    SortAnimator(Canvas* canvas);
     ~SortAnimator() = default;
 
 public:
     virtual void Start() override;
     virtual void Stop() override;
     virtual void AnimateCurrentStep() override;
+
+private:
+    std::vector<uint32_t> createVector(uint32_t max, bool shuffle = false);
 
 private:
     void sortDone(uint32_t i);

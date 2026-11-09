@@ -18,7 +18,7 @@
         {
             "type" : "canvas",
             "data" : {
-                "type" : "ds:array",
+                "type" : "bubble_sort",
                 "maxValue" : 30,
                 "label": "GUI.LEARN_ARRAY_CANVAS_LABEL",
                 "position" : {

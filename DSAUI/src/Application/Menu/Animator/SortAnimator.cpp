@@ -7,17 +7,52 @@
 
 #include "Logger/Logger.h"
 
-SortAnimator::SortAnimator(Canvas* canvas, const std::vector<uint32_t>& indexes, const std::vector<Step>& steps)
+SortAnimator::SortAnimator(Canvas* canvas)
     : Animator(canvas)
 {
-    if (steps.empty())
+    // shuffle begin
+    std::vector<DrawableShape*>& shapes = canvas->GetAllDrawableShapes();
+    m_Indexes = createVector(shapes.size(), true);
+    std::vector<uint32_t> currentOrder = createVector(m_Indexes.size());
+    for (int i = 0; i < m_Indexes.size(); i++)
+    {
+        for (int j = i; j < m_Indexes.size(); j++)
+        {
+            if (currentOrder[j] == m_Indexes[i])
+            {
+                LearnMenuUtils::SwapRectangles(shapes, i, j);
+                std::swap(currentOrder[i], currentOrder[j]);
+                break;
+            }
+        }
+    }
+    // shuffle end
+
+    // sort begin
+    // bubble sort as an example
+    // TODO: move step generation to core
+    for (int i = 0; i < m_Indexes.size(); i++)
+    {
+        for (int j = i + 1 ; j < m_Indexes.size(); j++)
+        {
+            m_AnimationSteps.emplace_back(i, j, SortActionType::COMPARE);
+            if (m_Indexes[i] > m_Indexes[j])
+            {
+                std::swap(m_Indexes[i], m_Indexes[j]);
+                m_AnimationSteps.emplace_back(i, j, SortActionType::SWAP);
+            }
+        }
+
+        m_AnimationSteps.emplace_back(i, 0, SortActionType::DONE);
+    }
+    // sort end
+
+    if (m_AnimationSteps.empty())
     {
         LOG_GUI_WARN("Step list is empty");
     }
 
-    m_AnimationSteps = steps;
-    m_Indexes = indexes;
-    m_StepCount = steps.size();
+    m_StepCount = m_AnimationSteps.size();
 }
 
 void SortAnimator::Start()
@@ -86,6 +121,28 @@ void SortAnimator::AnimateCurrentStep()
             sortDone(step.i1);
             break;
     }
+}
+
+std::vector<uint32_t> SortAnimator::createVector(uint32_t max, bool shuffle)
+{
+    if (max == 0)
+    {
+        // TODO: should this be fatal?
+        LOG_GUI_FATAL("Can't create vector, max value is 0");
+        exit(1);
+    }
+
+    std::vector<uint32_t> ret;
+    ret.resize(max);
+
+    std::iota(ret.begin(), ret.end(), 0);
+    if (shuffle)
+    {
+        static std::mt19937 rng(std::random_device{}());
+        std::shuffle(ret.begin(), ret.end(), rng);
+    }
+
+    return ret;
 }
 
 void SortAnimator::sortDone(uint32_t i)

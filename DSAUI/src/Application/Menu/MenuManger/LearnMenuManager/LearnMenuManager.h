@@ -19,6 +19,27 @@ struct AnimationData
 	Button* prevBut;
 };
 
+enum class DSAType
+{
+	Unknown = 0,
+
+	// Sorting algs
+	BubbleSort,
+	SelectionSort,
+	InsertionSort,
+
+	// Search algs
+	LinearSearch,
+	BinarySearch,
+
+	// Graph algs
+	DFS,
+
+	// Data Structures
+	Array,
+	LinkedList,
+};
+
 class LearnMenuManager
 {
 public:
@@ -40,6 +61,12 @@ private:
 	static Panel* parseJSON(json jsonData, Panel* panel);
 	static void setText(Panel* panel, const json& data, int index);
 	static void setCanvas(Panel* panel, const json& data, int index);
+
+	// setCanvas specific functions
+private:
+	static DSAType getDSAType(std::string type);
+	static Panel* createSortCanvasPanel(Panel* panel, const json& data, int index, DSAType sortType);
+	static Panel* createSearchCanvasPanel(Panel* panel, const json& data, int index, DSAType searchType);
 
 private:
 	static std::string s_LearnPath;

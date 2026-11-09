@@ -21,6 +21,13 @@ static const std::vector<std::string> VALID_TOKENS = {
 	"GUI.DEFAULT",
 
 	// Learn Panel specific
+	"GUI.STOP",
+	"GUI.BEGIN",
+	"GUI.PAUSE",
+	"GUI.RESUME",
+	"GUI.NEXT",
+	"GUI.PREVIOUS",
+
 	"GUI.DATA_STRUCTURES",
 	"GUI.LEARN_ARRAY_TITLE",
 	"GUI.LEARN_ARRAY_P_1",

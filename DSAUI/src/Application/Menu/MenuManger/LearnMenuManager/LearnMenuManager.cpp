@@ -111,6 +111,110 @@ void LearnMenuManager::setText(Panel* panel, const json& data, int index)
 
 void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
 {
+    Panel* sub = nullptr;
+
+    switch (DSAType type = getDSAType(data["type"]))
+    {
+        case DSAType::BubbleSort:
+        case DSAType::SelectionSort:
+        case DSAType::InsertionSort:
+            sub = createSortCanvasPanel(panel, data, index, type); break;
+        case DSAType::LinearSearch:
+        case DSAType::BinarySearch:
+            sub = createSearchCanvasPanel(panel, data, index, type); break;
+        case DSAType::DFS:
+        case DSAType::Array:
+        case DSAType::LinkedList:
+        case DSAType::Unknown:
+            std::string typeStr = data["type"];
+            LOG_GUI_FATAL("Unable to create canvas, type %s is unknown", typeStr.c_str());
+            exit(1);
+    }
+
+    panel->AddWidget(sub);
+}
+
+std::vector<uint32_t> LearnMenuManager::CreateVector(uint32_t max, bool shuffle)
+{
+    if (max == 0)
+    {
+        LOG_GUI_FATAL("Can't create vector, max value is 0");
+        exit(1);
+    }
+
+    std::vector<uint32_t> ret;
+    ret.resize(max);
+
+    std::iota(ret.begin(), ret.end(), 0);
+    if (shuffle)
+    {
+        static std::mt19937 rng(std::random_device{}());
+        std::shuffle(ret.begin(), ret.end(), rng);
+    }
+
+    return ret;
+}
+
+void LearnMenuManager::BeginCanvasAnimation(Canvas *canvas)
+{
+    delete s_AnimationData.canvasAnimator;
+    s_AnimationData.canvasAnimator = new SortAnimator(canvas);
+    s_AnimationData.canvasAnimator->Start();
+}
+
+void LearnMenuManager::UpdateCanvasAnimation()
+{
+    if (s_AnimationData.canvasAnimator == nullptr)
+    {
+        return;
+    }
+
+    if (s_AnimationData.canvasAnimator->IsPlaying())
+    {
+        static float delay = 0.005f; // TODO: add a delay slider for user
+        static float crt = -1.0f; // TODO: instead use Time.time rather than using Time.deltaTime
+
+        if (crt <= 0.0f)
+        {
+            s_AnimationData.canvasAnimator->AnimateCurrentStep();
+            s_AnimationData.canvasAnimator->Next();
+            crt = delay;
+        }
+        else
+        {
+            crt -= Time::GetDeltaTime();
+        }
+
+        if (s_AnimationData.canvasAnimator->IsFinished())
+        {
+            s_AnimationData.beginBut->Enable();
+            s_AnimationData.stopBut->Disable();
+            s_AnimationData.pauseBut->Disable();
+            s_AnimationData.resumeBut->Disable();
+            s_AnimationData.nextBut->Disable();
+            s_AnimationData.prevBut->Disable();
+        }
+    }
+}
+
+bool LearnMenuManager::IsCanvasAnimationInProgress()
+{
+    return s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPlaying();
+}
+
+DSAType LearnMenuManager::getDSAType(std::string type)
+{
+    if (type == "bubble_sort") { return DSAType::BubbleSort; }
+    if (type == "selection_sort") { return DSAType::SelectionSort; }
+    if (type == "insertion_sort") { return DSAType::InsertionSort; }
+    if (type == "linear_search") { return DSAType::LinearSearch; }
+    if (type == "binary_search") { return DSAType::BinarySearch; }
+
+    return DSAType::Unknown;
+}
+
+Panel* LearnMenuManager::createSortCanvasPanel(Panel *panel, const json &data, int index, DSAType sortType)
+{
     float width = data["size"]["width"];
     float height = data["size"]["height"];
 
@@ -139,12 +243,23 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
         canvas->AddDrawableShape(rect);
     }
 
-    Button* stopBut = new Button("button_stop_canvas_" + std::to_string(index), "Stop");
-    Button* beginBut = new Button("button_begin_canvas_" + std::to_string(index), "Begin");
-    Button* pauseBut = new Button("button_pause_canvas_" + std::to_string(index), "Pause");
-    Button* resumeBut = new Button("button_resume_canvas_" + std::to_string(index), "Resume");
-    Button* nextBut = new Button("button_next_canvas_" + std::to_string(index), "Next");
-    Button* prevBut = new Button("button_previous_canvas_" + std::to_string(index), "Previous");
+    auto tokens = MenuAppSignaler::SignalRequestTokens(
+        {
+            "GUI.STOP",
+            "GUI.BEGIN",
+            "GUI.PAUSE",
+            "GUI.RESUME",
+            "GUI.NEXT",
+            "GUI.PREVIOUS",
+        }
+    );
+
+    Button* stopBut = new Button("button_stop_canvas_" + std::to_string(index), tokens["GUI.STOP"]);
+    Button* beginBut = new Button("button_begin_canvas_" + std::to_string(index), tokens["GUI.BEGIN"]);
+    Button* pauseBut = new Button("button_pause_canvas_" + std::to_string(index), tokens["GUI.PAUSE"]);
+    Button* resumeBut = new Button("button_resume_canvas_" + std::to_string(index), tokens["GUI.RESUME"]);
+    Button* nextBut = new Button("button_next_canvas_" + std::to_string(index), tokens["GUI.NEXT"]);
+    Button* prevBut = new Button("button_previous_canvas_" + std::to_string(index), tokens["GUI.PREVIOUS"]);
 
     // begin button
     beginBut->SetCallback( [canvas]
@@ -256,8 +371,8 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
     // Output panel
     Panel* sub = new Panel("subpanel_canvas_" + panel->GetId());
     sub->MoveTo({ posX, posY });
-    sub->ScaleTo({ width, height + 300.0f });
-    // sub->HideBorder();
+    sub->ScaleTo({ width, height + 75.0f });
+    sub->HideBorder();
     sub->HideScrollBar();
 
     sub->AddWidget(canvas);
@@ -275,112 +390,10 @@ void LearnMenuManager::setCanvas(Panel* panel, const json& data, int index)
     s_AnimationData.nextBut = nextBut;
     s_AnimationData.prevBut = prevBut;
 
-    panel->AddWidget(sub);
+    return sub;
 }
 
-std::vector<uint32_t> LearnMenuManager::CreateVector(uint32_t max, bool shuffle)
+Panel* LearnMenuManager::createSearchCanvasPanel(Panel *panel, const json &data, int index, DSAType searchType)
 {
-    if (max == 0)
-    {
-        LOG_GUI_FATAL("Can't create vector, max value is 0");
-        exit(1);
-    }
 
-    std::vector<uint32_t> ret;
-    ret.resize(max);
-
-    std::iota(ret.begin(), ret.end(), 0);
-    if (shuffle)
-    {
-        static std::mt19937 rng(std::random_device{}());
-        std::shuffle(ret.begin(), ret.end(), rng);
-    }
-
-    return ret;
-}
-
-void LearnMenuManager::BeginCanvasAnimation(Canvas *canvas)
-{
-    // shuffle begin
-    std::vector<DrawableShape*>& shapes = canvas->GetAllDrawableShapes();
-    std::vector<uint32_t> indexes = CreateVector(shapes.size(), true);
-    std::vector<uint32_t> currentOrder = CreateVector(indexes.size());
-    for (int i = 0; i < indexes.size(); i++)
-    {
-        for (int j = i; j < indexes.size(); j++)
-        {
-            if (currentOrder[j] == indexes[i])
-            {
-                LearnMenuUtils::SwapRectangles(shapes, i, j);
-                std::swap(currentOrder[i], currentOrder[j]);
-                break;
-            }
-        }
-    }
-
-    std::vector<Step> steps;
-    // shuffle end
-
-    // sort begin
-    // bubble sort as an example
-    // TODO: move step generation to core
-    for (int i = 0; i < indexes.size(); i++)
-    {
-        for (int j = i + 1 ; j < indexes.size(); j++)
-        {
-            steps.emplace_back(i, j, SortActionType::COMPARE);
-            if (indexes[i] > indexes[j])
-            {
-                std::swap(indexes[i], indexes[j]);
-                steps.emplace_back(i, j, SortActionType::SWAP);
-            }
-        }
-
-        steps.emplace_back(i, 0, SortActionType::DONE);
-    }
-    // sort end
-
-    delete s_AnimationData.canvasAnimator;
-    s_AnimationData.canvasAnimator = new SortAnimator(canvas, currentOrder, steps);
-    s_AnimationData.canvasAnimator->Start();
-}
-
-void LearnMenuManager::UpdateCanvasAnimation()
-{
-    if (s_AnimationData.canvasAnimator == nullptr)
-    {
-        return;
-    }
-
-    if (s_AnimationData.canvasAnimator->IsPlaying())
-    {
-        static float delay = 0.005f; // TODO: add a delay slider for user
-        static float crt = -1.0f; // TODO: instead use Time.time rather than using Time.deltaTime
-
-        if (crt <= 0.0f)
-        {
-            s_AnimationData.canvasAnimator->AnimateCurrentStep();
-            s_AnimationData.canvasAnimator->Next();
-            crt = delay;
-        }
-        else
-        {
-            crt -= Time::GetDeltaTime();
-        }
-
-        if (s_AnimationData.canvasAnimator->IsFinished())
-        {
-            s_AnimationData.beginBut->Enable();
-            s_AnimationData.stopBut->Disable();
-            s_AnimationData.pauseBut->Disable();
-            s_AnimationData.resumeBut->Disable();
-            s_AnimationData.nextBut->Disable();
-            s_AnimationData.prevBut->Disable();
-        }
-    }
-}
-
-bool LearnMenuManager::IsCanvasAnimationInProgress()
-{
-    return s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPlaying();
 }
