@@ -13,6 +13,7 @@
 #include "../../../Widget/Button.h"
 #include "../../../Widget/CustomWidget.h"
 #include "../../../Widget/Shape/DrawableRectangle.h"
+#include "../../../Widget/Shape/DrawableText.h"
 
 #include "../../Animator/SortAnimator.h"
 
