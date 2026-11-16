@@ -2,11 +2,10 @@
 
 #include "TextBox.h"
 
-TextBox::TextBox(std::string id, std::string text, ImFont* font)
+TextBox::TextBox(const std::string& id, const std::string& text, ImFont* font)
+	: BasicText(text, font)
 {
 	m_Id = id;
-	m_Text = text;
-	m_Font = font;
 }
 
 TextBox::~TextBox()

@@ -15,7 +15,7 @@ DrawableCircle::~DrawableCircle()
 void DrawableCircle::DrawShape(ImDrawList* drawList)
 {
 	ImVec2 finalPos = m_GlobalOrigin + m_Origin;
-	
+
 	if (!m_Filled)
 	{
 		drawList->AddCircle(

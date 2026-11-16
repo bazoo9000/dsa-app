@@ -6,7 +6,7 @@
 class TextBox : public Widget, public BasicText
 {
 public:
-	TextBox(std::string id, std::string text = "", ImFont* font = FONT_DEFAULT);
+	TextBox(const std::string& id, const std::string& text, ImFont* font = FONT_DEFAULT);
 	~TextBox();
 
 protected:

@@ -1,0 +1,13 @@
+CompileFlags:
+  Add:
+    - -std=c++17
+    - -I./
+    - -I./DSACore/headers
+    - -I./DSAUI/src
+    - -I./DSAUI/vendors/json/single_include
+    - -I./DSAUI/vendors/glad/include
+    - -I./DSAUI/vendors/imgui
+    - -I./DSAUI/vendors/imgui/backends
+    - -I./DSAUI/vendors/glfw/include
+
+CompilationDatabase: build/clangd-debug

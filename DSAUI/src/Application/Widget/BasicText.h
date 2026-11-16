@@ -6,15 +6,21 @@ extern ImFont* FONT_H2;
 extern ImFont* FONT_H3;
 extern ImFont* FONT_H4;
 
-void LoadFonts(ImGuiIO& io);
-
 class BasicText
 {
 public:
-	virtual ~BasicText() { m_Text.clear(); m_Font = nullptr; }
+	BasicText() = default;
+	BasicText(const std::string& text, ImFont* font = FONT_DEFAULT);
+	virtual ~BasicText();
 
 public:
-	void ModifyText(std::string newText) { m_Text = newText; }
+	std::string GetText() { return m_Text; }
+	void SetText(const std::string& newText) { m_Text = newText; }
+
+public:
+	static void LoadFonts(ImGuiIO& io, const std::string& fontName);
+	static void ReloadFonts(ImGuiIO& io, const std::string& fontName);
+	static void UnloadFonts(ImGuiIO& io);
 
 protected:
 	std::string m_Text;

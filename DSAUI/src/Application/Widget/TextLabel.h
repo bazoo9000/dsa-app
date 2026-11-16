@@ -6,7 +6,7 @@
 class TextLabel : public Widget, public BasicText
 {
 public:
-	TextLabel(std::string id, std::string text = "", ImFont* font = FONT_DEFAULT);
+	TextLabel(const std::string& id, const std::string& text, ImFont* font = FONT_DEFAULT);
 	virtual ~TextLabel();
 
 protected:

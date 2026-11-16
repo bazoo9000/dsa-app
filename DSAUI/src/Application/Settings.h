@@ -8,6 +8,7 @@ struct SettingsData
 	ImVec2 resolution = { 1280.0f, 720.0f };
 	bool isVsync = true;
 	std::string language = "ro-RO";
+	std::string font = "Roboto-Medium";
 };
 
 // TODO: make hot reloading, to change settings after pressing save

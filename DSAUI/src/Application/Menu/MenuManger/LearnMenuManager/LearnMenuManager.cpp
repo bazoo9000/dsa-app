@@ -395,5 +395,180 @@ Panel* LearnMenuManager::createSortCanvasPanel(Panel *panel, const json &data, i
 
 Panel* LearnMenuManager::createSearchCanvasPanel(Panel *panel, const json &data, int index, DSAType searchType)
 {
+    float width = data["size"]["width"];
+    float height = data["size"]["height"];
 
+    float posX = data["position"]["x"];
+    float posY = data["position"]["y"];
+
+    std::string id = "canvas_" + panel->GetId() + "_" + std::to_string(index);
+    Canvas* canvas = new Canvas(id);
+    canvas->ScaleTo({ width, height });
+    canvas->SetBgColor(COLOR_BLACK);
+
+    float offset = 0.0f;
+    int max = data["maxValue"];
+    float deltaWidth = (width - 2 * offset) / max;
+    float deltaHeight = (height - 2 * offset) / max;
+    std::vector<uint32_t> vals = CreateVector(max);
+    for (int i = 0; i < max; i++)
+    {
+        DrawableRectangle* rect = new DrawableRectangle(
+            { offset + deltaWidth * i, height - offset },
+            { offset + deltaWidth * (i + 1), height - (deltaHeight * (vals[i] + 1)) - offset }
+        );
+        rect->SetColor(COLOR_WHITE);
+        rect->SetFilled(true);
+
+        canvas->AddDrawableShape(rect);
+    }
+
+    auto tokens = MenuAppSignaler::SignalRequestTokens(
+        {
+            "GUI.STOP",
+            "GUI.BEGIN",
+            "GUI.PAUSE",
+            "GUI.RESUME",
+            "GUI.NEXT",
+            "GUI.PREVIOUS",
+        }
+    );
+
+    Button* stopBut = new Button("button_stop_canvas_" + std::to_string(index), tokens["GUI.STOP"]);
+    Button* beginBut = new Button("button_begin_canvas_" + std::to_string(index), tokens["GUI.BEGIN"]);
+    Button* pauseBut = new Button("button_pause_canvas_" + std::to_string(index), tokens["GUI.PAUSE"]);
+    Button* resumeBut = new Button("button_resume_canvas_" + std::to_string(index), tokens["GUI.RESUME"]);
+    Button* nextBut = new Button("button_next_canvas_" + std::to_string(index), tokens["GUI.NEXT"]);
+    Button* prevBut = new Button("button_previous_canvas_" + std::to_string(index), tokens["GUI.PREVIOUS"]);
+
+    // begin button
+    beginBut->SetCallback( [canvas]
+        {
+            if (s_AnimationData.canvasAnimator == nullptr || !(s_AnimationData.canvasAnimator->IsPlaying() || s_AnimationData.canvasAnimator->IsPaused()))
+            {
+                BeginCanvasAnimation(canvas);
+
+                s_AnimationData.beginBut->Disable();
+                s_AnimationData.stopBut->Enable();
+                s_AnimationData.pauseBut->Enable();
+                s_AnimationData.resumeBut->Disable();
+                s_AnimationData.nextBut->Disable();
+                s_AnimationData.prevBut->Disable();
+            }
+        });
+    beginBut->MoveTo({ 0.0f, height + 5.0f});
+    beginBut->ScaleTo({ 50.0f, 20.0f });
+    // begin button
+
+    // stop button
+    stopBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && (s_AnimationData.canvasAnimator->IsPlaying() || s_AnimationData.canvasAnimator->IsPaused()))
+            {
+                s_AnimationData.canvasAnimator->Stop();
+
+                s_AnimationData.beginBut->Enable();
+                s_AnimationData.stopBut->Disable();
+                s_AnimationData.pauseBut->Disable();
+                s_AnimationData.resumeBut->Disable();
+                s_AnimationData.nextBut->Disable();
+                s_AnimationData.prevBut->Disable();
+            }
+        });
+    stopBut->MoveTo({80.0f, height + 5.0f});
+    stopBut->ScaleTo({ 50.0f, 20.0f });
+    stopBut->Disable();
+    // stop button
+
+    // pause button
+    pauseBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && !s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Pause();
+
+                s_AnimationData.beginBut->Disable();
+                s_AnimationData.stopBut->Enable();
+                s_AnimationData.pauseBut->Disable();
+                s_AnimationData.resumeBut->Enable();
+                s_AnimationData.nextBut->Enable();
+                s_AnimationData.prevBut->Enable();
+            }
+        });
+    pauseBut->MoveTo({160.0f, height + 5.0f});
+    pauseBut->ScaleTo({ 50.0f, 20.0f });
+    pauseBut->Disable();
+    // pause button
+
+    // resume button
+    resumeBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Resume();
+
+                s_AnimationData.beginBut->Disable();
+                s_AnimationData.stopBut->Enable();
+                s_AnimationData.pauseBut->Enable();
+                s_AnimationData.resumeBut->Disable();
+                s_AnimationData.nextBut->Disable();
+                s_AnimationData.prevBut->Disable();
+            }
+        });
+    resumeBut->MoveTo({240.0f, height + 5.0f});
+    resumeBut->ScaleTo({ 50.0f, 20.0f });
+    resumeBut->Disable();
+    // resume button
+
+    // next button
+    nextBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Next();
+                s_AnimationData.canvasAnimator->AnimateCurrentStep();
+            }
+        });
+    nextBut->MoveTo({160.0f, height + 35.0f});
+    nextBut->ScaleTo({ 50.0f, 20.0f });
+    nextBut->Disable();
+    // next button
+
+    // previous button
+    prevBut->SetCallback( []
+        {
+            if (s_AnimationData.canvasAnimator != nullptr && s_AnimationData.canvasAnimator->IsPaused())
+            {
+                s_AnimationData.canvasAnimator->Prev();
+                s_AnimationData.canvasAnimator->AnimateCurrentStep();
+            }
+        });
+    prevBut->MoveTo({240.0f, height + 35.0f});
+    prevBut->ScaleTo({ 50.0f, 20.0f });
+    prevBut->Disable();
+    // previous button
+
+    // Output panel
+    Panel* sub = new Panel("subpanel_canvas_" + panel->GetId());
+    sub->MoveTo({ posX, posY });
+    sub->ScaleTo({ width, height + 75.0f });
+    sub->HideBorder();
+    sub->HideScrollBar();
+
+    sub->AddWidget(canvas);
+    sub->AddWidget(beginBut);
+    sub->AddWidget(stopBut);
+    sub->AddWidget(pauseBut);
+    sub->AddWidget(resumeBut);
+    sub->AddWidget(nextBut);
+    sub->AddWidget(prevBut);
+
+    s_AnimationData.beginBut = beginBut;
+    s_AnimationData.stopBut = stopBut;
+    s_AnimationData.pauseBut = pauseBut;
+    s_AnimationData.resumeBut = resumeBut;
+    s_AnimationData.nextBut = nextBut;
+    s_AnimationData.prevBut = prevBut;
+
+    return sub;
 }

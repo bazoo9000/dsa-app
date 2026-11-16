@@ -8,17 +8,17 @@ const std::string Settings::SETTINGS_FILENAME = "settings.json";
 
 SettingsData Settings::LoadSettings()
 {
-    return Settings::readSettings();
+    return readSettings();
 }
 
 void Settings::SaveSettings(SettingsData data)
 {
-	Settings::writeSettings(data);
+	writeSettings(data);
 }
 
 void Settings::RestoreDefaultSettings()
 {
-    Settings::writeSettings(SettingsData());
+    writeSettings(SettingsData());
 }
 
 SettingsData Settings::readSettings()
@@ -48,6 +48,11 @@ SettingsData Settings::readSettings()
 		if (!settings["language"].is_null())
 		{
 			ret.language = settings["language"];
+		}
+
+		if (!settings["font"].is_null())
+		{
+			ret.font = settings["font"];
 		}
 
 		LOG_GUI_DEBUG("Settings loaded succesfully");
@@ -81,6 +86,7 @@ void Settings::writeSettings(SettingsData data)
 		out["resolution"]["y"] = (int)data.resolution.y;
 		out["isVsync"] = data.isVsync;
 		out["language"] = data.language;
+		out["font"] = data.font;
 
 		file.clear();
 		file << out.dump(4);

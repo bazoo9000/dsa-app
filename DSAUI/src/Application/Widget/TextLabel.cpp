@@ -2,11 +2,10 @@
 
 #include "TextLabel.h"
 
-TextLabel::TextLabel(std::string id, std::string text, ImFont* font)
+TextLabel::TextLabel(const std::string& id, const std::string& text, ImFont* font)
+	: BasicText(text, font)
 {
 	m_Id = id;
-	m_Text = text;
-	m_Font = font;
 }
 
 TextLabel::~TextLabel()

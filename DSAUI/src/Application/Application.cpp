@@ -23,7 +23,7 @@ Application::Application()
 	initImGUI("#version 130");
 	m_I18N = I18NFactory::GetI18N(settingsData.language);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	LoadFonts(io);
+	BasicText::LoadFonts(io, settingsData.font);
 
 	m_TextCache = CacheManager<std::string>(250);
 
